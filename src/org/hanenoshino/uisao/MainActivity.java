@@ -348,6 +348,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
 					cover.setTag(image().bmp());
 				}
 				String background = CoverDecoder.getThumbernailCache(url);
+				// Exception for Web Images
+				if(background == null) 
+					background = CoverDecoder.getThumbernailCache(image().file().getAbsolutePath());
 				if(coverToBkg && background != null) {
 					updateBackground(background);
 				}

@@ -41,6 +41,13 @@ public class CoverDecoder extends BitmapDecoder {
 		return null;
 	}
 	
+	public static String rTmp(String any) {
+		if(any.endsWith("__tmp__")) {
+			return any.substring(0, any.length() - 7);
+		}
+		return any;
+	}
+	
 	private final int MAX_WIDTH;
 	private final int MAX_HEIGHT;
 	
@@ -58,7 +65,7 @@ public class CoverDecoder extends BitmapDecoder {
 		
 		Bitmap rtn = null;
 
-		String id = hasher.hash(path);
+		String id = hasher.hash(rTmp(path));
 
 		FileOutputStream fout = null;
 		
@@ -72,15 +79,11 @@ public class CoverDecoder extends BitmapDecoder {
 					options.outHeight/MAX_HEIGHT);
 			int sampleSize = Integer.highestOneBit((int)Math.floor(ratio));
 			
-			if(sampleSize == 0){
-				sampleSize = 1;
-			}else{
-				if(thumbnailcache != null && thumbnailcache.exists(id)) {
-					if(!thumbnailcache.expire(id)) {
-						rtn = BitmapFactory.decodeFile(
-								thumbnailcache.file(id).getAbsolutePath());
-						return rtn;
-					}
+			if(thumbnailcache != null && thumbnailcache.exists(id)) {
+				if(!thumbnailcache.expire(id)) {
+					rtn = BitmapFactory.decodeFile(
+							thumbnailcache.file(id).getAbsolutePath());
+					return rtn;
 				}
 			}
 
