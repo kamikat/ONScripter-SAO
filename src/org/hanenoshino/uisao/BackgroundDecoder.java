@@ -1,23 +1,83 @@
 package org.hanenoshino.uisao;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.CompressFormat;
 import android.util.Log;
 
+import com.footmark.utils.TimeUnit;
+import com.footmark.utils.cache.FileCache;
+import com.footmark.utils.hash.IHasher;
+import com.footmark.utils.hash.MD5Hasher;
 import com.footmark.utils.image.decoder.BitmapDecodeException;
 import com.footmark.utils.image.decoder.BitmapDecoder;
 
 public class BackgroundDecoder extends BitmapDecoder {
 
+	private static FileCache thumbnailcache = null;
+	private static IHasher hasher = new MD5Hasher();
+
+	public static void init(Context ctx, int width, int height) {
+		File path = new File(ctx.getCacheDir(), "background");
+		if(! path.exists()) path.mkdir();
+		thumbnailcache = new FileCache(path, TimeUnit.WEEK);
+	}
 	
+	private Bitmap $(String path) {
+		
+		Bitmap rtn = null;
+
+		String id = hasher.hash(path);
+
+		FileOutputStream fout = null;
+		
+		try{
+			
+			if(thumbnailcache != null && thumbnailcache.exists(id)) {
+				if(!thumbnailcache.expire(id)) {
+					rtn = BitmapFactory.decodeFile(
+							thumbnailcache.file(id).getAbsolutePath());
+					return rtn;
+				}
+			}
+
+			rtn = BitmapFactory.decodeFile(path);
+
+			rtn = fastblur(rtn, 30);
+			
+			if(thumbnailcache != null) {
+				fout = thumbnailcache.put(id);
+				rtn.compress(CompressFormat.JPEG, 90, fout);
+				fout.close();
+				thumbnailcache.acknowledge(id);
+			}
+			
+		} catch (OutOfMemoryError oom){
+			System.gc();
+		} catch (IOException e) {
+			
+		} finally {
+			try { 
+				fout.close();
+			} catch (Exception e) {
+				
+			}
+		}
+		
+		return rtn;
+	}
 	
 	@Override
 	public Bitmap decode(String path) {
 
 		Thread.currentThread().setPriority(Thread.NORM_PRIORITY / 2);
 
-		Bitmap rtn = super.decode(path);
-		
-		rtn = fastblur(rtn, 30);
+		Bitmap rtn = $(path);
 
 		Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
 
