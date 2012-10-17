@@ -112,26 +112,16 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	public void onResume() {
 		super.onResume();
 
-		final String[] test = {
-				"月は东に日は西に ～Operation Sanctuary～",
-				"寒蝉鸣泣之时系列",
-				"One Way Love～ミントちゃん物语",
-				"水仙~narcissu~1",
-				"水仙~narcissu~2",
-				"水仙~narcissu~3",
-				"银色",
-				"水色",
-				"Princess Holiday ～転がるりんご亭千夜一夜～",
-				"海猫鸣泣",
-				"月姫",
-				"ひとかた",
-		};
-
 		new Handler() {
 			public void handleMessage(Message msg) {
-				for(final String s: test) {
-					items.add(new GameItem() {{title=s; cover="/sdcard/dbkg_nob.jpg";}});
-				}
+				items.add(new GameItem() {{title="月は东に日は西に ～Operation Sanctuary～"; cover="http://www.august-soft.com/hani/event/cg_09.jpg";}});
+				items.add(new GameItem() {{title="寒蝉鸣泣之时系列"; cover="http://www.forcos.com/upload/2009_07/09071414528628.jpg";}});
+				items.add(new GameItem() {{title="One Way Love～ミントちゃん物语"; cover="http://ec2.images-amazon.com/images/I/61LUkVZeNTL.jpg";}});
+				items.add(new GameItem() {{title="水仙~narcissu~"; cover="http://img.4gdm.com/forum/201105/06/11050623502dd4b9cef1b2e2f3.jpg";}});
+				items.add(new GameItem() {{title="水色"; cover="http://i2.sinaimg.cn/gm/2010/1110/20101110214231.jpg";}});
+				items.add(new GameItem() {{title="Princess Holiday ～転がるりんご亭千夜一夜～"; cover="http://image.space.rakuten.co.jp/lg01/30/0000604730/52/img7529b0fbzik3zj.jpeg";}});
+				items.add(new GameItem() {{title="月姫"; cover="http://i246.photobucket.com/albums/gg97/zelda45694/Shingetsutan%20Tsukihime/Tsukihime.jpg";}});
+				items.add(new GameItem() {{title="海猫鸣泣之时"; cover="http://comic.ce.cn/news/dmzx/200805/06/W020080506493361950744.jpg";}});
 				items.add(new GameItem() {{title="Kcnny"; cover="/sdcard/dbkg_kcn.jpg";}});
 				items.add(new GameItem() {{title="Oda Nobuna"; cover="/sdcard/dbkg_nob.jpg";}});
 				items.add(new GameItem() {{title="Yuruyuri"; cover="/sdcard/dbkg_yur.jpg";}});
