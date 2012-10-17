@@ -315,7 +315,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		public void onAnimationStart(Animation animation) {}
 
 	});
-	
+
 	private void updateCover(final String url, final boolean coverToBkg) {
 		cover.setVisibility(View.INVISIBLE);
 		Object o = cover.getTag();
@@ -370,14 +370,14 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		public void onAnimationStart(Animation animation) {}
 
 	});
-	
+
 	private void updateBackground(String url) {
 		background.setVisibility(View.INVISIBLE);
 		Object o = background.getTag();
 		if(o instanceof ImageSetter) {
 			((ImageSetter) o).cancel();
 		}
-		
+
 		if(!animBackgroundOut.hasStarted())
 			background.startAnimation(animBackgroundOut);
 
@@ -399,24 +399,28 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		items.setSelectedPosition(position);
 		scrollViewToCenter(view);
 
-		final GameItem item = items.getItem(position);
+		if(items.getSelectedPosition() != position) {
+			
+			items.setSelectedPosition(position);
 
-		if(item.background != null) {
-			updateBackground(item.background);
-		}
-		if(item.cover != null) {
-			updateCover(item.cover, item.background == null);
-		}else{
-			cover.setImageResource(R.drawable.dbkg_und);
-			if(item.background == null) {
-				background.setImageResource(R.drawable.dbkg_und_blur);
+			final GameItem item = items.getItem(position);
+
+			if(item.background != null) {
+				updateBackground(item.background);
 			}
-		}
+			if(item.cover != null) {
+				updateCover(item.cover, item.background == null);
+			}else{
+				cover.setImageResource(R.drawable.dbkg_und);
+				if(item.background == null) {
+					background.setImageResource(R.drawable.dbkg_und_blur);
+				}
+			}
 
-		gametitle.setText(item.title);
+			gametitle.setText(item.title);
+		}
 	}
 
 }
