@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sao_grey">#757575</color>
+    <color name="sao_orange">#FBAD06</color>
+    <color name="sao_white">#FFFFFF</color>
+    <color name="sao_transparent_white">#6FFFFFFF</color>
+    
+</resources>
