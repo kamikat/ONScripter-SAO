@@ -157,7 +157,12 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	}
 
 	public class GameItemAdapter extends ArrayAdapter<GameItem> implements ListAdapter {
-
+		
+		public class ItemViewLoad {
+			GameItem item;
+			boolean selected;
+		}
+		
 		private int textViewResourceId;
 
 		public GameItemAdapter(Context context, int textViewResourceId, ArrayList<GameItem> items) {
@@ -175,16 +180,25 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		public int getSelectedPosition() {
 			return selectedPos;
 		}
+		
+		public ItemViewLoad load(View v) {
+			Object o = v.getTag();
+			return (o instanceof ItemViewLoad)?(ItemViewLoad) o:null;
+		}
 
 		private int viewCount = 0;
 
 		@TargetApi(11)
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 			View v = convertView;
 			if (v == null) {
 				LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				v = vi.inflate(textViewResourceId, null);
+				v.setTag(new ItemViewLoad() {{
+					item = getItem(position); 
+					selected = false;
+					}});
 			}
 			GameItem o = getItem(position);
 			if (o != null) {
@@ -195,14 +209,22 @@ public class MainActivity extends Activity implements OnItemClickListener {
 					icon.setImageResource(R.drawable.test_icon_0);
 					caption.setTextColor(getResources().getColor(R.color.sao_grey));
 					v.setBackgroundColor(getResources().getColor(R.color.sao_transparent_white));
-					v.setAlpha(0.8f);
+					// Following code implements v.setAlpha(0.8f);
+					if(load(v).selected) {
+						leaveSelected(v);
+						load(v).selected = false;
+					}
 					if(convertView == null)
 						flyInAnimation(v, 100 * ++viewCount, 0.8f);
 				}else{
 					icon.setImageResource(R.drawable.test_icon_1);
 					caption.setTextColor(getResources().getColor(R.color.sao_white));
 					v.setBackgroundColor(getResources().getColor(R.color.sao_orange));
-					v.setAlpha(1.0f);
+					// Following code implements v.setAlpha(1.0f);
+					if(!load(v).selected) {
+						goSelected(v);
+						load(v).selected = true;
+					}
 					if(convertView == null)
 						flyInAnimation(v, 100 * ++viewCount, 1.0f);
 				}
@@ -230,6 +252,19 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			set.setInterpolator(new DecelerateInterpolator(1.5f));
 			set.setFillAfter(true);
 			v.startAnimation(set);
+		}
+		
+		private void goSelected(View v) {
+			AlphaAnimation animAlpha = new AlphaAnimation(0.8f, 1.0f);
+			animAlpha.setDuration(200);
+			animAlpha.setFillAfter(true);
+			v.startAnimation(animAlpha);
+		}
+		
+		private void leaveSelected(View v) {
+			AlphaAnimation animAlpha = new AlphaAnimation(0.8f, 0.8f);
+			animAlpha.setFillAfter(true);
+			v.startAnimation(animAlpha);
 		}
 
 	}
