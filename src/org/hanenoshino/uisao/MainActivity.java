@@ -316,22 +316,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		return animAlpha;
 	}
 
-	/**
-	 * Scroll view to the center of the game list
-	 * @param view
-	 * child view of game list
-	 */
-	private void scrollViewToCenter(View view) {
-		int viewY = view.getTop() + view.getHeight() / 2 - games.getHeight() / 2;
-		if(viewY < 0 && games.getFirstVisiblePosition() == 0){
-			games.smoothScrollToPosition(0);
-		}else if(viewY > 0 && games.getLastVisiblePosition() == items.getCount() - 1){
-			games.smoothScrollToPosition(items.getCount() - 1);
-		}else{
-			games.smoothScrollBy(viewY, 300);
-		}
-	}
-
 	private Animation animCoverOut = coverOutAnimation(new AnimationListener() {
 
 		public void onAnimationEnd(Animation animation) {
@@ -426,6 +410,31 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		},
 		new BackgroundDecoder());
 
+	}
+
+	private Handler hdlListScroller = new Handler() {
+		
+		public void handleMessage(Message msg) {
+			games.smoothScrollBy(msg.what, 300);
+		}
+		
+	};
+	
+	/**
+	 * Scroll view to the center of the game list
+	 * @param view
+	 * child view of game list
+	 */
+	private void scrollViewToCenter(View view) {
+		int viewY = view.getTop() + view.getHeight() / 2 - games.getHeight() / 2;
+		if(viewY < 0 && games.getFirstVisiblePosition() == 0){
+			games.smoothScrollToPosition(0);
+		}else if(viewY > 0 && games.getLastVisiblePosition() == items.getCount() - 1){
+			games.smoothScrollToPosition(items.getCount() - 1);
+		}else{
+			Message msg = Message.obtain(hdlListScroller, viewY);
+			hdlListScroller.sendMessageDelayed(msg, 100);
+		}
 	}
 
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
