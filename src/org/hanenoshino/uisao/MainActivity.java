@@ -124,10 +124,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				items.add(new GameItem() {{title="Princess Holiday ～転がるりんご亭千夜一夜～"; cover="http://image.space.rakuten.co.jp/lg01/30/0000604730/52/img7529b0fbzik3zj.jpeg";}});
 				items.add(new GameItem() {{title="月姫"; cover="http://i246.photobucket.com/albums/gg97/zelda45694/Shingetsutan%20Tsukihime/Tsukihime.jpg";}});
 				items.add(new GameItem() {{title="海猫鸣泣之时"; cover="http://comic.ce.cn/news/dmzx/200805/06/W020080506493361950744.jpg";}});
-				items.add(new GameItem() {{title="Kcnny"; cover="/sdcard/dbkg_kcn.jpg";}});
-				items.add(new GameItem() {{title="Oda Nobuna"; cover="/sdcard/dbkg_nob.jpg";}});
-				items.add(new GameItem() {{title="Yuruyuri"; cover="/sdcard/dbkg_yur.jpg";}});
-				items.add(new GameItem() {{title="Remilia Scarlet"; cover="/sdcard/dbkg_rem.jpg";}});
+				items.add(new GameItem() {{title="Kcnny"; cover="http://komica.byethost32.com/pix/src/1334318735221.jpg";}});
+				items.add(new GameItem() {{title="Oda Nobuna"; cover="http://randomc.net/image/Oda%20Nobuna%20no%20Yabou/Oda%20Nobuna%20no%20Yabou%20-%20OP%20-%20Large%2002.jpg";}});
+				items.add(new GameItem() {{title="Yuruyuri"; cover="http://www.emptyblue.it/data/wallpaper/Yuruyuri/yuruyuri_91341_thumb.jpg";}});
+				items.add(new GameItem() {{title="Remilia Scarlet"; cover="http://konachan.com/image/5dd13f43bd3e78625a99ba49195cab50/Konachan.com%20-%2040803%20remilia_scarlet%20touhou.jpg";}});
 			}
 		}.sendMessageDelayed(Message.obtain(), 400);
 
