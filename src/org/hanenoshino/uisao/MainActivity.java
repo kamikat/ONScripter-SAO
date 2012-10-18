@@ -222,7 +222,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 						load(v).selected = false;
 					}
 					if(convertView == null)
-						flyInAnimation(v, 100 * ++viewCount, 0.8f);
+						flyInAnimation(v, 30 * ++viewCount, 0.8f);
 				}else{
 					icon.setImageResource(R.drawable.test_icon_1);
 					caption.setTextColor(getResources().getColor(R.color.sao_white));
@@ -233,7 +233,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 						load(v).selected = true;
 					}
 					if(convertView == null)
-						flyInAnimation(v, 100 * ++viewCount, 1.0f);
+						flyInAnimation(v, 30 * ++viewCount, 1.0f);
 				}
 			}
 			return v;
