@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -94,7 +93,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			imgMgr.shutdown();
 	}
 
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -138,7 +136,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 	}
 
-	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
@@ -195,8 +192,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 		private int viewCount = 0;
 
-		@TargetApi(11)
-		@Override
 		public View getView(final int position, View convertView, ViewGroup parent) {
 			View v = convertView;
 			if (v == null) {
@@ -339,7 +334,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 	private Animation animCoverOut = coverOutAnimation(new AnimationListener() {
 
-		@Override
 		public void onAnimationEnd(Animation animation) {
 			animCoverOut = coverOutAnimation(this);
 			if(cover.getTag() instanceof Bitmap) {
@@ -350,10 +344,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			}
 		}
 
-		@Override
 		public void onAnimationRepeat(Animation animation) {}
 
-		@Override
 		public void onAnimationStart(Animation animation) {}
 
 	});
@@ -394,7 +386,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 	private Animation animBackgroundOut = bkgOutAnimation(new AnimationListener() {
 
-		@Override
 		public void onAnimationEnd(Animation arg0) {
 			animBackgroundOut = bkgOutAnimation(this);
 			if(background.getTag() instanceof Bitmap) {
@@ -405,10 +396,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			}
 		}
 
-		@Override
 		public void onAnimationRepeat(Animation animation) {}
 
-		@Override
 		public void onAnimationStart(Animation animation) {}
 
 	});
@@ -439,7 +428,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 	}
 
-	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		scrollViewToCenter(view);
 

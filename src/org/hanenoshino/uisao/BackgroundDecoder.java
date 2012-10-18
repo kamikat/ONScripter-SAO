@@ -72,7 +72,6 @@ public class BackgroundDecoder extends BitmapDecoder {
 		return rtn;
 	}
 	
-	@Override
 	public Bitmap decode(String path) {
 
 		Thread.currentThread().setPriority(Thread.NORM_PRIORITY / 2);
