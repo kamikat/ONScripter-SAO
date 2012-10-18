@@ -15,7 +15,7 @@
         android:theme="@android:style/Theme.Holo.NoActionBar" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" android:screenOrientation="landscape">
+            android:label="@string/title_activity_main" android:screenOrientation="sensorLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -7,6 +7,7 @@ import com.footmark.utils.cache.FileCache;
 import com.footmark.utils.image.ImageManager;
 import com.footmark.utils.image.ImageSetter;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -14,6 +15,7 @@ import android.os.Message;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -96,6 +98,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		if(Build.VERSION.SDK_INT < 9) {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		}
 		setContentView(R.layout.activity_main);
 		findViews();
 		CoverDecoder.init(getApplicationContext(), cover.getWidth(), cover.getHeight());
