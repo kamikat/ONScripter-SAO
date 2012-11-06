@@ -1,4 +1,4 @@
-package org.hanenoshino.uisao;
+package org.hanenoshino.uisao.decoder;
 
 import java.io.File;
 import java.io.FileOutputStream;

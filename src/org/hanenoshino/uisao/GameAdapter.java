@@ -16,8 +16,7 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-
-public class GameItemAdapter extends ArrayAdapter<GameItem> implements ListAdapter {
+public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 
 	private static <T> T $(View v, int id) {
 		return U.$(v, id);
@@ -25,13 +24,13 @@ public class GameItemAdapter extends ArrayAdapter<GameItem> implements ListAdapt
 	
 	// Class for storage state in Tag of correspoinding View
 	public class ItemViewLoad {
-		GameItem item;
+		Game item;
 		boolean selected;
 	}
 	
 	private int textViewResourceId;
 
-	public GameItemAdapter(Context context, int textViewResourceId, ArrayList<GameItem> items) {
+	public GameAdapter(Context context, int textViewResourceId, ArrayList<Game> items) {
 		super(context, textViewResourceId, items);
 		this.textViewResourceId=textViewResourceId;
 	}
@@ -64,7 +63,7 @@ public class GameItemAdapter extends ArrayAdapter<GameItem> implements ListAdapt
 				selected = false;
 				}});
 		}
-		GameItem o = getItem(position);
+		Game o = getItem(position);
 		if (o != null) {
 			ImageView icon = $(v, R.id.icon);
 			TextView caption = $(v, R.id.caption);

@@ -1,6 +1,6 @@
 package org.hanenoshino.uisao;
 
-public class GameItem {
+public class Game {
 
 	// Game Title
 	public String title;

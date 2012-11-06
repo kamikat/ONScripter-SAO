@@ -1,4 +1,4 @@
-package org.hanenoshino.uisao;
+package org.hanenoshino.uisao.decoder;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -312,7 +312,7 @@ public class BackgroundDecoder extends BitmapDecoder {
             }
         }
 
-        Log.e("pix", w + " " + h + " " + pix.length);
+        //Log.e("pix", w + " " + h + " " + pix.length);
         bitmap.setPixels(pix, 0, w, 0, 0, w, h);
 
         return (bitmap);
