@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package io.vov.vitamio.widget;
+package org.hanenoshino.uisao.widget;
 
 import io.vov.utils.Log;
 import io.vov.vitamio.MediaPlayer;
@@ -27,7 +27,7 @@ import io.vov.vitamio.MediaPlayer.OnPreparedListener;
 import io.vov.vitamio.MediaPlayer.OnSeekCompleteListener;
 import io.vov.vitamio.MediaPlayer.OnSubtitleUpdateListener;
 import io.vov.vitamio.MediaPlayer.OnVideoSizeChangedListener;
-import io.vov.vitamio.R;
+import org.hanenoshino.uisao.R;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -142,8 +142,15 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
 	 */
 	public void setVideoLayout(int layout, float aspectRatio) {
 		LayoutParams lp = getLayoutParams();
-		DisplayMetrics disp = mContext.getResources().getDisplayMetrics();
-		int windowWidth = disp.widthPixels, windowHeight = disp.heightPixels;
+		int windowWidth, windowHeight;
+		if(this.getParent() instanceof View) {
+			windowWidth = ((View)this.getParent()).getWidth();
+			windowHeight = ((View)this.getParent()).getHeight();
+		}else{
+			DisplayMetrics disp = mContext.getResources().getDisplayMetrics();
+			windowWidth = disp.widthPixels;
+			windowHeight = disp.heightPixels;
+		}
 		float windowRatio = windowWidth / (float) windowHeight;
 		float videoRatio = aspectRatio <= 0.01f ? mVideoAspectRatio : aspectRatio;
 		mSurfaceHeight = mVideoHeight;
@@ -188,6 +195,10 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
 		setVideoURI(Uri.parse(path));
 	}
 
+	public Uri getVideoURI() {
+		return mUri;
+	}
+	
 	public void setVideoURI(Uri uri) {
 		mUri = uri;
 		mSeekWhenPrepared = 0;
