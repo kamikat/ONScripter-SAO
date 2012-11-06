@@ -29,27 +29,49 @@
         android:cacheColorHint="#00000000"
         android:fadingEdgeLength="48dip" />
 
-    <ImageView
-        android:id="@+id/cover"
+    <RelativeLayout
+        android:id="@+id/coverframe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+	    android:layout_toRightOf="@id/games"
         android:layout_marginBottom="80dip"
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip"
-        android:layout_marginTop="40dip"
-        android:layout_toRightOf="@id/games"
-        android:contentDescription="@string/alt_cover"
-        android:scaleType="fitCenter"
-        android:src="@drawable/dbkg_und" />
+        android:layout_marginTop="40dip">
+        
+	    <ImageView
+	        android:id="@+id/cover"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:contentDescription="@string/alt_cover"
+	        android:scaleType="fitCenter"
+	        android:src="@drawable/dbkg_und" />
+		
+	    <RelativeLayout
+	        android:id="@+id/videoframe"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#000000"
+            android:visibility="gone">
+
+	        <org.hanenoshino.uisao.widget.VideoView
+	            android:id="@+id/surface_view"
+	            android:visibility="gone"
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
+	            android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
+    
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/gametitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/cover"
+        android:layout_alignLeft="@id/coverframe"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="60dip"
-        android:text="Test" />
+        android:layout_marginBottom="60dip"/>
     
 </RelativeLayout>
