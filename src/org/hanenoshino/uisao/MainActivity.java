@@ -433,6 +433,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		if(item.video != null) {
 			// Load Video
 			if(isVideoInitialized) {
+				videoframe.setVisibility(View.VISIBLE);
 				preview.setVisibility(View.VISIBLE);
 				preview.setVideoPath(item.video);
 			}
