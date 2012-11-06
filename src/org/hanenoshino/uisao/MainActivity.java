@@ -1,12 +1,20 @@
 package org.hanenoshino.uisao;
 
+import io.vov.vitamio.MediaPlayer;
+import io.vov.vitamio.MediaPlayer.OnCompletionListener;
+import io.vov.vitamio.Vitamio;
+
 import java.io.File;
 import java.util.ArrayList;
+
+import org.hanenoshino.uisao.widget.MediaController;
+import org.hanenoshino.uisao.widget.VideoView;
 
 import com.footmark.utils.cache.FileCache;
 import com.footmark.utils.image.ImageManager;
 import com.footmark.utils.image.ImageSetter;
 
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -36,6 +44,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnItemClickListener {
@@ -44,12 +53,16 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		// Set the priority
 		Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 	}
+	
+	private static volatile boolean isVideoInitialized = false;
 
 	private ImageManager imgMgr;
 
 	private ListView games;
 	private ImageView cover, background;
 	private TextView gametitle;
+	private VideoView preview;
+	private RelativeLayout videoframe;
 
 	private GameItemAdapter items;
 
@@ -70,6 +83,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		cover = $(R.id.cover);
 		background = $(R.id.background);
 		gametitle = $(R.id.gametitle);
+		preview = $(R.id.surface_view);
+		videoframe = $(R.id.videoframe);
 	}
 
 	private void initImageManager() {
@@ -92,6 +107,20 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		if(imgMgr != null)
 			imgMgr.shutdown();
 	}
+	
+	private static Handler startMediaPlayer = new Handler() {
+		
+		public void handleMessage(Message msg) {
+			if(msg.obj instanceof VideoView) {
+				VideoView v = ((VideoView) msg.obj);
+				if(v.canSeekForward()) {
+					v.seekTo(0);
+				}else{
+					v.setVideoURI(v.getVideoURI());
+				}
+			}
+		}
+	};
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -101,12 +130,51 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		}
 		setContentView(R.layout.activity_main);
 		findViews();
+		
 		CoverDecoder.init(getApplicationContext(), cover.getWidth(), cover.getHeight());
 		initImageManager();
+
+		preview.setVideoQuality(MediaPlayer.VIDEOQUALITY_HIGH);
+		preview.setOnCompletionListener(new OnCompletionListener() {
+
+			public void onCompletion(MediaPlayer player) {
+				Message.obtain(startMediaPlayer, 0, preview).sendToTarget();
+			}
+
+		});
+		preview.setMediaController(new MediaController(this));
 
 		items = new GameItemAdapter(this, R.layout.gamelist_item, new ArrayList<GameItem>());
 		games.setAdapter(items);
 		games.setOnItemClickListener(this);
+		
+		if(!Vitamio.isInitialized(this)) {
+			new AsyncTask<Object, Object, Boolean>() {
+				@Override
+				protected void onPreExecute() {
+					isVideoInitialized = false;
+				}
+
+				@Override
+				protected Boolean doInBackground(Object... params) {
+					Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+					boolean inited = Vitamio.initialize(MainActivity.this);
+					Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
+					return inited;
+				}
+
+				@Override
+				protected void onPostExecute(Boolean inited) {
+					if (inited) {
+						isVideoInitialized = true;
+					}
+				}
+
+			}.execute();
+		}else{
+			isVideoInitialized = true;
+		}
+		
 	}
 
 	public void onDestroy() {
@@ -119,8 +187,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 		new Handler() {
 			public void handleMessage(Message msg) {
-				items.add(new GameItem() {{title="月は东に日は西に ～Operation Sanctuary～"; cover="http://www.august-soft.com/hani/event/cg_09.jpg";}});
-				items.add(new GameItem() {{title="寒蝉鸣泣之时系列"; cover="http://www.forcos.com/upload/2009_07/09071414528628.jpg";}});
+				items.add(new GameItem() {{title="月は东に日は西に ～Operation Sanctuary～"; cover="http://www.august-soft.com/hani/event/cg_09.jpg"; video="/sdcard/test.mp4";}});
+				items.add(new GameItem() {{title="寒蝉鸣泣之时系列"; cover="http://www.forcos.com/upload/2009_07/09071414528628.jpg"; video="/sdcard/test2.mp4";}});
 				items.add(new GameItem() {{title="One Way Love～ミントちゃん物语"; cover="http://ec2.images-amazon.com/images/I/61LUkVZeNTL.jpg";}});
 				items.add(new GameItem() {{title="水仙~narcissu~"; cover="http://img.4gdm.com/forum/201105/06/11050623502dd4b9cef1b2e2f3.jpg";}});
 				items.add(new GameItem() {{title="水色"; cover="http://i2.sinaimg.cn/gm/2010/1110/20101110214231.jpg";}});
@@ -157,6 +225,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 		// Optional Path/To/Icon/File
 		public String icon;
+		
+		public String video;
 
 	}
 
@@ -315,17 +385,67 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		animAlpha.setAnimationListener(listener);
 		return animAlpha;
 	}
+	
+	private Animation videoPlayerAnimation(AnimationListener listener) {
+		AlphaAnimation animAlpha = new AlphaAnimation(0, 1);
+		animAlpha.setDuration(200);
+		animAlpha.setInterpolator(new AccelerateInterpolator(1.5f));
+		animAlpha.setAnimationListener(listener);
+		return animAlpha;
+	}
+	
+	private Animation hideVideoPlayerAnimation(AnimationListener listener) {
+		AlphaAnimation animAlpha = new AlphaAnimation(1, 0);
+		animAlpha.setDuration(200);
+		animAlpha.setInterpolator(new AccelerateInterpolator(1.5f));
+		animAlpha.setAnimationListener(listener);
+		return animAlpha;
+	}
 
+	private void displayCover() {
+		Object o = cover.getTag();
+		if(o instanceof Bitmap) {
+			cover.setTag(null);
+			cover.setImageBitmap((Bitmap) o);
+			cover.setBackgroundDrawable(null);
+			cover.startAnimation(coverInAnimation());
+			GameItem item = items.getItem(items.getSelectedPosition());
+			if(item.video != null) {
+				videoframe.startAnimation(videoPlayerAnimation(new AnimationListener(){
+
+					public void onAnimationEnd(Animation animation) {
+						playPreview();
+					}
+
+					public void onAnimationRepeat(Animation animation) {}
+
+					public void onAnimationStart(Animation animation) {
+						videoframe.setVisibility(View.VISIBLE);
+					}
+					
+				}));
+			}
+		}
+	}
+	
+	private boolean playPreview() {
+		GameItem item = items.getItem(items.getSelectedPosition());
+		if(item.video != null) {
+			// Load Video
+			if(isVideoInitialized) {
+				preview.setVisibility(View.VISIBLE);
+				preview.setVideoPath(item.video);
+			}
+			return true;
+		}
+		return false;
+	}
+	
 	private Animation animCoverOut = coverOutAnimation(new AnimationListener() {
 
 		public void onAnimationEnd(Animation animation) {
 			animCoverOut = coverOutAnimation(this);
-			if(cover.getTag() instanceof Bitmap) {
-				cover.setImageBitmap((Bitmap) cover.getTag());
-				cover.setBackgroundDrawable(null);
-				cover.setTag(null);
-				cover.startAnimation(coverInAnimation());
-			}
+			displayCover();
 		}
 
 		public void onAnimationRepeat(Animation animation) {}
@@ -349,12 +469,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				new ImageSetter(cover) {
 
 			protected void act() {
-				if(animCoverOut.hasEnded()||!animCoverOut.hasStarted()) {
-					super.act();
-					cover.startAnimation(coverInAnimation());
-				}else{
-					cover.setTag(image().bmp());
-				}
+				cover.setTag(image().bmp());
+				displayCover();
 				String background = CoverDecoder.getThumbernailCache(url);
 				// Exception for Web Images
 				if(background == null) 
@@ -442,6 +558,25 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 		if(items.getSelectedPosition() != position) {
 			
+			// Clear Video Player
+			if(preview.isPlaying()){
+				preview.stopPlayback();
+				preview.setVideoURI(null);
+				preview.setVisibility(View.GONE);
+				videoframe.startAnimation(hideVideoPlayerAnimation(new AnimationListener(){
+
+					public void onAnimationEnd(Animation animation) {
+						videoframe.setVisibility(View.GONE);
+					}
+
+					public void onAnimationRepeat(Animation animation) {}
+
+					public void onAnimationStart(Animation animation) {}
+					
+				}));
+			}
+			
+			// Set Selection
 			items.setSelectedPosition(position);
 
 			final GameItem item = items.getItem(position);
@@ -452,7 +587,13 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			if(item.cover != null) {
 				updateCover(item.cover, item.background == null);
 			}else{
-				cover.setImageResource(R.drawable.dbkg_und);
+				// If no cover but video, play video directly
+				if(item.video != null) {
+					playPreview();
+				}else{
+					// With no multimedia information
+					cover.setImageResource(R.drawable.dbkg_und);
+				}
 				if(item.background == null) {
 					background.setImageResource(R.drawable.dbkg_und_blur);
 				}
