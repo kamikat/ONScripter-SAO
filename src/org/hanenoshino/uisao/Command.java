@@ -44,11 +44,8 @@ public class Command {
 			switch(msg.what){
 			case LOOP_VIDEO_PREVIEW:
 				videoview = $(msg.obj);
-				if(videoview.canSeekForward()) {
-					videoview.seekTo(0);
-				}else{
-					videoview.setVideoURI(videoview.getVideoURI());
-				}
+				videoview.seekTo(0);
+				videoview.start();
 				break;
 			case SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS:
 				ListView listview = $(msg.obj);
