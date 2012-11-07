@@ -2,6 +2,7 @@
 
     <style name="AppTheme" parent="android:Theme.Holo.NoActionBar">
         <item name="android:windowFullscreen">true</item>
+    	<item name="android:windowNoTitle">true</item>
     </style>
  	
     <style name="MediaController_SeekBar">
