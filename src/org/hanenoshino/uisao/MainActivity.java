@@ -172,6 +172,21 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		
 	});
 	
+	private Animation animPlayVideo = AnimationFactory.videoPlayerAnimation(new AnimationListener(){
+
+		public void onAnimationEnd(Animation animation) {
+			playPreview();
+		}
+
+		public void onAnimationRepeat(Animation animation) {}
+
+		public void onAnimationStart(Animation animation) {
+			videoframe.setVisibility(View.VISIBLE);
+		}
+		
+	});
+	
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -220,19 +235,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			cover.startAnimation(AnimationFactory.coverInAnimation());
 			Game item = items.getItem(items.getSelectedPosition());
 			if(item.video != null) {
-				videoframe.startAnimation(AnimationFactory.videoPlayerAnimation(new AnimationListener(){
-
-					public void onAnimationEnd(Animation animation) {
-						playPreview();
-					}
-
-					public void onAnimationRepeat(Animation animation) {}
-
-					public void onAnimationStart(Animation animation) {
-						videoframe.setVisibility(View.VISIBLE);
-					}
-					
-				}));
+				videoframe.clearAnimation();
+				videoframe.setVisibility(View.GONE);
+				animPlayVideo.reset();
+				videoframe.startAnimation(animPlayVideo);
 			}
 		}
 	}
@@ -330,6 +336,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		scrollViewToCenter(view);
 
 		if(items.getSelectedPosition() != position) {
+			
+			videoframe.clearAnimation();
+			videoframe.setVisibility(View.GONE);
 			
 			// Clear Video Player
 			if(preview.isPlaying()){
