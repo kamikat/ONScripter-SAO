@@ -25,6 +25,9 @@ public class Command {
 	// obj - VideoView
 	public static final int LOOP_VIDEO_PREVIEW = 13;
 	
+	// obj - VideoView
+	public static final int RELEASE_VIDEO_PREVIEW = 14;
+	
 	// obj - GameAdapter
 	public static final int GENERATE_TEST_DATA = 184;
 	
@@ -37,9 +40,10 @@ public class Command {
 	private static Handler Commander = new Handler() {
 		
 		public void handleMessage(Message msg) {
+			VideoView videoview;
 			switch(msg.what){
 			case LOOP_VIDEO_PREVIEW:
-				VideoView videoview = $(msg.obj);
+				videoview = $(msg.obj);
 				if(videoview.canSeekForward()) {
 					videoview.seekTo(0);
 				}else{
@@ -57,6 +61,10 @@ public class Command {
 			case MAINACTIVITY_PLAY_VIDEO:
 				MainActivity mainactivity = $(msg.obj);
 				mainactivity.playVideo();
+				break;
+			case RELEASE_VIDEO_PREVIEW:
+				videoview = $(msg.obj);
+				videoview.setVideoURI(null);
 				break;
 			default:
 				if(msg.obj instanceof Runnable) {

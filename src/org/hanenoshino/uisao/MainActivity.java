@@ -263,6 +263,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		if(item.video != null && isVideoInitialized) {
 				videoframe.setVisibility(View.VISIBLE);
 				preview.setVisibility(View.VISIBLE);
+				Command.revoke(Command.RELEASE_VIDEO_PREVIEW, preview);
+				preview.setVideoURI(null);
 				preview.setVideoPath(item.video);
 		}
 	}
@@ -274,9 +276,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		// Clear Video Player
 		if(preview.isPlaying()){
 			preview.stopPlayback();
-			preview.setVideoURI(null);
 			preview.setVisibility(View.GONE);
 			videoframe.startAnimation(animHideVideo);
+			Command.invoke(Command.RELEASE_VIDEO_PREVIEW).of(preview).sendDelayed(2000);
 		}
 	}
 
