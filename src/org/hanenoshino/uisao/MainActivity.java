@@ -26,7 +26,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.view.Menu;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.AdapterView;
@@ -129,6 +128,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				protected void onPostExecute(Boolean inited) {
 					if (inited) {
 						isVideoInitialized = true;
+						
+						// Play video if exists
+						Command.invoke(Command.MAINACTIVITY_PLAY_VIDEO).of(this).only().sendDelayed(2000);
 					}
 				}
 
@@ -241,7 +243,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			cover.setImageBitmap((Bitmap) o);
 			cover.setBackgroundDrawable(null);
 			cover.startAnimation(AnimationFactory.coverInAnimation());
-			Command.invoke(Command.MAINACTIVITY_PLAY_VIDEO).of(this).only().sendDelayed(3000);
 		}
 	}
 
@@ -376,6 +377,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			}
 			if(item.cover != null) {
 				updateCover(item.cover, item.background == null);
+				Command.invoke(Command.MAINACTIVITY_PLAY_VIDEO).of(this).only().sendDelayed(3000);
 			}else{
 				// If no cover but video, play video directly
 				if(item.video != null) {
