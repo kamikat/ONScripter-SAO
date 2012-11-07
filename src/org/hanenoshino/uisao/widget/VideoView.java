@@ -352,17 +352,6 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
 				if (mOnErrorListener.onError(mMediaPlayer, framework_err, impl_err))
 					return true;
 			}
-
-			if (getWindowToken() != null) {
-				int message = framework_err == MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK ? R.string.vitamio_videoview_error_text_invalid_progressive_playback : R.string.vitamio_videoview_error_text_unknown;
-
-				new AlertDialog.Builder(mContext).setTitle(R.string.vitamio_videoview_error_title).setMessage(message).setPositiveButton(R.string.vitamio_videoview_error_button, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						if (mOnCompletionListener != null)
-							mOnCompletionListener.onCompletion(mMediaPlayer);
-					}
-				}).setCancelable(false).show();
-			}
 			return true;
 		}
 	};

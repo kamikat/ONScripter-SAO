@@ -2,6 +2,7 @@ package org.hanenoshino.uisao;
 
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.MediaPlayer.OnCompletionListener;
+import io.vov.vitamio.MediaPlayer.OnErrorListener;
 import io.vov.vitamio.Vitamio;
 
 import java.io.File;
@@ -97,6 +98,15 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				Command.invoke(Command.LOOP_VIDEO_PREVIEW).of(preview).send();
 			}
 
+		});
+		preview.setOnErrorListener(new OnErrorListener() {
+
+			@Override
+			public boolean onError(MediaPlayer player, int framework_err, int impl_err) {
+				releaseVideoPlay();
+				return true;
+			}
+			
 		});
 		preview.setMediaController(new MediaController(this));
 		
@@ -256,6 +266,19 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				preview.setVideoPath(item.video);
 		}
 	}
+	
+	private void releaseVideoPlay() {
+		Command.revoke(Command.MAINACTIVITY_PLAY_VIDEO);
+		videoframe.clearAnimation();
+		
+		// Clear Video Player
+		if(preview.isPlaying()){
+			preview.stopPlayback();
+			preview.setVideoURI(null);
+			preview.setVisibility(View.GONE);
+			videoframe.startAnimation(animHideVideo);
+		}
+	}
 
 	private void updateCover(final String url, final boolean coverToBkg) {
 		cover.setVisibility(View.INVISIBLE);
@@ -337,17 +360,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 		if(items.getSelectedPosition() != position) {
 			
-			Command.revoke(Command.MAINACTIVITY_PLAY_VIDEO);
-			videoframe.clearAnimation();
-			videoframe.setVisibility(View.GONE);
-			
-			// Clear Video Player
-			if(preview.isPlaying()){
-				preview.stopPlayback();
-				preview.setVideoURI(null);
-				preview.setVisibility(View.GONE);
-				videoframe.startAnimation(animHideVideo);
-			}
+			releaseVideoPlay();
 			
 			// Set Selection
 			items.setSelectedPosition(position);

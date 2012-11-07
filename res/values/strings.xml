@@ -7,12 +7,6 @@
     <string name="alt_background">背景</string>
     <string name="alt_icon">图标</string>
     
-    <string name="vitamio_init_decoders">Initializing decoders…</string>
-    <string name="vitamio_videoview_error_title">Cannot play video</string>
-    <string name="vitamio_videoview_error_text_invalid_progressive_playback">Sorry, this video is not valid for streaming to
-		this device.</string>
-    <string name="vitamio_videoview_error_text_unknown">Sorry, this video cannot be played.</string>
-    <string name="vitamio_videoview_error_button">OK</string>
     <string name="mediacontroller_play_pause">Play/Pause</string>
 
 </resources>
