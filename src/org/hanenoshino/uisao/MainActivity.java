@@ -313,6 +313,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	 * child view of game list
 	 */
 	private void scrollViewToCenter(View view) {
+		Command.revoke(Command.SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS, games);
 		int viewY = view.getTop() + view.getHeight() / 2 - games.getHeight() / 2;
 		if(viewY < 0 && games.getFirstVisiblePosition() == 0){
 			games.smoothScrollToPosition(0);

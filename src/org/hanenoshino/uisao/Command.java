@@ -78,6 +78,10 @@ public class Command {
 		Commander.removeMessages(progId);
 	}
 	
+	public static void revoke(int progId, Object obj) {
+		Commander.removeMessages(progId, obj);
+	}
+	
 	private final Message msg;
 	
 	private Command() {
