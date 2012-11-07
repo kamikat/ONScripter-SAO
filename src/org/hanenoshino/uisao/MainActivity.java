@@ -175,7 +175,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	private Animation animPlayVideo = AnimationFactory.videoPlayerAnimation(new AnimationListener(){
 
 		public void onAnimationEnd(Animation animation) {
-			playPreview();
+			startVideoPlay();
 		}
 
 		public void onAnimationRepeat(Animation animation) {}
@@ -233,28 +233,28 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			cover.setImageBitmap((Bitmap) o);
 			cover.setBackgroundDrawable(null);
 			cover.startAnimation(AnimationFactory.coverInAnimation());
-			Game item = items.getItem(items.getSelectedPosition());
-			if(item.video != null) {
-				videoframe.clearAnimation();
-				videoframe.setVisibility(View.GONE);
-				animPlayVideo.reset();
-				videoframe.startAnimation(animPlayVideo);
-			}
+			Command.revoke(Command.MAINACTIVITY_PLAY_VIDEO);
+			Command.invoke(Command.MAINACTIVITY_PLAY_VIDEO).of(this).sendDelayed(3000);
 		}
 	}
 	
-	private boolean playPreview() {
+	public void playVideo() {
 		Game item = items.getItem(items.getSelectedPosition());
-		if(item.video != null) {
-			// Load Video
-			if(isVideoInitialized) {
+		if(item.video != null && isVideoInitialized) {
+			videoframe.clearAnimation();
+			videoframe.setVisibility(View.GONE);
+			animPlayVideo.reset();
+			videoframe.startAnimation(animPlayVideo);
+		}
+	}
+	
+	private void startVideoPlay() {
+		Game item = items.getItem(items.getSelectedPosition());
+		if(item.video != null && isVideoInitialized) {
 				videoframe.setVisibility(View.VISIBLE);
 				preview.setVisibility(View.VISIBLE);
 				preview.setVideoPath(item.video);
-			}
-			return true;
 		}
-		return false;
 	}
 
 	private void updateCover(final String url, final boolean coverToBkg) {
@@ -337,6 +337,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 		if(items.getSelectedPosition() != position) {
 			
+			Command.revoke(Command.MAINACTIVITY_PLAY_VIDEO);
 			videoframe.clearAnimation();
 			videoframe.setVisibility(View.GONE);
 			
@@ -361,7 +362,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			}else{
 				// If no cover but video, play video directly
 				if(item.video != null) {
-					playPreview();
+					playVideo();
 				}else{
 					// With no multimedia information
 					cover.setImageResource(R.drawable.dbkg_und);

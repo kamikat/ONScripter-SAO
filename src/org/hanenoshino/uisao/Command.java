@@ -30,6 +30,9 @@ public class Command {
 	
 	// obj - listview, arg1 - distance, arg2 - duration
 	public static final int SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS = 10;
+	
+	// obj - MainActivity
+	public static final int MAINACTIVITY_PLAY_VIDEO = 38;
 
 	private static Handler Commander = new Handler() {
 		
@@ -50,6 +53,10 @@ public class Command {
 			case GENERATE_TEST_DATA:
 				GameAdapter adapter = $(msg.obj);
 				Tester.fillTestData(adapter);
+				break;
+			case MAINACTIVITY_PLAY_VIDEO:
+				MainActivity mainactivity = $(msg.obj);
+				mainactivity.playVideo();
 				break;
 			default:
 				if(msg.obj instanceof Runnable) {
