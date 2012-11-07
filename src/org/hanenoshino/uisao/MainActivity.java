@@ -275,9 +275,14 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		if(preview.isPlaying()){
 			preview.stopPlayback();
 			preview.setVisibility(View.GONE);
-			videoframe.startAnimation(animHideVideo);
-			Command.invoke(Command.RELEASE_VIDEO_PREVIEW).of(preview).sendDelayed(2000);
 		}
+
+		if(videoframe.getVisibility() == View.VISIBLE) {
+			animHideVideo.reset();
+			videoframe.startAnimation(animHideVideo);
+		}
+		
+		Command.invoke(Command.RELEASE_VIDEO_PREVIEW).of(preview).sendDelayed(2000);
 	}
 
 	private void updateCover(final String url, final boolean coverToBkg) {
