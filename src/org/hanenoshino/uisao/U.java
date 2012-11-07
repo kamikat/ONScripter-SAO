@@ -2,6 +2,11 @@ package org.hanenoshino.uisao;
 
 import android.view.View;
 
+/**
+ * Utility functions
+ * @author trinity
+ *
+ */
 public class U {
 
 	@SuppressWarnings("unchecked")

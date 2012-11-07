@@ -20,9 +20,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
@@ -40,10 +37,6 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnItemClickListener {
 
-	private static final int ACTION_LOOP_VIDEO_PREVIEW = 13;
-	private static final int ACTION_GENERATE_TEST_DATA = 184;
-	// obj - listview, arg1 - distance, arg2 - duration
-	private static final int ACTION_SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLS = 10;
 	
 	{
 		// Set the priority, trick useful for some CPU
@@ -62,14 +55,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 	private GameAdapter items;
 
-	private static <T> T $(Object o) {
-		return U.$(o);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public <T> T $(int id) {
-		// Black Magic
-		return (T) findViewById(id);
+	private <T> T $(int id) {
+		return U.$(findViewById(id));
 	}
 
 	private void findViews() {
@@ -107,7 +94,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		preview.setOnCompletionListener(new OnCompletionListener() {
 
 			public void onCompletion(MediaPlayer player) {
-				Message.obtain(WhatDoUWantFromMe, ACTION_LOOP_VIDEO_PREVIEW, preview).sendToTarget();
+				Command.invoke(Command.LOOP_VIDEO_PREVIEW).of(preview).send();
 			}
 
 		});
@@ -141,47 +128,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			isVideoInitialized = true;
 		}
 	}
-
-	@SuppressLint("SdCardPath")
-	private static void fillTestData(GameAdapter items) {
-		items.add(new Game() {{title="月は东に日は西に ～Operation Sanctuary～"; cover="http://www.august-soft.com/hani/event/cg_09.jpg"; video="/sdcard/test.mp4";}});
-		items.add(new Game() {{title="寒蝉鸣泣之时系列"; cover="http://www.forcos.com/upload/2009_07/09071414528628.jpg"; video="/sdcard/test2.mp4";}});
-		items.add(new Game() {{title="One Way Love～ミントちゃん物语"; cover="http://ec2.images-amazon.com/images/I/61LUkVZeNTL.jpg";}});
-		items.add(new Game() {{title="水仙~narcissu~"; cover="http://img.4gdm.com/forum/201105/06/11050623502dd4b9cef1b2e2f3.jpg";}});
-		items.add(new Game() {{title="水色"; cover="http://i2.sinaimg.cn/gm/2010/1110/20101110214231.jpg";}});
-		items.add(new Game() {{title="Princess Holiday ～転がるりんご亭千夜一夜～"; cover="http://image.space.rakuten.co.jp/lg01/30/0000604730/52/img7529b0fbzik3zj.jpeg";}});
-		items.add(new Game() {{title="月姫"; cover="http://i246.photobucket.com/albums/gg97/zelda45694/Shingetsutan%20Tsukihime/Tsukihime.jpg";}});
-		items.add(new Game() {{title="海猫鸣泣之时"; cover="http://comic.ce.cn/news/dmzx/200805/06/W020080506493361950744.jpg";}});
-		items.add(new Game() {{title="Kcnny"; cover="http://komica.byethost32.com/pix/src/1334318735221.jpg";}});
-		items.add(new Game() {{title="Oda Nobuna"; cover="http://randomc.net/image/Oda%20Nobuna%20no%20Yabou/Oda%20Nobuna%20no%20Yabou%20-%20OP%20-%20Large%2002.jpg";}});
-		items.add(new Game() {{title="Yuruyuri"; cover="http://www.emptyblue.it/data/wallpaper/Yuruyuri/yuruyuri_91341_thumb.jpg";}});
-		items.add(new Game() {{title="Remilia Scarlet"; cover="http://konachan.com/image/5dd13f43bd3e78625a99ba49195cab50/Konachan.com%20-%2040803%20remilia_scarlet%20touhou.jpg";}});
-	}
-
-	private static Handler WhatDoUWantFromMe = new Handler() {
-		
-		public void handleMessage(Message msg) {
-			switch(msg.what){
-			case ACTION_LOOP_VIDEO_PREVIEW:
-				VideoView videoview = $(msg.obj);
-				if(videoview.canSeekForward()) {
-					videoview.seekTo(0);
-				}else{
-					videoview.setVideoURI(videoview.getVideoURI());
-				}
-				break;
-			case ACTION_SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLS:
-				ListView listview = $(msg.obj);
-				listview.smoothScrollBy(msg.arg1, msg.arg2);
-				break;
-			case ACTION_GENERATE_TEST_DATA:
-				GameAdapter datalist = $(msg.obj);
-				fillTestData(datalist);
-				break;
-			}
-		}
-		
-	};
 	
 	private Animation animCoverOut = AnimationFactory.coverOutAnimation(new AnimationListener() {
 
@@ -257,10 +203,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	public void onResume() {
 		super.onResume();
 		
-		// Ask for test data
-		WhatDoUWantFromMe.sendMessageDelayed(
-				Message.obtain(WhatDoUWantFromMe, ACTION_GENERATE_TEST_DATA, items)
-				, 400);
+		Command.invoke(Command.GENERATE_TEST_DATA).of(items).sendDelayed(400);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -376,12 +319,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		}else if(viewY > 0 && games.getLastVisiblePosition() == items.getCount() - 1){
 			games.smoothScrollToPosition(items.getCount() - 1);
 		}else{
-			Message msg = Message.obtain(
-					WhatDoUWantFromMe, ACTION_SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLS,
-					games);
-			msg.arg1 = viewY;
-			msg.arg2 = 300;
-			WhatDoUWantFromMe.sendMessageDelayed(msg, 100);
+			Command.invoke(Command.SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS)
+			.of(games).args(viewY, 300).sendDelayed(100);
 		}
 	}
 
