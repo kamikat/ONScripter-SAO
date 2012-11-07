@@ -226,7 +226,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	public void onResume() {
 		super.onResume();
 
-		Command.invoke(Command.GENERATE_TEST_DATA).of(items).sendDelayed(400);
+		Command.invoke(Command.GENERATE_TEST_DATA).of(items).sendDelayed(300);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -241,8 +241,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			cover.setImageBitmap((Bitmap) o);
 			cover.setBackgroundDrawable(null);
 			cover.startAnimation(AnimationFactory.coverInAnimation());
-			Command.revoke(Command.MAINACTIVITY_PLAY_VIDEO);
-			Command.invoke(Command.MAINACTIVITY_PLAY_VIDEO).of(this).sendDelayed(3000);
+			Command.invoke(Command.MAINACTIVITY_PLAY_VIDEO).of(this).only().sendDelayed(3000);
 		}
 	}
 
@@ -268,7 +267,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	}
 
 	private void releaseVideoPlay() {
-		Command.revoke(Command.MAINACTIVITY_PLAY_VIDEO);
 		videoframe.clearAnimation();
 
 		// Clear Video Player
@@ -282,7 +280,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			videoframe.startAnimation(animHideVideo);
 		}
 		
-		Command.invoke(Command.RELEASE_VIDEO_PREVIEW).of(preview).sendDelayed(2000);
+		Command.invoke(Command.RELEASE_VIDEO_PREVIEW).exclude(Command.MAINACTIVITY_PLAY_VIDEO)
+		.of(preview).sendDelayed(2000);
 	}
 
 	private void updateCover(final String url, final boolean coverToBkg) {
@@ -347,7 +346,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	 * child view of game list
 	 */
 	private void scrollViewToCenter(View view) {
-		Command.revoke(Command.SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS, games);
 		int viewY = view.getTop() + view.getHeight() / 2 - games.getHeight() / 2;
 		if(viewY < 0 && games.getFirstVisiblePosition() == 0){
 			games.smoothScrollToPosition(0);
@@ -355,7 +353,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			games.smoothScrollToPosition(items.getCount() - 1);
 		}else{
 			Command.invoke(Command.SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS)
-			.of(games).args(viewY, 300).sendDelayed(100);
+			.of(games).only().args(viewY, 300).sendDelayed(100);
 		}
 	}
 

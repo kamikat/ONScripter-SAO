@@ -123,6 +123,25 @@ public class Command {
 		msg.setData(bundle);
 		return this;
 	}
+	
+	public Command only() {
+		if(msg.obj != null) {
+			Commander.removeMessages(msg.what, msg.obj);
+		}else{
+			Commander.removeMessages(msg.what);
+		}
+		return this;
+	}
+	
+	public Command exclude(int progId) {
+		Commander.removeMessages(progId);
+		return this;
+	}
+
+	public Command exclude(int progId, Object obj) {
+		Commander.removeMessages(progId, obj);
+		return this;
+	}
 
 	public Message getMessage() {
 		return msg;
