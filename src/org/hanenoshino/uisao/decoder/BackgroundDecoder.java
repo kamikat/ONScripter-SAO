@@ -27,17 +27,17 @@ public class BackgroundDecoder extends BitmapDecoder {
 		if(! path.exists()) path.mkdir();
 		thumbnailcache = new FileCache(path, TimeUnit.WEEK);
 	}
-	
+
 	private Bitmap $(String path) {
-		
+
 		Bitmap rtn = null;
 
 		String id = hasher.hash(path);
 
 		FileOutputStream fout = null;
-		
+
 		try{
-			
+
 			if(thumbnailcache != null && thumbnailcache.exists(id)) {
 				if(!thumbnailcache.expire(id)) {
 					rtn = BitmapFactory.decodeFile(
@@ -49,29 +49,29 @@ public class BackgroundDecoder extends BitmapDecoder {
 			rtn = BitmapFactory.decodeFile(path);
 
 			rtn = fastblur(rtn, 30);
-			
+
 			if(thumbnailcache != null) {
 				fout = thumbnailcache.put(id);
 				rtn.compress(CompressFormat.JPEG, 90, fout);
 				fout.close();
 				thumbnailcache.acknowledge(id);
 			}
-			
+
 		} catch (OutOfMemoryError oom){
 			System.gc();
 		} catch (IOException e) {
-			
+
 		} finally {
-			try { 
+			try {
 				fout.close();
 			} catch (Exception e) {
-				
+
 			}
 		}
-		
+
 		return rtn;
 	}
-	
+
 	public Bitmap decode(String path) {
 
 		Thread.currentThread().setPriority(Thread.NORM_PRIORITY / 2);
@@ -85,7 +85,7 @@ public class BackgroundDecoder extends BitmapDecoder {
 
 		return rtn;
 	}
-	
+
 	public Bitmap fastblur(Bitmap sentBitmap, int radius) {
 
         // Stack Blur v1.0 from

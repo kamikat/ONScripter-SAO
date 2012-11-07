@@ -46,7 +46,7 @@ import android.widget.TextView;
  * <p>
  * The way to use this class is to a) instantiate it programatically or b)
  * create it in your xml layout.
- * 
+ *
  * a) The MediaController will create a default set of controls and put them in
  * a window floating above your application. Specifically, the controls will
  * float above the view specified with setAnchorView(). By default, the window
@@ -54,10 +54,10 @@ import android.widget.TextView;
  * touches the anchor view. To customize the MediaController's style, layout and
  * controls you should extend MediaController and override the {#link
  * {@link #makeControllerView()} method.
- * 
+ *
  * b) The MediaController is a FrameLayout, you can put it in your layout xml
  * and get it through {@link #findViewById(int)}.
- * 
+ *
  * NOTES: In each way, if you want customize the MediaController, the SeekBar's
  * id must be mediacontroller_progress, the Play/Pause's must be
  * mediacontroller_pause, current time's must be mediacontroller_time_current,
@@ -128,7 +128,7 @@ public class MediaController extends FrameLayout {
 	/**
 	 * Set the view that acts as the anchor for the control view. This can for
 	 * example be a VideoView, or your Activity's main view.
-	 * 
+	 *
 	 * @param view
 	 *            The view to which to anchor the controller when it is visible.
 	 */
@@ -147,7 +147,7 @@ public class MediaController extends FrameLayout {
 	/**
 	 * Create the view that holds the widgets that control playback. Derived
 	 * classes can override this to create their own.
-	 * 
+	 *
 	 * @return The controller view.
 	 */
 	protected View makeControllerView() {
@@ -185,7 +185,7 @@ public class MediaController extends FrameLayout {
 
 	/**
 	 * Control the action when the seekbar dragged by user
-	 * 
+	 *
 	 * @param seekWhenDragging
 	 *            True the media will seek periodically
 	 */
@@ -199,7 +199,7 @@ public class MediaController extends FrameLayout {
 
 	/**
 	 * Set the content of the file_name TextView
-	 * 
+	 *
 	 * @param name
 	 */
 	public void setFileName(String name) {
@@ -211,7 +211,7 @@ public class MediaController extends FrameLayout {
 	/**
 	 * Set the View to hold some information when interact with the
 	 * MediaController
-	 * 
+	 *
 	 * @param v
 	 */
 	public void setInfoView(OutlineTextView v) {
@@ -230,17 +230,17 @@ public class MediaController extends FrameLayout {
 	 * <p>
 	 * Change the animation style resource for this controller.
 	 * </p>
-	 * 
+	 *
 	 * <p>
 	 * If the controller is showing, calling this method will take effect only
 	 * the next time the controller is shown.
 	 * </p>
-	 * 
+	 *
 	 * @param animationStyle
 	 *            animation style to use when the controller appears and
 	 *            disappears. Set to -1 for the default animation, 0 for no
 	 *            animation, or a resource identifier for an explicit animation.
-	 * 
+	 *
 	 */
 	public void setAnimationStyle(int animationStyle) {
 		mAnimStyle = animationStyle;
@@ -249,7 +249,7 @@ public class MediaController extends FrameLayout {
 	/**
 	 * Show the controller on screen. It will go away automatically after
 	 * 'timeout' milliseconds of inactivity.
-	 * 
+	 *
 	 * @param timeout
 	 *            The timeout in milliseconds. Use 0 to show the controller
 	 *            until hide() is called.

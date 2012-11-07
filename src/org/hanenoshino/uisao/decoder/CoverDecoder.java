@@ -30,7 +30,7 @@ public class CoverDecoder extends BitmapDecoder {
 		if(! path.exists()) path.mkdir();
 		thumbnailcache = new FileCache(path, TimeUnit.WEEK);
 	}
-	
+
 	public static String getThumbernailCache(String path) {
 		String id = hasher.hash(path);
 		if(thumbnailcache != null && thumbnailcache.exists(id)) {
@@ -40,45 +40,45 @@ public class CoverDecoder extends BitmapDecoder {
 		}
 		return null;
 	}
-	
+
 	public static String rTmp(String any) {
 		if(any.endsWith("__tmp__")) {
 			return any.substring(0, any.length() - 7);
 		}
 		return any;
 	}
-	
+
 	private final int MAX_WIDTH;
 	private final int MAX_HEIGHT;
-	
+
 	public CoverDecoder() {
 		MAX_WIDTH = _MAX_WIDTH;
 		MAX_HEIGHT = _MAX_HEIGHT;
 	}
-	
+
 	public CoverDecoder(int width, int height) {
 		MAX_WIDTH = width;
 		MAX_HEIGHT = height;
 	}
-	
+
 	private Bitmap $(String path) {
-		
+
 		Bitmap rtn = null;
 
 		String id = hasher.hash(rTmp(path));
 
 		FileOutputStream fout = null;
-		
+
 		try{
-			
+
 			BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inJustDecodeBounds = true;
 			BitmapFactory.decodeFile(path, options);
 
-			long ratio = Math.min(options.outWidth/MAX_WIDTH, 
+			long ratio = Math.min(options.outWidth/MAX_WIDTH,
 					options.outHeight/MAX_HEIGHT);
 			int sampleSize = Integer.highestOneBit((int)Math.floor(ratio));
-			
+
 			if(thumbnailcache != null && thumbnailcache.exists(id)) {
 				if(!thumbnailcache.expire(id)) {
 					rtn = BitmapFactory.decodeFile(
@@ -92,26 +92,26 @@ public class CoverDecoder extends BitmapDecoder {
 			opts.inSampleSize = sampleSize;
 
 			rtn = BitmapFactory.decodeFile(path, opts);
-			
+
 			if(thumbnailcache != null) {
 				fout = thumbnailcache.put(id);
 				rtn.compress(CompressFormat.JPEG, 90, fout);
 				fout.close();
 				thumbnailcache.acknowledge(id);
 			}
-			
+
 		} catch (OutOfMemoryError oom){
 			System.gc();
 		} catch (IOException e) {
-			
+
 		} finally {
-			try { 
+			try {
 				fout.close();
 			} catch (Exception e) {
-				
+
 			}
 		}
-		
+
 		return rtn;
 	}
 

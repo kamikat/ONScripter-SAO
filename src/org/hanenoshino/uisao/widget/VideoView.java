@@ -27,16 +27,12 @@ import io.vov.vitamio.MediaPlayer.OnPreparedListener;
 import io.vov.vitamio.MediaPlayer.OnSeekCompleteListener;
 import io.vov.vitamio.MediaPlayer.OnSubtitleUpdateListener;
 import io.vov.vitamio.MediaPlayer.OnVideoSizeChangedListener;
-import org.hanenoshino.uisao.R;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.net.Uri;
@@ -54,7 +50,7 @@ import android.view.ViewGroup.LayoutParams;
  * sources (such as resources or content providers), takes care of computing its
  * measurement from the video so that it can be used in any layout manager, and
  * provides various display options such as scaling and tinting.
- * 
+ *
  * VideoView also provide many wrapper methods for
  * {@link io.vov.vitamio.MediaPlayer}, such as {@link #getVideoWidth()},
  * {@link #setSubShown(boolean)}
@@ -129,7 +125,7 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
 
 	/**
 	 * Set the display options
-	 * 
+	 *
 	 * @param layout
 	 *            <ul>
 	 *            <li>{@link #VIDEO_LAYOUT_ORIGIN}
@@ -198,7 +194,7 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
 	public Uri getVideoURI() {
 		return mUri;
 	}
-	
+
 	public void setVideoURI(Uri uri) {
 		mUri = uri;
 		mSeekWhenPrepared = 0;

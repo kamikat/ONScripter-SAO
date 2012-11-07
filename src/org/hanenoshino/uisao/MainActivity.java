@@ -38,12 +38,11 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnItemClickListener {
 
-	
 	{
 		// Set the priority, trick useful for some CPU
 		Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 	}
-	
+
 	private static volatile boolean isVideoInitialized = false;
 
 	private ImageManager imgMgr;
@@ -106,10 +105,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				releaseVideoPlay();
 				return true;
 			}
-			
+
 		});
 		preview.setMediaController(new MediaController(this));
-		
+
 		// Initialize the Vitamio codecs
 		if(!Vitamio.isInitialized(this)) {
 			new AsyncTask<Object, Object, Boolean>() {
@@ -138,7 +137,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			isVideoInitialized = true;
 		}
 	}
-	
+
 	private Animation animCoverOut = AnimationFactory.coverOutAnimation(new AnimationListener() {
 
 		public void onAnimationEnd(Animation animation) {
@@ -169,7 +168,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		public void onAnimationStart(Animation animation) {}
 
 	});
-	
+
 	private Animation animHideVideo = AnimationFactory.hideVideoPlayerAnimation(new AnimationListener(){
 
 		public void onAnimationEnd(Animation animation) {
@@ -179,9 +178,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		public void onAnimationRepeat(Animation animation) {}
 
 		public void onAnimationStart(Animation animation) {}
-		
+
 	});
-	
+
 	private Animation animPlayVideo = AnimationFactory.videoPlayerAnimation(new AnimationListener(){
 
 		public void onAnimationEnd(Animation animation) {
@@ -193,10 +192,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		public void onAnimationStart(Animation animation) {
 			videoframe.setVisibility(View.VISIBLE);
 		}
-		
+
 	});
-	
-	
+
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -205,29 +204,29 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		}
 		setContentView(R.layout.activity_main);
 		findViews();
-		
+
 		// Pass parameters to CoverDecoder to get better performance
 		CoverDecoder.init(getApplicationContext(), cover.getWidth(), cover.getHeight());
-		
+
 		initImageManager();
 
 		configureVideoPlayer();
-		
+
 		// Initializing data and binding to ListView
 		items = new GameAdapter(this, R.layout.gamelist_item, new ArrayList<Game>());
 		games.setAdapter(items);
 		games.setOnItemClickListener(this);
-		
+
 	}
 
 	public void onDestroy() {
 		super.onDestroy();
 		destroyImageManager();
 	}
-	
+
 	public void onResume() {
 		super.onResume();
-		
+
 		Command.invoke(Command.GENERATE_TEST_DATA).of(items).sendDelayed(400);
 	}
 
@@ -247,7 +246,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			Command.invoke(Command.MAINACTIVITY_PLAY_VIDEO).of(this).sendDelayed(3000);
 		}
 	}
-	
+
 	public void playVideo() {
 		Game item = items.getItem(items.getSelectedPosition());
 		if(item.video != null && isVideoInitialized) {
@@ -257,7 +256,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			videoframe.startAnimation(animPlayVideo);
 		}
 	}
-	
+
 	private void startVideoPlay() {
 		Game item = items.getItem(items.getSelectedPosition());
 		if(item.video != null && isVideoInitialized) {
@@ -268,11 +267,11 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				preview.setVideoPath(item.video);
 		}
 	}
-	
+
 	private void releaseVideoPlay() {
 		Command.revoke(Command.MAINACTIVITY_PLAY_VIDEO);
 		videoframe.clearAnimation();
-		
+
 		// Clear Video Player
 		if(preview.isPlaying()){
 			preview.stopPlayback();
@@ -293,7 +292,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			cover.startAnimation(animCoverOut);
 		}
 
-		imgMgr.requestImageAsync(url, 
+		imgMgr.requestImageAsync(url,
 				new ImageSetter(cover) {
 
 			protected void act() {
@@ -301,14 +300,14 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				displayCover();
 				String background = CoverDecoder.getThumbernailCache(url);
 				// Exception for Web Images
-				if(background == null) 
+				if(background == null)
 					background = CoverDecoder.getThumbernailCache(image().file().getAbsolutePath());
 				if(coverToBkg && background != null) {
 					updateBackground(background);
 				}
 			}
 
-		}, 
+		},
 		new CoverDecoder(cover.getWidth(), cover.getHeight()));
 	}
 
@@ -337,7 +336,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		new BackgroundDecoder());
 
 	}
-	
+
 	/**
 	 * Scroll view to the center of the game list
 	 * @param view
@@ -357,13 +356,13 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	}
 
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		
+
 		scrollViewToCenter(view);
 
 		if(items.getSelectedPosition() != position) {
-			
+
 			releaseVideoPlay();
-			
+
 			// Set Selection
 			items.setSelectedPosition(position);
 

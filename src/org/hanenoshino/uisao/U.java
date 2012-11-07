@@ -19,5 +19,5 @@ public class U {
 	public static <T> T $(Object o) {
 		return (T) o;
 	}
-	
+
 }

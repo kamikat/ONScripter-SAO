@@ -10,12 +10,12 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.Animation.AnimationListener;
 
 public class AnimationFactory {
-	
+
 	public static Animation coverInAnimation() {
 		AnimationSet set = new AnimationSet(false);
 		AlphaAnimation animAlpha = new AlphaAnimation(0, 1);
 		ScaleAnimation animScale = new ScaleAnimation(
-				0.5f, 1.0f, 0.5f, 1.0f, 
+				0.5f, 1.0f, 0.5f, 1.0f,
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 		animScale.setInterpolator(new OvershootInterpolator());
 		animAlpha.setDuration(300);
@@ -30,7 +30,7 @@ public class AnimationFactory {
 		AnimationSet set = new AnimationSet(true);
 		AlphaAnimation animAlpha = new AlphaAnimation(1, 0);
 		ScaleAnimation animScale = new ScaleAnimation(
-				1.0f, 1.2f, 1.0f, 1.2f, 
+				1.0f, 1.2f, 1.0f, 1.2f,
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 		animAlpha.setDuration(100);
 		animScale.setDuration(100);
@@ -55,7 +55,7 @@ public class AnimationFactory {
 		animAlpha.setAnimationListener(listener);
 		return animAlpha;
 	}
-	
+
 	public static Animation videoPlayerAnimation(AnimationListener listener) {
 		AlphaAnimation animAlpha = new AlphaAnimation(0, 1);
 		animAlpha.setDuration(200);
@@ -63,7 +63,7 @@ public class AnimationFactory {
 		animAlpha.setAnimationListener(listener);
 		return animAlpha;
 	}
-	
+
 	public static Animation hideVideoPlayerAnimation(AnimationListener listener) {
 		AlphaAnimation animAlpha = new AlphaAnimation(1, 0);
 		animAlpha.setDuration(200);
@@ -71,5 +71,5 @@ public class AnimationFactory {
 		animAlpha.setAnimationListener(listener);
 		return animAlpha;
 	}
-	
+
 }

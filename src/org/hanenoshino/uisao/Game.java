@@ -16,7 +16,7 @@ public class Game {
 
 	// Optional Path/To/Icon/File
 	public String icon;
-	
+
 	// Optional Path/To/Video/File
 	public String video;
 

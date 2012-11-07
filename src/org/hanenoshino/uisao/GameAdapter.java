@@ -21,13 +21,13 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 	private static <T> T $(View v, int id) {
 		return U.$(v, id);
 	}
-	
+
 	// Class for storage state in Tag of correspoinding View
 	public class ItemViewLoad {
 		Game item;
 		boolean selected;
 	}
-	
+
 	private int textViewResourceId;
 
 	public GameAdapter(Context context, int textViewResourceId, ArrayList<Game> items) {
@@ -45,7 +45,7 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 	public int getSelectedPosition() {
 		return selectedPos;
 	}
-	
+
 	public ItemViewLoad load(View v) {
 		Object o = v.getTag();
 		return (o instanceof ItemViewLoad)?(ItemViewLoad) o:null;
@@ -59,7 +59,7 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 			LayoutInflater vi = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			v = vi.inflate(textViewResourceId, null);
 			v.setTag(new ItemViewLoad() {{
-				item = getItem(position); 
+				item = getItem(position);
 				selected = false;
 				}});
 		}
@@ -94,7 +94,7 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 		}
 		return v;
 	}
-	
+
 	/**
 	 * List Item Animation Generator
 	 * @param v
@@ -105,7 +105,7 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 		AnimationSet set = new AnimationSet(true);
 		AlphaAnimation animAlpha = new AlphaAnimation(0, alpha);
 		TranslateAnimation animTrans = new TranslateAnimation(
-				Animation.RELATIVE_TO_PARENT, 0.7f, Animation.RELATIVE_TO_PARENT, 0f, 
+				Animation.RELATIVE_TO_PARENT, 0.7f, Animation.RELATIVE_TO_PARENT, 0f,
 				Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT, 0);
 		animAlpha.setDuration(200);
 		animTrans.setDuration(200);
@@ -116,14 +116,14 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 		set.setFillAfter(true);
 		v.startAnimation(set);
 	}
-	
+
 	private void goSelected(View v) {
 		AlphaAnimation animAlpha = new AlphaAnimation(0.8f, 1.0f);
 		animAlpha.setDuration(200);
 		animAlpha.setFillAfter(true);
 		v.startAnimation(animAlpha);
 	}
-	
+
 	private void leaveSelected(View v) {
 		AlphaAnimation animAlpha = new AlphaAnimation(0.8f, 0.8f);
 		animAlpha.setFillAfter(true);
