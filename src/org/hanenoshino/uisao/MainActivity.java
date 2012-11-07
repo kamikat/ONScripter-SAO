@@ -272,8 +272,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		// Clear Video Player
 		if(preview.isPlaying()){
 			preview.stopPlayback();
-			preview.setVisibility(View.GONE);
 		}
+		
+		preview.setVisibility(View.GONE);
 
 		if(videoframe.getVisibility() == View.VISIBLE) {
 			animHideVideo.reset();
