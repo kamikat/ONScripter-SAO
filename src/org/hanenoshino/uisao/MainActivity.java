@@ -198,7 +198,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		if(Build.VERSION.SDK_INT < 9) {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		}
