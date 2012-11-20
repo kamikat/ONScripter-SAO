@@ -74,10 +74,19 @@
 
     <TextView
         android:id="@+id/gametitle"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/coverframe"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="60dip"/>
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:layout_marginBottom="50dip"
+        android:textColor="@color/sao_white"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:shadowColor="@color/sao_grey"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"/>
     
 </RelativeLayout>
