@@ -377,7 +377,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		Game item = items.getItem(items.getSelectedPosition());
 		if(item.video != null && isVideoInitialized) {
 			videoframe.clearAnimation();
-			videoframe.setVisibility(View.GONE);
 			animPlayVideo.reset();
 			videoframe.startAnimation(animPlayVideo);
 		}
