@@ -51,6 +51,7 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 		return (o instanceof ItemViewLoad)?(ItemViewLoad) o:null;
 	}
 
+	private int maxPosition = 0;
 	private int viewCount = 0;
 
 	public View getView(final int position, View convertView, ViewGroup parent) {
@@ -68,6 +69,7 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 			ImageView icon = $(v, R.id.icon);
 			TextView caption = $(v, R.id.caption);
 			caption.setText(o.title);
+			float alpha;
 			if(selectedPos != position) {
 				icon.setImageResource(R.drawable.test_icon_0);
 				caption.setTextColor(getContext().getResources().getColor(R.color.sao_grey));
@@ -77,8 +79,7 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 					leaveSelected(v);
 					load(v).selected = false;
 				}
-				if(convertView == null)
-					flyInAnimation(v, 30 * ++viewCount, 0.8f);
+				alpha = 0.8f;
 			}else{
 				icon.setImageResource(R.drawable.test_icon_1);
 				caption.setTextColor(getContext().getResources().getColor(R.color.sao_white));
@@ -88,9 +89,15 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 					goSelected(v);
 					load(v).selected = true;
 				}
-				if(convertView == null)
-					flyInAnimation(v, 30 * ++viewCount, 1.0f);
+				alpha = 1.0f;
 			}
+			if(convertView == null || position > maxPosition) {
+				if(viewCount == parent.getChildCount())
+					flyInAnimation(v, ++viewCount, alpha);
+				else
+					flyInAnimation(v, 0, alpha);
+			}
+			if(position > maxPosition) maxPosition = position;
 		}
 		return v;
 	}
@@ -105,14 +112,14 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 		AnimationSet set = new AnimationSet(true);
 		AlphaAnimation animAlpha = new AlphaAnimation(0, alpha);
 		TranslateAnimation animTrans = new TranslateAnimation(
-				Animation.RELATIVE_TO_PARENT, 0.7f, Animation.RELATIVE_TO_PARENT, 0f,
-				Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT, 0);
-		animAlpha.setDuration(200);
-		animTrans.setDuration(200);
+				Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+				Animation.RELATIVE_TO_SELF, 1.7f, Animation.RELATIVE_TO_SELF, 0.0f);
+		animAlpha.setDuration(500);
+		animTrans.setDuration(500);
 		set.addAnimation(animAlpha);
 		set.addAnimation(animTrans);
-		set.setStartOffset(delay);
-		set.setInterpolator(new DecelerateInterpolator(1.5f));
+		set.setStartOffset(delay * 50);
+		set.setInterpolator(new DecelerateInterpolator(4f));
 		set.setFillAfter(true);
 		v.startAnimation(set);
 	}

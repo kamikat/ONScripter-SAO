@@ -278,10 +278,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		games.setAdapter(items);
 		games.setOnItemClickListener(this);
 
-		Command.invoke(Command.RUN).send();
-		
-		scanGames();
-		
+		Command.invoke(Command.RUN).of(
+				new Runnable() { public void run() {scanGames();}}
+		).sendDelayed(500);
 	}
 
 	public void onDestroy() {
