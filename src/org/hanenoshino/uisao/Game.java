@@ -1,5 +1,7 @@
 package org.hanenoshino.uisao;
 
+import java.io.File;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -64,6 +66,62 @@ public class Game {
 		b.putString("icon", icon);
 		b.putString("video", video);
 		return b;
+	}
+	
+	public static Game scanGameDir(File gamedir) {
+		Game g = new Game();
+		g.title = gamedir.getName();
+		File media = new File(gamedir, "media.json");
+		if(media.exists()) {
+			try {
+				JSONObject data = new JSONObject(U.read(media));
+				g.readJSON(data, true);
+			} catch (Exception e) {}
+		}
+		if(g.cover != null && g.background != null && g.video != null && g.icon != null) return g;
+		String[] files = gamedir.list();
+		for(String file: files) {
+			String name = file.toLowerCase();
+			if(name.equals("cover.jpg") || name.equals("cover.png")) {
+				if(g.cover == null) 
+					g.cover = new File(gamedir, file).getAbsolutePath();
+			}
+			if(name.equals("background.jpg") || name.equals("background.png") ||
+			   name.equals("bkg.jpg") || name.equals("bkg.png")) {
+				if(g.background == null) 
+					g.background = new File(gamedir, file).getAbsolutePath();
+			}
+			if(name.equals("preview.mp4") || name.equals("preview.avi") || name.equals("preview.mpg") ||
+			   name.equals("pv.mp4") || name.equals("pv.avi") || name.equals("pv.mpg")) {
+				if(g.video == null) 
+					g.video = new File(gamedir, file).getAbsolutePath();
+			}
+			if(name.equals("icon.jpg") || name.equals("icon.png")) {
+				if(g.icon == null) 
+					g.icon = new File(gamedir, file).getAbsolutePath();
+			}
+		}
+		if(g.cover != null && g.video != null) return g;
+		for(String file: files) {
+			String name = file.toLowerCase();
+			if(name.endsWith(".jpg") || name.endsWith(".png")) {
+				if(g.cover == null) 
+					g.cover = new File(gamedir, file).getAbsolutePath();
+			}
+			if(name.startsWith("preview.") && U.supportMedia(name)) {
+				if(g.video == null) 
+					g.video = new File(gamedir, file).getAbsolutePath();
+			}
+		}
+		if(g.video != null) return g;
+		for(String file: files) {
+			String name = file.toLowerCase();
+			if(U.supportMedia(name)) {
+				if(g.video == null) 
+					g.video = new File(gamedir, file).getAbsolutePath();
+			}
+		}
+		return g;
 	}
 	
 }
