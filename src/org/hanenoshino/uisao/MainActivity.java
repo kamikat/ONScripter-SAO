@@ -206,7 +206,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			if(name.startsWith("preview.") && ( 
 			   name.endsWith(".avi") || name.endsWith(".mp4") || name.endsWith(".mpg") || name.endsWith(".rmvb") || 
 			   name.endsWith(".mpeg") || name.endsWith(".flv") ||  name.endsWith(".rm") || name.endsWith(".f4v") || 
-			   name.endsWith(".hlv") || name.endsWith(".wmv")
+			   name.endsWith(".hlv") || name.endsWith(".wmv") || name.endsWith(".mkv")
 			   )) {
 				if(g.video == null) 
 					g.video = new File(gamedir, file).getAbsolutePath();
@@ -217,7 +217,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			String name = file.toLowerCase();
 			if(name.endsWith(".avi") || name.endsWith(".mp4") || name.endsWith(".mpg") || name.endsWith(".rmvb") || 
 			   name.endsWith(".mpeg") || name.endsWith(".flv") ||  name.endsWith(".rm") || name.endsWith(".f4v") || 
-			   name.endsWith(".hlv") || name.endsWith(".wmv")
+			   name.endsWith(".hlv") || name.endsWith(".wmv") || name.endsWith(".mkv")
 			   ) {
 				if(g.video == null) 
 					g.video = new File(gamedir, file).getAbsolutePath();
