@@ -32,16 +32,22 @@ public class Game {
 	}
 	
 	public void readJSON(JSONObject json, boolean overlay) throws JSONException {
+		if(json.has("title"))
 		if(overlay || title == null)
 		title = json.getString("title");
+		if(json.has("cover"))
 		if(overlay || cover == null)
 		cover = json.getString("cover");
+		if(json.has("description"))
 		if(overlay || description == null)
 		description = json.getString("description");
+		if(json.has("background"))
 		if(overlay || background == null)
 		background = json.getString("background");
+		if(json.has("icon"))
 		if(overlay || icon == null)
 		icon = json.getString("icon");
+		if(json.has("video"))
 		if(overlay || video == null)
 		video = json.getString("video");
 	}
