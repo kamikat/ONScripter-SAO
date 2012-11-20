@@ -163,7 +163,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		return true;
 	}
 	
-	private Game scanGameDir(File gamedir) {
+	public static Game scanGameDir(File gamedir) {
 		Game g = new Game();
 		g.title = gamedir.getName();
 		File media = new File(gamedir, "media.json");
@@ -203,11 +203,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				if(g.cover == null) 
 					g.cover = new File(gamedir, file).getAbsolutePath();
 			}
-			if(name.startsWith("preview.") && ( 
-			   name.endsWith(".avi") || name.endsWith(".mp4") || name.endsWith(".mpg") || name.endsWith(".rmvb") || 
-			   name.endsWith(".mpeg") || name.endsWith(".flv") ||  name.endsWith(".rm") || name.endsWith(".f4v") || 
-			   name.endsWith(".hlv") || name.endsWith(".wmv") || name.endsWith(".mkv")
-			   )) {
+			if(name.startsWith("preview.") && U.supportMedia(name)) {
 				if(g.video == null) 
 					g.video = new File(gamedir, file).getAbsolutePath();
 			}
@@ -215,10 +211,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		if(g.video != null) return g;
 		for(String file: files) {
 			String name = file.toLowerCase();
-			if(name.endsWith(".avi") || name.endsWith(".mp4") || name.endsWith(".mpg") || name.endsWith(".rmvb") || 
-			   name.endsWith(".mpeg") || name.endsWith(".flv") ||  name.endsWith(".rm") || name.endsWith(".f4v") || 
-			   name.endsWith(".hlv") || name.endsWith(".wmv") || name.endsWith(".mkv")
-			   ) {
+			if(U.supportMedia(name)) {
 				if(g.video == null) 
 					g.video = new File(gamedir, file).getAbsolutePath();
 			}

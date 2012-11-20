@@ -40,5 +40,15 @@ public class U {
 			return null;
 		}
 	}
+	
+	public static boolean supportMedia(String name) {
+		return 
+				name.endsWith(".avi") || name.endsWith(".mp4") || 
+				name.endsWith(".mpg") || name.endsWith(".rmvb") || 
+				name.endsWith(".mpeg") || name.endsWith(".flv") || 
+				name.endsWith(".rm") || name.endsWith(".f4v") || 
+				name.endsWith(".hlv") || name.endsWith(".wmv") || 
+				name.endsWith(".mkv");
+	}
 
 }
