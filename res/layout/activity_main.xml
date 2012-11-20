@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
 	    android:layout_toRightOf="@id/games"
-        android:layout_marginBottom="60dip"
+        android:layout_marginBottom="80dip"
         android:layout_marginTop="20dip">
         
 	    <ImageView
@@ -77,10 +77,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/coverframe"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip"
-        android:layout_marginBottom="50dip"
+        android:layout_marginTop="10dip"
         android:textColor="@color/sao_white"
         android:textSize="18sp"
         android:gravity="center"
@@ -88,5 +88,33 @@
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="2"/>
+    
+    <RelativeLayout 
+        android:layout_width="170dip"
+        android:layout_height="80dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dip"
+        android:layout_marginRight="20dip">
+        
+        <ImageView
+	        android:id="@+id/btn_about"
+	        android:layout_width="80dip"
+	        android:layout_height="80dip"
+	        android:layout_alignParentLeft="true"
+	        android:contentDescription="@string/alt_about"
+	        android:clickable="true"
+	        android:background="@drawable/about_button" />
+        
+        <ImageView
+	        android:id="@+id/btn_settings"
+	        android:layout_width="80dip"
+	        android:layout_height="80dip"
+	        android:layout_alignParentRight="true"
+	        android:contentDescription="@string/alt_settings"
+	        android:clickable="true"
+	        android:background="@drawable/settings_button" />
+        
+    </RelativeLayout>
     
 </RelativeLayout>

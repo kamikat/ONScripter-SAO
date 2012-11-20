@@ -77,6 +77,11 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 				// Following code implements v.setAlpha(0.8f);
 				if(load(v).selected) {
 					leaveSelected(v);
+					
+					View start_panel = $(v, R.id.start_panel);
+					start_panel.setBackgroundColor(getContext().getResources().getColor(android.R.color.transparent));
+					start_panel.setVisibility(View.GONE);
+					
 					load(v).selected = false;
 				}
 				alpha = 0.8f;
@@ -87,6 +92,11 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 				// Following code implements v.setAlpha(1.0f);
 				if(!load(v).selected) {
 					goSelected(v);
+
+					View start_panel = $(v, R.id.start_panel);
+					start_panel.setBackgroundColor(getContext().getResources().getColor(R.color.sao_transparent_orange));
+					start_panel.setVisibility(View.VISIBLE);
+					
 					load(v).selected = true;
 				}
 				alpha = 1.0f;
