@@ -130,7 +130,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 						isVideoInitialized = true;
 						
 						// Play video if exists
-						Command.invoke(Command.MAINACTIVITY_PLAY_VIDEO).of(this).only().sendDelayed(2000);
+						Command.invoke(Command.MAINACTIVITY_PLAY_VIDEO).of(MainActivity.this).only().sendDelayed(2000);
 					}
 				}
 
