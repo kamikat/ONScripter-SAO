@@ -170,7 +170,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		if(media.exists()) {
 			try {
 				JSONObject data = new JSONObject(U.read(media));
-				g.readJSON(data);
+				g.readJSON(data, true);
 			} catch (Exception e) {}
 		}
 		if(g.cover != null && g.background != null && g.video != null && g.icon != null) return g;
