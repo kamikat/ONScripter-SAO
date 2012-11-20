@@ -7,11 +7,11 @@ import io.vov.vitamio.Vitamio;
 
 import java.io.File;
 import java.util.ArrayList;
-
 import org.hanenoshino.uisao.decoder.BackgroundDecoder;
 import org.hanenoshino.uisao.decoder.CoverDecoder;
 import org.hanenoshino.uisao.widget.MediaController;
 import org.hanenoshino.uisao.widget.VideoView;
+import org.json.JSONObject;
 
 import com.footmark.utils.cache.FileCache;
 import com.footmark.utils.image.ImageManager;
@@ -22,6 +22,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.view.Menu;
@@ -74,7 +76,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			imgMgr = new ImageManager(new FileCache(
 					new File(
 							Environment.getExternalStorageDirectory(),
-							"saoui/cover")));
+							"saoui/.cover")));
 		}else{
 			imgMgr = new ImageManager(new FileCache(
 					new File(
@@ -139,6 +141,116 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			isVideoInitialized = true;
 		}
 	}
+	
+	private boolean environmentCheck() {
+		File mCurrentDirectory = new File(
+				Environment.getExternalStorageDirectory() + "/saoui"
+				);
+		if (!mCurrentDirectory.exists()) {
+			new AlertDialog.Builder(this)
+			.setTitle(getString(R.string.error))
+			.setMessage(getString(R.string.no_sdcard_dir))
+			.setPositiveButton(getString(R.string.known), 
+					new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface dialog, int whichButton) {
+					finish();
+				}
+			})
+			.create()
+			.show();
+			return false;
+		}
+		return true;
+	}
+	
+	private Game scanGameDir(File gamedir) {
+		Game g = new Game();
+		g.title = gamedir.getName();
+		File media = new File(gamedir, "media.json");
+		if(media.exists()) {
+			try {
+				JSONObject data = new JSONObject(U.read(media));
+				g.readJSON(data);
+			} catch (Exception e) {}
+		}
+		if(g.cover != null && g.background != null && g.video != null && g.icon != null) return g;
+		String[] files = gamedir.list();
+		for(String file: files) {
+			String name = file.toLowerCase();
+			if(name.equals("cover.jpg") || name.equals("cover.png")) {
+				if(g.cover == null) 
+					g.cover = new File(gamedir, file).getAbsolutePath();
+			}
+			if(name.equals("background.jpg") || name.equals("background.png") ||
+			   name.equals("bkg.jpg") || name.equals("bkg.png")) {
+				if(g.background == null) 
+					g.background = new File(gamedir, file).getAbsolutePath();
+			}
+			if(name.equals("preview.mp4") || name.equals("preview.avi") || name.equals("preview.mpg") ||
+			   name.equals("pv.mp4") || name.equals("pv.avi") || name.equals("pv.mpg")) {
+				if(g.video == null) 
+					g.video = new File(gamedir, file).getAbsolutePath();
+			}
+			if(name.equals("icon.jpg") || name.equals("icon.png")) {
+				if(g.icon == null) 
+					g.icon = new File(gamedir, file).getAbsolutePath();
+			}
+		}
+		if(g.cover != null && g.video != null) return g;
+		for(String file: files) {
+			String name = file.toLowerCase();
+			if(name.endsWith(".jpg") || name.endsWith(".png")) {
+				if(g.cover == null) 
+					g.cover = new File(gamedir, file).getAbsolutePath();
+			}
+			if(name.startsWith("preview.") && ( 
+			   name.endsWith(".avi") || name.endsWith(".mp4") || name.endsWith(".mpg") || name.endsWith(".rmvb") || 
+			   name.endsWith(".mpeg") || name.endsWith(".flv") ||  name.endsWith(".rm") || name.endsWith(".f4v") || 
+			   name.endsWith(".hlv") || name.endsWith(".wmv")
+			   )) {
+				if(g.video == null) 
+					g.video = new File(gamedir, file).getAbsolutePath();
+			}
+		}
+		if(g.video != null) return g;
+		for(String file: files) {
+			String name = file.toLowerCase();
+			if(name.endsWith(".avi") || name.endsWith(".mp4") || name.endsWith(".mpg") || name.endsWith(".rmvb") || 
+			   name.endsWith(".mpeg") || name.endsWith(".flv") ||  name.endsWith(".rm") || name.endsWith(".f4v") || 
+			   name.endsWith(".hlv") || name.endsWith(".wmv")
+			   ) {
+				if(g.video == null) 
+					g.video = new File(gamedir, file).getAbsolutePath();
+			}
+		}
+		return g;
+	}
+	
+	private void scanGames () {
+		items.clear();
+		items.notifyDataSetChanged();
+		
+		new Thread() {
+			
+			public void run() {
+				File root = new File(
+						Environment.getExternalStorageDirectory() + "/saoui"
+						);
+				File[] mDirectoryFiles = root.listFiles();
+				for(File file: mDirectoryFiles) {
+					if(!file.isHidden() && file.isDirectory()) {
+						Game g = scanGameDir(file);
+						if(g != null) {
+							// Add Game to Game List
+							Command.invoke(Command.ADD_ITEM_TO_LISTADAPTER)
+							.of(items).args(g.toBundle()).send();
+						}
+					}
+				}
+			}
+			
+		}.start();
+	}
 
 	private Animation animCoverOut = AnimationFactory.coverOutAnimation(new AnimationListener() {
 
@@ -194,6 +306,17 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		public void onAnimationStart(Animation animation) {
 			videoframe.setVisibility(View.VISIBLE);
 		}
+		
+		private void startVideoPlay() {
+			Game item = items.getItem(items.getSelectedPosition());
+			if(item.video != null && isVideoInitialized) {
+					videoframe.setVisibility(View.VISIBLE);
+					preview.setVisibility(View.VISIBLE);
+					Command.revoke(Command.RELEASE_VIDEO_PREVIEW, preview);
+					preview.setVideoURI(null);
+					preview.setVideoPath(item.video);
+			}
+		}
 
 	});
 
@@ -205,6 +328,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		}
 		setContentView(R.layout.activity_main);
 		findViews();
+		
+		if(!environmentCheck()) return;
 
 		// Pass parameters to CoverDecoder to get better performance
 		CoverDecoder.init(getApplicationContext(), cover.getWidth(), cover.getHeight());
@@ -218,6 +343,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		games.setAdapter(items);
 		games.setOnItemClickListener(this);
 
+		Command.invoke(Command.RUN).send();
+		
+		scanGames();
+		
 	}
 
 	public void onDestroy() {
@@ -227,8 +356,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 	public void onResume() {
 		super.onResume();
-
-		Command.invoke(Command.GENERATE_TEST_DATA).of(items).sendDelayed(300);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -256,18 +383,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		}
 	}
 
-	private void startVideoPlay() {
-		Game item = items.getItem(items.getSelectedPosition());
-		if(item.video != null && isVideoInitialized) {
-				videoframe.setVisibility(View.VISIBLE);
-				preview.setVisibility(View.VISIBLE);
-				Command.revoke(Command.RELEASE_VIDEO_PREVIEW, preview);
-				preview.setVideoURI(null);
-				preview.setVideoPath(item.video);
-		}
-	}
-
-	private void releaseVideoPlay() {
+	public void releaseVideoPlay() {
 		videoframe.clearAnimation();
 
 		// Clear Video Player

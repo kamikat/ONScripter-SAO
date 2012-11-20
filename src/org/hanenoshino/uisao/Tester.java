@@ -1,6 +1,7 @@
 package org.hanenoshino.uisao;
 
 import android.annotation.SuppressLint;
+import android.widget.ArrayAdapter;
 
 /**
  * Test use functions should be placed here
@@ -10,7 +11,7 @@ import android.annotation.SuppressLint;
 public class Tester {
 
 	@SuppressLint("SdCardPath")
-	public static void fillTestData(GameAdapter items) {
+	public static void fillTestData(ArrayAdapter<Game> items) {
 		items.add(new Game() {{title="月は东に日は西に ～Operation Sanctuary～"; cover="http://www.august-soft.com/hani/event/cg_09.jpg"; video="/sdcard/test.mp4";}});
 		items.add(new Game() {{title="寒蝉鸣泣之时系列"; cover="http://www.forcos.com/upload/2009_07/09071414528628.jpg"; video="/sdcard/test2.mp4";}});
 		items.add(new Game() {{title="One Way Love～ミントちゃん物语"; cover="http://ec2.images-amazon.com/images/I/61LUkVZeNTL.jpg"; video="/sdcard/test3.mp4";}});
