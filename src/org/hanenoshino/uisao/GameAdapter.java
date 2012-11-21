@@ -225,8 +225,9 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 			title.startAnimation(animAlpha);
 		}else{
 			start_panel.setVisibility(View.GONE);
-			Animation animAlpha = new AlphaAnimation(1.0f, 1.0f);
+			Animation animAlpha = new AlphaAnimation(0.5f, 1.0f);
 			animAlpha.setFillAfter(true);
+			animAlpha.setDuration(100);
 			title.startAnimation(animAlpha);
 		}
 	}
