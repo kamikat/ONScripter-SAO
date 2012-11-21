@@ -89,9 +89,11 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 				// Following code implements v.setAlpha(0.8f);
 				if(load(v).selected) {
 					leaveSelected(v);
+					hidePanel(v, true);
 					load(v).selected = false;
+				}else{
+					hidePanel(v, false);
 				}
-				hidePanel(v);
 				alpha = 0.8f;
 			}else{
 				icon.setImageResource(R.drawable.test_icon_1);
@@ -185,12 +187,12 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 		final View p = v;
 		Command.invoke(Command.RUN).of(new Runnable() {
 			 public void run() {
-				 hidePanel(p);
+				 hidePanel(p, true);
 			 }
 		}).sendDelayed(5000);
 	}
 	
-	public void hidePanel(View v) {
+	public void hidePanel(View v, boolean animation) {
 		final View start_panel = $(v, R.id.start_panel);
 		if(start_panel.getVisibility()==View.GONE || !start_panel.getAnimation().hasEnded())
 			return;
@@ -200,25 +202,32 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 		btn_play.setClickable(false);
 		btn_config.setClickable(false);
 		start_panel.setClickable(false);
-		AlphaAnimation animAlpha = new AlphaAnimation(1.0f, 0.0f);
-		animAlpha.setFillAfter(true);
-		animAlpha.setDuration(300);
-		animAlpha.setAnimationListener(new AnimationListener() {
-
-			public void onAnimationEnd(Animation animation) {
-				start_panel.setVisibility(View.GONE);
-			}
-
-			public void onAnimationRepeat(Animation animation) {}
-
-			public void onAnimationStart(Animation animation) {start_panel.setVisibility(View.VISIBLE);}
-			
-		});
-		start_panel.startAnimation(animAlpha);
-		animAlpha = new AlphaAnimation(0.5f, 1.0f);
-		animAlpha.setFillAfter(true);
-		animAlpha.setDuration(300);
-		title.startAnimation(animAlpha);
+		if(animation) {
+			AlphaAnimation animAlpha = new AlphaAnimation(1.0f, 0.0f);
+			animAlpha.setFillAfter(true);
+			animAlpha.setDuration(300);
+			animAlpha.setAnimationListener(new AnimationListener() {
+	
+				public void onAnimationEnd(Animation animation) {
+					start_panel.setVisibility(View.GONE);
+				}
+	
+				public void onAnimationRepeat(Animation animation) {}
+	
+				public void onAnimationStart(Animation animation) {start_panel.setVisibility(View.VISIBLE);}
+				
+			});
+			start_panel.startAnimation(animAlpha);
+			animAlpha = new AlphaAnimation(0.5f, 1.0f);
+			animAlpha.setFillAfter(true);
+			animAlpha.setDuration(300);
+			title.startAnimation(animAlpha);
+		}else{
+			start_panel.setVisibility(View.GONE);
+			Animation animAlpha = new AlphaAnimation(1.0f, 1.0f);
+			animAlpha.setFillAfter(true);
+			title.startAnimation(animAlpha);
+		}
 	}
 
 }
