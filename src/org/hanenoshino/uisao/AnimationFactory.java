@@ -11,7 +11,7 @@ import android.view.animation.Animation.AnimationListener;
 
 public class AnimationFactory {
 
-	public static Animation coverInAnimation() {
+	public static Animation coverInAnimation(AnimationListener listener) {
 		AnimationSet set = new AnimationSet(false);
 		AlphaAnimation animAlpha = new AlphaAnimation(0, 1);
 		ScaleAnimation animScale = new ScaleAnimation(
@@ -23,6 +23,7 @@ public class AnimationFactory {
 		set.addAnimation(animAlpha);
 		set.addAnimation(animScale);
 		set.setFillAfter(true);
+		set.setAnimationListener(listener);
 		return set;
 	}
 
@@ -30,12 +31,13 @@ public class AnimationFactory {
 		AnimationSet set = new AnimationSet(true);
 		AlphaAnimation animAlpha = new AlphaAnimation(1, 0);
 		ScaleAnimation animScale = new ScaleAnimation(
-				1.0f, 1.2f, 1.0f, 1.2f,
+				1.0f, 1.5f, 1.0f, 1.5f,
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-		animAlpha.setDuration(100);
-		animScale.setDuration(100);
+		animAlpha.setDuration(300);
+		animScale.setDuration(300);
 		set.addAnimation(animAlpha);
 		set.addAnimation(animScale);
+		set.setInterpolator(new AccelerateInterpolator(2));
 		set.setAnimationListener(listener);
 		return set;
 	}

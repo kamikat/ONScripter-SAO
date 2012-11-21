@@ -316,12 +316,21 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 	}
 
 	private void displayCover() {
-		Object o = cover.getTag();
+		final Object o = cover.getTag();
 		if(o instanceof Bitmap) {
 			cover.setTag(null);
-			cover.setImageBitmap((Bitmap) o);
-			cover.setBackgroundDrawable(null);
-			cover.startAnimation(AnimationFactory.coverInAnimation());
+			cover.startAnimation(AnimationFactory.coverInAnimation(new AnimationListener (){
+
+				public void onAnimationEnd(Animation animation) {}
+
+				public void onAnimationRepeat(Animation animation) {}
+
+				public void onAnimationStart(Animation animation) {
+					cover.setImageBitmap((Bitmap) o);
+					cover.setBackgroundDrawable(null);
+				}
+				
+			}));
 		}
 	}
 
@@ -369,7 +378,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 
 			protected void act() {
 				cover.setTag(image().bmp());
-				displayCover();
+				if(!animCoverOut.hasStarted())
+					displayCover();
 				String background = CoverDecoder.getThumbernailCache(url);
 				// Exception for Web Images
 				if(background == null)
