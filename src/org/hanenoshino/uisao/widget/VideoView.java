@@ -75,6 +75,7 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
 
 	private float mAspectRatio = 0;
 	private int mVideoLayout = VIDEO_LAYOUT_SCALE;
+	public static final int VIDEO_LAYOUT_PREVIOUS = -1;
 	public static final int VIDEO_LAYOUT_ORIGIN = 0;
 	public static final int VIDEO_LAYOUT_SCALE = 1;
 	public static final int VIDEO_LAYOUT_STRETCH = 2;
@@ -137,6 +138,7 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
 	 *            video aspect ratio, will audo detect if 0.
 	 */
 	public void setVideoLayout(int layout, float aspectRatio) {
+		if(layout == VIDEO_LAYOUT_PREVIOUS) layout = mVideoLayout;
 		LayoutParams lp = getLayoutParams();
 		int windowWidth, windowHeight;
 		if(this.getParent() instanceof View) {
@@ -479,13 +481,6 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent ev) {
-		if (isInPlaybackState() && mMediaController != null)
-			toggleMediaControlsVisiblity();
-		return false;
-	}
-
-	@Override
 	public boolean onTrackballEvent(MotionEvent ev) {
 		if (isInPlaybackState() && mMediaController != null)
 			toggleMediaControlsVisiblity();
@@ -516,7 +511,7 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
 		return super.onKeyDown(keyCode, event);
 	}
 
-	private void toggleMediaControlsVisiblity() {
+	public void toggleMediaControlsVisiblity() {
 		if (mMediaController.isShowing()) {
 			mMediaController.hide();
 		} else {

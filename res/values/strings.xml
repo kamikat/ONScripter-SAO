@@ -13,6 +13,7 @@
     
     <string name="mediacontroller_play_pause">Play/Pause</string>
     
+    <string name="notify_exit">再按一次回退键退出</string>
     
     <string name="error">错误</string>
     <string name="known">我知道了</string>

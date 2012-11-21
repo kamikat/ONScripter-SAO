@@ -29,6 +29,9 @@ public class Command {
 	// obj - VideoView
 	public static final int RELEASE_VIDEO_PREVIEW = 14;
 
+	// obj - VideoView
+	public static final int UPDATE_VIDEO_SIZE = 16;
+
 	// obj - GameAdapter
 	public static final int GENERATE_TEST_DATA = 184;
 
@@ -80,6 +83,10 @@ public class Command {
 			case RELEASE_VIDEO_PREVIEW:
 				videoview = $(msg.obj);
 				videoview.setVideoURI(null);
+				break;
+			case UPDATE_VIDEO_SIZE:
+				videoview = $(msg.obj);
+				videoview.setVideoLayout(VideoView.VIDEO_LAYOUT_PREVIOUS, 0.0f);
 				break;
 			default:
 				if(msg.obj instanceof Runnable) {

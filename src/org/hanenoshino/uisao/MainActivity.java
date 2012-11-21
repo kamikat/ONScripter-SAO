@@ -24,9 +24,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.AdapterView;
@@ -35,8 +39,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnItemClickListener, OnClickListener {
+public class MainActivity extends Activity implements OnItemClickListener, OnClickListener, OnTouchListener {
 
 	{
 		// Set the priority, trick useful for some CPU
@@ -292,6 +297,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		items.setOnConfigClickListener(this);
 		items.setOnPlayClickListener(this);
 		
+		preview.setOnTouchListener(this);
+		
 	}
 
 	public void onDestroy() {
@@ -474,6 +481,76 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			
 			break;
 		}
+	}
+	
+	private RelativeLayout.LayoutParams videoframelayout = null;
+	private RelativeLayout.LayoutParams fullscreenlayout = 
+			new RelativeLayout.LayoutParams(
+					LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+	
+	private void toggleFullscreen() {
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) videoframe.getLayoutParams();
+		if(videoframelayout == null) {
+			videoframelayout = params;
+		}
+		if(!isVideoFullscreen()) {
+			videoframe.setLayoutParams(fullscreenlayout);
+		}else{
+			videoframe.setLayoutParams(videoframelayout);
+		}
+		Command.invoke(Command.UPDATE_VIDEO_SIZE).of(preview).send();
+	}
+	
+	private boolean isVideoFullscreen() {
+		return videoframelayout != null && videoframe.getLayoutParams() != videoframelayout;
+	}
+
+	private long last_videotouch = 0;
+	
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		switch(v.getId()) {
+		case R.id.surface_view:
+			int action = event.getAction() & MotionEvent.ACTION_MASK;
+			if(action == MotionEvent.ACTION_UP) {
+				if(System.currentTimeMillis() - last_videotouch < 200) {
+					toggleFullscreen();
+				}else{
+					if (preview.isPlaying())
+						preview.toggleMediaControlsVisiblity();
+				}
+				last_videotouch = System.currentTimeMillis();
+			}
+			break;
+		}
+		return true;
+	}
+	
+	private long last_backkey_pressed = 0;
+	
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent msg) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        	if(isVideoFullscreen()) {
+        		toggleFullscreen();
+        		return true;
+        	}
+        	if(preview.isPlaying()) {
+        		releaseVideoPlay();
+        		return true;
+        	}
+            if (msg.getEventTime()-last_backkey_pressed<2000) {
+                finish();
+            } else {
+                Toast.makeText(
+                		getApplicationContext(), 
+                		R.string.notify_exit, Toast.LENGTH_SHORT
+                		).show();
+                last_backkey_pressed=msg.getEventTime();
+            }
+            return true;
+        }
+		return super.onKeyDown(keyCode, msg);
 	}
 
 }
