@@ -31,36 +31,38 @@
         android:textColor="#757575"
         android:singleLine="true" />
     
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/start_panel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/icon"
         android:layout_centerVertical="true"
         android:paddingLeft="40dip"
         android:paddingRight="40dip"
-        android:background="@color/sao_transparent_orange"
+        android:clickable="true"
         android:visibility="gone">
         
         <ImageView
-	        android:id="@+id/btn_config"
-	        android:layout_weight="1"
-	        android:layout_width="48dip"
-	        android:layout_height="48dip"
-	        android:contentDescription="@string/alt_config"
-	        android:clickable="true"
-	        android:src="@drawable/config_button" />
-        
-        <ImageView
 	        android:id="@+id/btn_play"
-	        android:layout_weight="1"
 	        android:layout_width="48dip"
 	        android:layout_height="48dip"
+	        android:layout_marginRight="20dip"
 	        android:contentDescription="@string/alt_play"
+	        android:layout_alignParentRight="true"
 	        android:clickable="true"
 	        android:src="@drawable/play_button" />
         
-    </LinearLayout>
+        <ImageView
+	        android:id="@+id/btn_config"
+	        android:layout_width="48dip"
+	        android:layout_height="48dip"
+	        android:layout_marginRight="20dip"
+	        android:contentDescription="@string/alt_config"
+	        android:layout_toLeftOf="@id/btn_play"
+	        android:clickable="true"
+	        android:src="@drawable/config_button" />
+        
+        
+    </RelativeLayout>
         
         
     

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
@@ -78,9 +79,7 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 				if(load(v).selected) {
 					leaveSelected(v);
 					
-					View start_panel = $(v, R.id.start_panel);
-					start_panel.setBackgroundColor(getContext().getResources().getColor(android.R.color.transparent));
-					start_panel.setVisibility(View.GONE);
+					hidePanel(v);
 					
 					load(v).selected = false;
 				}
@@ -93,9 +92,7 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 				if(!load(v).selected) {
 					goSelected(v);
 
-					View start_panel = $(v, R.id.start_panel);
-					start_panel.setBackgroundColor(getContext().getResources().getColor(R.color.sao_transparent_orange));
-					start_panel.setVisibility(View.VISIBLE);
+					showPanel(v);
 					
 					load(v).selected = true;
 				}
@@ -145,6 +142,64 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 		AlphaAnimation animAlpha = new AlphaAnimation(0.8f, 0.8f);
 		animAlpha.setFillAfter(true);
 		v.startAnimation(animAlpha);
+	}
+	
+	private void showPanel(View v) {
+		final View start_panel = $(v, R.id.start_panel);
+		View title = $(v, R.id.caption);
+		View btn_play = $(v, R.id.btn_play);
+		View btn_config = $(v, R.id.btn_config);
+		btn_play.setClickable(true);
+		btn_config.setClickable(true);
+		start_panel.setClickable(true);
+		AlphaAnimation animAlpha = new AlphaAnimation(0.0f, 1.0f);
+		animAlpha.setFillAfter(true);
+		animAlpha.setDuration(500);
+		animAlpha.setAnimationListener(new AnimationListener() {
+
+			public void onAnimationEnd(Animation animation) {}
+
+			public void onAnimationRepeat(Animation animation) {}
+
+			public void onAnimationStart(Animation animation) {
+				start_panel.setVisibility(View.VISIBLE);
+			}
+			
+		});
+		start_panel.startAnimation(animAlpha);
+		animAlpha = new AlphaAnimation(1.0f, 0.5f);
+		animAlpha.setFillAfter(true);
+		animAlpha.setDuration(500);
+		title.startAnimation(animAlpha);
+	}
+	
+	private void hidePanel(View v) {
+		final View start_panel = $(v, R.id.start_panel);
+		View title = $(v, R.id.caption);
+		View btn_play = $(v, R.id.btn_play);
+		View btn_config = $(v, R.id.btn_config);
+		btn_play.setClickable(false);
+		btn_config.setClickable(false);
+		start_panel.setClickable(false);
+		AlphaAnimation animAlpha = new AlphaAnimation(1.0f, 0.0f);
+		animAlpha.setFillAfter(true);
+		animAlpha.setDuration(300);
+		animAlpha.setAnimationListener(new AnimationListener() {
+
+			public void onAnimationEnd(Animation animation) {
+				start_panel.setVisibility(View.GONE);
+			}
+
+			public void onAnimationRepeat(Animation animation) {}
+
+			public void onAnimationStart(Animation animation) {start_panel.setVisibility(View.VISIBLE);}
+			
+		});
+		start_panel.startAnimation(animAlpha);
+		animAlpha = new AlphaAnimation(0.5f, 1.0f);
+		animAlpha.setFillAfter(true);
+		animAlpha.setDuration(300);
+		title.startAnimation(animAlpha);
 	}
 
 }
