@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -45,6 +46,16 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 
 	public int getSelectedPosition() {
 		return selectedPos;
+	}
+	
+	private OnClickListener mOnConfigClickListener, mOnPlayClickListener;
+	
+	public void setOnConfigClickListener(OnClickListener listener) {
+		mOnConfigClickListener = listener;
+	}
+	
+	public void setOnPlayClickListener(OnClickListener listener) {
+		mOnPlayClickListener = listener;
 	}
 
 	public ItemViewLoad load(View v) {
@@ -149,6 +160,8 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 		btn_play.setClickable(true);
 		btn_config.setClickable(true);
 		start_panel.setClickable(true);
+		btn_play.setOnClickListener(mOnPlayClickListener);
+		btn_config.setOnClickListener(mOnConfigClickListener);
 		AlphaAnimation animAlpha = new AlphaAnimation(0.0f, 1.0f);
 		animAlpha.setFillAfter(true);
 		animAlpha.setDuration(500);

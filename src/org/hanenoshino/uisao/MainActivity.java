@@ -26,6 +26,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.AdapterView;
@@ -35,7 +36,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class MainActivity extends Activity implements OnItemClickListener {
+public class MainActivity extends Activity implements OnItemClickListener, OnClickListener {
 
 	{
 		// Set the priority, trick useful for some CPU
@@ -52,6 +53,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	private VideoView preview;
 	private RelativeLayout videoframe;
 
+	private ImageView btn_settings, btn_about;
+
 	private GameAdapter items;
 
 	private <T> T $(int id) {
@@ -65,6 +68,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		gametitle = $(R.id.gametitle);
 		preview = $(R.id.surface_view);
 		videoframe = $(R.id.videoframe);
+		btn_settings = $(R.id.btn_settings);
+		btn_about = $(R.id.btn_about);
 	}
 
 	private void initImageManager() {
@@ -281,6 +286,12 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		Command.invoke(Command.RUN).of(
 				new Runnable() { public void run() {scanGames();}}
 		).sendDelayed(500);
+		
+		btn_settings.setOnClickListener(this);
+		btn_about.setOnClickListener(this);
+		items.setOnConfigClickListener(this);
+		items.setOnPlayClickListener(this);
+		
 	}
 
 	public void onDestroy() {
@@ -444,6 +455,25 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		}
 		
 		items.showPanel(view);
+	}
+
+	public void onClick(View v) {
+		// TODO Handle Click Events Here
+		Game item = items.getItem(items.getSelectedPosition());
+		switch(v.getId()) {
+		case R.id.btn_settings:
+			
+			break;
+		case R.id.btn_about:
+			
+			break;
+		case R.id.btn_config:
+			
+			break;
+		case R.id.btn_play:
+			
+			break;
+		}
 	}
 
 }
