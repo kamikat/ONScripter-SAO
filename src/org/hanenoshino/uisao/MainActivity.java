@@ -535,7 +535,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
         		toggleFullscreen();
         		return true;
         	}
-        	if(preview.isPlaying()) {
+        	if(preview.isInPlaybackState()) {
         		releaseVideoPlay();
         		return true;
         	}

@@ -694,7 +694,7 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
 		return null;
 	}
 
-	protected boolean isInPlaybackState() {
+	public boolean isInPlaybackState() {
 		return (mMediaPlayer != null && mCurrentState != STATE_ERROR && mCurrentState != STATE_IDLE && mCurrentState != STATE_PREPARING);
 	}
 
