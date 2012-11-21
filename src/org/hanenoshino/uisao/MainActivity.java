@@ -442,6 +442,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 			gametitle.setText(item.title);
 		}
+		
+		items.showPanel(view);
 	}
 
 }

@@ -78,11 +78,9 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 				// Following code implements v.setAlpha(0.8f);
 				if(load(v).selected) {
 					leaveSelected(v);
-					
-					hidePanel(v);
-					
 					load(v).selected = false;
 				}
+				hidePanel(v);
 				alpha = 0.8f;
 			}else{
 				icon.setImageResource(R.drawable.test_icon_1);
@@ -91,9 +89,6 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 				// Following code implements v.setAlpha(1.0f);
 				if(!load(v).selected) {
 					goSelected(v);
-
-					showPanel(v);
-					
 					load(v).selected = true;
 				}
 				alpha = 1.0f;
@@ -144,8 +139,10 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 		v.startAnimation(animAlpha);
 	}
 	
-	private void showPanel(View v) {
+	public void showPanel(View v) {
 		final View start_panel = $(v, R.id.start_panel);
+		if(start_panel.getVisibility()==View.VISIBLE)
+			return;
 		View title = $(v, R.id.caption);
 		View btn_play = $(v, R.id.btn_play);
 		View btn_config = $(v, R.id.btn_config);
@@ -171,10 +168,19 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 		animAlpha.setFillAfter(true);
 		animAlpha.setDuration(500);
 		title.startAnimation(animAlpha);
+
+		final View p = v;
+		Command.invoke(Command.RUN).of(new Runnable() {
+			 public void run() {
+				 hidePanel(p);
+			 }
+		}).sendDelayed(5000);
 	}
 	
-	private void hidePanel(View v) {
+	public void hidePanel(View v) {
 		final View start_panel = $(v, R.id.start_panel);
+		if(start_panel.getVisibility()==View.GONE || !start_panel.getAnimation().hasEnded())
+			return;
 		View title = $(v, R.id.caption);
 		View btn_play = $(v, R.id.btn_play);
 		View btn_config = $(v, R.id.btn_config);
