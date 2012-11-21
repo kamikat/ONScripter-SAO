@@ -194,7 +194,8 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 	
 	public void hidePanel(View v, boolean animation) {
 		final View start_panel = $(v, R.id.start_panel);
-		if(start_panel.getVisibility()==View.GONE || !start_panel.getAnimation().hasEnded())
+		if(start_panel.getVisibility()==View.GONE || 
+		   (start_panel.getAnimation() != null && !start_panel.getAnimation().hasEnded()))
 			return;
 		View title = $(v, R.id.caption);
 		View btn_play = $(v, R.id.btn_play);
