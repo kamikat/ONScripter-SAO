@@ -476,7 +476,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 
 	public void onClick(View v) {
 		// TODO Handle Click Events Here
-		Game item = items.getItem(items.getSelectedPosition());
+		Game item;
 		switch(v.getId()) {
 		case R.id.btn_settings:
 			
@@ -485,10 +485,12 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			
 			break;
 		case R.id.btn_config:
-			
+			item = items.getItem(items.getSelectedPosition());
+			// TODO Show Game Config
 			break;
 		case R.id.btn_play:
-			
+			item = items.getItem(items.getSelectedPosition());
+			// TODO Goto Game Play
 			break;
 		}
 	}
