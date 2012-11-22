@@ -20,4 +20,8 @@ Bugs
 ----
 
 * H> Need to scroll game list to trigger selected event (from natdon)
+* M> Start Panel remains on unselected item on leave selection at showPanel
 * L> Fly in order of initial items may cross (from trinity)
+
+
+
