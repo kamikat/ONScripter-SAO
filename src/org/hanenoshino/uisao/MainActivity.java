@@ -32,7 +32,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
@@ -197,57 +196,43 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		}.start();
 	}
 
-	private Animation animCoverOut = AnimationFactory.coverOutAnimation(new AnimationListener() {
+	private Animation animCoverOut = GetAnimation.For.MainInterface.ToHideCover(new AnimationListener() {
 
 		public void onAnimationEnd(Animation animation) {
-			animCoverOut = AnimationFactory.coverOutAnimation(this);
+			animCoverOut = GetAnimation.For.MainInterface.ToHideCover(this);
 			displayCover();
 		}
 
-		public void onAnimationRepeat(Animation animation) {}
-
-		public void onAnimationStart(Animation animation) {}
-
 	});
 
-	private Animation animBackgroundOut = AnimationFactory.bkgOutAnimation(new AnimationListener() {
+	private Animation animBackgroundOut = GetAnimation.For.MainInterface.ToHideBackground(new AnimationListener() {
 
 		public void onAnimationEnd(Animation arg0) {
-			animBackgroundOut = AnimationFactory.bkgOutAnimation(this);
+			animBackgroundOut = GetAnimation.For.MainInterface.ToHideBackground(this);
 			if(background.getTag() instanceof Bitmap) {
 				background.setImageBitmap((Bitmap) background.getTag());
 				background.setBackgroundDrawable(null);
 				background.setTag(null);
-				background.startAnimation(AnimationFactory.bkgInAnimation());
+				background.startAnimation(GetAnimation.For.MainInterface.ToShowBackground(null));
 			}
 		}
 
-		public void onAnimationRepeat(Animation animation) {}
-
-		public void onAnimationStart(Animation animation) {}
-
 	});
 
-	private Animation animHideVideo = AnimationFactory.hideVideoPlayerAnimation(new AnimationListener(){
+	private Animation animHideVideo = GetAnimation.For.MainInterface.ToHideVideoPlayerFrame(new AnimationListener(){
 
 		public void onAnimationEnd(Animation animation) {
 			videoframe.setVisibility(View.GONE);
 		}
 
-		public void onAnimationRepeat(Animation animation) {}
-
-		public void onAnimationStart(Animation animation) {}
-
 	});
 
-	private Animation animPlayVideo = AnimationFactory.videoPlayerAnimation(new AnimationListener(){
+	private Animation animPlayVideo = GetAnimation.For.MainInterface.ToShowVideoPlayerFrame(new AnimationListener(){
 
 		public void onAnimationEnd(Animation animation) {
 			startVideoPlay();
 		}
-
-		public void onAnimationRepeat(Animation animation) {}
-
+		
 		public void onAnimationStart(Animation animation) {
 			videoframe.setVisibility(View.VISIBLE);
 		}
@@ -319,11 +304,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		final Object o = cover.getTag();
 		if(o instanceof Bitmap) {
 			cover.setTag(null);
-			cover.startAnimation(AnimationFactory.coverInAnimation(new AnimationListener (){
-
-				public void onAnimationEnd(Animation animation) {}
-
-				public void onAnimationRepeat(Animation animation) {}
+			cover.startAnimation(GetAnimation.For.MainInterface.ToShowCover(new AnimationListener (){
 
 				public void onAnimationStart(Animation animation) {
 					cover.setImageBitmap((Bitmap) o);
@@ -408,7 +389,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			protected void act() {
 				if(animBackgroundOut.hasEnded()||!animBackgroundOut.hasStarted()) {
 					super.act();
-					background.startAnimation(AnimationFactory.bkgInAnimation());
+					background.startAnimation(GetAnimation.For.MainInterface.ToShowBackground(null));
 				}else{
 					background.setTag(image().bmp());
 				}

@@ -41,6 +41,10 @@ public class U {
 		}
 	}
 	
+	public static void setAlpha(View v, float alpha) {
+		v.startAnimation(GetAnimation.General.Alpha(alpha, alpha, 0));
+	}
+	
 	public static boolean supportMedia(String name) {
 		return 
 				name.endsWith(".avi") || name.endsWith(".mp4") || 

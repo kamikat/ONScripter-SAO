@@ -10,9 +10,6 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationSet;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -106,37 +103,20 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 				}
 				alpha = 1.0f;
 			}
+			// animation on item first displayed TODO
 			if(convertView == null || position > maxPosition) {
 				if(viewCount == parent.getChildCount())
-					flyInAnimation(v, ++viewCount, alpha);
+					v.startAnimation(
+							GetAnimation.For.ListItem.OnItemFirstDisplayed(++viewCount * 50, alpha)
+							);
 				else
-					flyInAnimation(v, 0, alpha);
+					v.startAnimation(
+							GetAnimation.For.ListItem.OnItemFirstDisplayed(0, alpha)
+							);
 			}
 			if(position > maxPosition) maxPosition = position;
 		}
 		return v;
-	}
-
-	/**
-	 * List Item Animation Generator
-	 * @param v
-	 * @param delay
-	 * @param alpha
-	 */
-	private void flyInAnimation(View v, long delay, float alpha) {
-		AnimationSet set = new AnimationSet(true);
-		AlphaAnimation animAlpha = new AlphaAnimation(0, alpha);
-		TranslateAnimation animTrans = new TranslateAnimation(
-				Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
-				Animation.RELATIVE_TO_SELF, 1.7f, Animation.RELATIVE_TO_SELF, 0.0f);
-		animAlpha.setDuration(500);
-		animTrans.setDuration(500);
-		set.addAnimation(animAlpha);
-		set.addAnimation(animTrans);
-		set.setStartOffset(delay * 50);
-		set.setInterpolator(new DecelerateInterpolator(4f));
-		set.setFillAfter(true);
-		v.startAnimation(set);
 	}
 
 	private void goSelected(View v) {
@@ -147,9 +127,7 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 	}
 
 	private void leaveSelected(View v) {
-		AlphaAnimation animAlpha = new AlphaAnimation(0.8f, 0.8f);
-		animAlpha.setFillAfter(true);
-		v.startAnimation(animAlpha);
+		U.setAlpha(v, 0.8f);
 	}
 	
 	public void showPanel(View v) {
