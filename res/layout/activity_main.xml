@@ -73,19 +73,19 @@
             android:contentDescription="@string/alt_settings" />
     </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/cover"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/cover"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_alignParentRight="true"
+        android:layout_marginBottom="100dip"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:layout_marginTop="40dip"
         android:layout_toRightOf="@id/games"
-            android:layout_marginBottom="100dip"
-            android:layout_marginLeft="20dip"
-            android:layout_marginRight="20dip"
-            android:layout_marginTop="40dip"
-            android:contentDescription="@string/alt_cover"
-            android:scaleType="fitCenter"
-            android:src="@drawable/dbkg_und" />
+        android:contentDescription="@string/alt_cover"
+        android:scaleType="fitCenter"
+        android:src="@drawable/dbkg_und" />
 
     <RelativeLayout
         android:id="@+id/videoframe"
@@ -106,7 +106,6 @@
             android:layout_height="fill_parent"
             android:layout_centerInParent="true"
             android:visibility="gone" />
-        
     </RelativeLayout>
 
 </RelativeLayout>

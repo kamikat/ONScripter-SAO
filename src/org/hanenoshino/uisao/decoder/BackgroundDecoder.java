@@ -8,7 +8,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
-import android.util.Log;
 
 import com.footmark.utils.TimeUnit;
 import com.footmark.utils.cache.FileCache;
@@ -17,6 +16,11 @@ import com.footmark.utils.hash.MD5Hasher;
 import com.footmark.utils.image.decoder.BitmapDecodeException;
 import com.footmark.utils.image.decoder.BitmapDecoder;
 
+/**
+ * Cache File dependency on cover decoder, be careful change the code on CoverDecoder
+ * @author trinity
+ *
+ */
 public class BackgroundDecoder extends BitmapDecoder {
 
 	private static FileCache thumbnailcache = null;
@@ -48,7 +52,14 @@ public class BackgroundDecoder extends BitmapDecoder {
 
 			rtn = BitmapFactory.decodeFile(path);
 
-			rtn = fastblur(rtn, 30);
+			int radius = 30;
+			
+			if(Math.min(rtn.getWidth(), rtn.getHeight()) < 256)
+				radius = 10;
+			else if(Math.min(rtn.getWidth(), rtn.getHeight()) < 64)
+				radius = 5;
+			
+			rtn = fastblur(rtn, radius);
 
 			if(thumbnailcache != null) {
 				fout = thumbnailcache.put(id);
