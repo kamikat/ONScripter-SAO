@@ -10,19 +10,15 @@ import java.util.ArrayList;
 import org.hanenoshino.uisao.decoder.BackgroundDecoder;
 import org.hanenoshino.uisao.decoder.CoverDecoder;
 import org.hanenoshino.uisao.widget.MediaController;
-import org.hanenoshino.uisao.widget.VideoView;
 import com.footmark.utils.cache.FileCache;
 import com.footmark.utils.image.ImageManager;
 import com.footmark.utils.image.ImageSetter;
 
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -34,13 +30,9 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnItemClickListener, OnClickListener, OnTouchListener {
+public class MainActivity extends GameController implements OnItemClickListener, OnClickListener, OnTouchListener {
 
 	{
 		// Set the priority, trick useful for some CPU
@@ -51,30 +43,15 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 
 	private ImageManager imgMgr;
 
-	private ListView games;
-	private ImageView cover, background;
-	private TextView gametitle;
-	private VideoView preview;
-	private RelativeLayout videoframe;
-
-	private ImageView btn_settings, btn_about;
-
 	private GameAdapter items;
 
-	private <T> T $(int id) {
-		return U.$(findViewById(id));
-	}
-
-	private void findViews() {
-		games = $(R.id.games);
-		cover = $(R.id.cover);
-		background = $(R.id.background);
-		gametitle = $(R.id.gametitle);
-		preview = $(R.id.surface_view);
-		videoframe = $(R.id.videoframe);
-		btn_settings = $(R.id.btn_settings);
-		btn_about = $(R.id.btn_about);
-	}
+// Following code on GameController
+//	protected ListView games;
+//	protected ImageView cover, background;
+//	protected TextView gametitle;
+//	protected VideoView preview;
+//	protected RelativeLayout videoframe;
+//	protected ImageView btn_settings, btn_about;
 
 	private void initImageManager() {
 		destroyImageManager();
@@ -253,11 +230,6 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if(Build.VERSION.SDK_INT < 9) {
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		}
-		setContentView(R.layout.activity_main);
-		findViews();
 		
 		if(!environmentCheck()) return;
 
@@ -467,11 +439,11 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			break;
 		case R.id.btn_config:
 			item = items.getItem(items.getSelectedPosition());
-			// TODO Show Game Config
+			configForGame(item);
 			break;
 		case R.id.btn_play:
 			item = items.getItem(items.getSelectedPosition());
-			// TODO Goto Game Play
+			startGame(item);
 			break;
 		}
 	}
@@ -519,9 +491,6 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		return true;
 	}
 	
-	private long last_backkey_pressed = 0;
-	
-	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent msg) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
         	if(isVideoFullscreen()) {
@@ -532,16 +501,6 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
         		releaseVideoPlay();
         		return true;
         	}
-            if (msg.getEventTime()-last_backkey_pressed<2000) {
-                finish();
-            } else {
-                Toast.makeText(
-                		getApplicationContext(), 
-                		R.string.notify_exit, Toast.LENGTH_SHORT
-                		).show();
-                last_backkey_pressed=msg.getEventTime();
-            }
-            return true;
         }
 		return super.onKeyDown(keyCode, msg);
 	}
