@@ -2,6 +2,8 @@ package org.hanenoshino.uisao;
 
 import java.util.ArrayList;
 
+import org.hanenoshino.uisao.anim.GetAnimation;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

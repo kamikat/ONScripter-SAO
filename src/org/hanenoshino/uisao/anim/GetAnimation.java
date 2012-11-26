@@ -1,4 +1,4 @@
-package org.hanenoshino.uisao;
+package org.hanenoshino.uisao.anim;
 
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;

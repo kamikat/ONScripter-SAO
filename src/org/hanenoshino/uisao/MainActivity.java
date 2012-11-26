@@ -7,6 +7,9 @@ import io.vov.vitamio.Vitamio;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import org.hanenoshino.uisao.anim.AnimationListener;
+import org.hanenoshino.uisao.anim.GetAnimation;
 import org.hanenoshino.uisao.decoder.BackgroundDecoder;
 import org.hanenoshino.uisao.decoder.CoverDecoder;
 import org.hanenoshino.uisao.widget.MediaController;
