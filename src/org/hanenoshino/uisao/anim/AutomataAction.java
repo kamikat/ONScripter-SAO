@@ -32,7 +32,7 @@ public class AutomataAction extends
 		return automata;
 	}
 	
-	public void onStateChanged() {
+	public void onStateChanged(int from, int to) {
 		
 	}
 	

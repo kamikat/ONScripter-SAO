@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.view.View;
 import android.view.animation.Animation;
 
 /**
@@ -23,14 +24,27 @@ public class AnimationAutomata implements StateIO {
 	
 	private final StateIO runner;
 	
+	private View target;
+	
 	// To avoid circular notify
 	private int lastIssue = 0;
 	
 	private Map<Long, Animation> animations = new HashMap<Long, Animation>();
 	private Map<Long, List<AutomataAction>> actions = new HashMap<Long, List<AutomataAction>>();
 	
+	private Animation current = null;
+	
 	private AnimationAutomata(StateIO sio) {
 		runner = sio;
+	}
+	
+	public AnimationAutomata target(View v) {
+		target = v;
+		return this;
+	}
+	
+	public View target() {
+		return target;
 	}
 
 	/**
@@ -81,7 +95,48 @@ public class AnimationAutomata implements StateIO {
 	public void onStateTransferred(int before, int after, int issueId) {
 		if(lastIssue == issueId) return;
 		lastIssue = issueId;
-		// TODO Check state transfer and decide animation and actions to be taken
+		// Take actions
+		long key = makeLong(before, after);
+		Animation anim = animations.get(key);
+		if(anim != null) {
+			if(target == null) throw new NoTargetFoundException();
+			if(current != null && !current.hasEnded()) {
+				current.cancel();
+				target.clearAnimation();
+			}
+			final List<AutomataAction> action = actions.get(key);
+			for(AutomataAction a : action) {
+				a.setAutomata(AnimationAutomata.this);
+				a.onStateChanged(before, after);
+			}
+			anim.setAnimationListener(new android.view.animation.Animation.AnimationListener() {
+				
+				public void onAnimationEnd(Animation animation) {
+					for(AutomataAction a : action) {
+						a.setAutomata(AnimationAutomata.this);
+						a.onAnimationEnd(animation);
+					}
+				}
+				
+				public void onAnimationStart(Animation animation) {
+					for(AutomataAction a : action) {
+						a.setAutomata(AnimationAutomata.this);
+						a.onAnimationStart(animation);
+					}
+					
+				}
+				
+				public void onAnimationRepeat(Animation animation) {
+					for(AutomataAction a : action) {
+						a.setAutomata(AnimationAutomata.this);
+						a.onAnimationRepeat(animation);
+					}
+				}
+				
+			});
+			current = anim;
+			target.startAnimation(anim);
+		}
 	}
 
 	// Following code behave as a wrapper to StateIO
