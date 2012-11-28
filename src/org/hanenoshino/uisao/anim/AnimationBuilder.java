@@ -10,6 +10,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 
 public class AnimationBuilder {
 
@@ -18,6 +19,8 @@ public class AnimationBuilder {
 	}
 
 	ArrayList<Animation> animations = new ArrayList<Animation>();
+	
+	private int val_type = Animation.ABSOLUTE;
 
 	// Utility Functions
 
@@ -52,6 +55,11 @@ public class AnimationBuilder {
 		anim(new AlphaAnimation(from, to));
 		return this;
 	}
+	
+	public AnimationBuilder valtype(int type) {
+		val_type = type;
+		return this;
+	}
 
 	public AnimationBuilder scale(float fromX, float toX, float fromY,
 			float toY, int pivotXType, float pivotX, int pivotYType,
@@ -68,7 +76,24 @@ public class AnimationBuilder {
 
 	public AnimationBuilder scale(float fromX, float toX, float fromY,
 			float toY, float pivotX, float pivotY) {
-		anim(new ScaleAnimation(fromX, toX, fromY, toY, pivotX, pivotY));
+		anim(new ScaleAnimation(fromX, toX, fromY, toY, val_type, pivotX, val_type, pivotY));
+		return this;
+	}
+	
+	public AnimationBuilder translate(
+			float fromXDelta, float toXDelta, float fromYDelta, float toYDelta) {
+		anim(new TranslateAnimation(val_type, fromXDelta, val_type, toXDelta, 
+				val_type, fromYDelta, val_type, toYDelta));
+		return this;
+	}
+	
+	public AnimationBuilder translate(
+			int fromXDeltaType, float fromXDelta, 
+			int toXDeltaType, float toXDelta, 
+			int fromYDeltaType, float fromYDelta, 
+			int toYDeltaType, float toYDelta) {
+		anim(new TranslateAnimation(fromXDeltaType, fromXDelta, toXDeltaType, toXDelta, 
+				fromYDeltaType, fromYDelta, toYDeltaType, toYDelta));
 		return this;
 	}
 
