@@ -13,84 +13,75 @@ import android.view.animation.ScaleAnimation;
 
 public class AnimationBuilder {
 
-	/*
-	 * AnimationBuilder.create()
-	 * .alpha(0, 1).startAt(100).to(200).serial().fillafter().fillbefore().fillenabled()
-	 * .scale(tx1, x1, tx2, x2, ty1, y1, ty2, y2).overshoot().startAt(0).animateFor(200).parallel()
-	 * .anim(someAnimation)
-	 * .build()
-	 */
-
 	public static AnimationBuilder create() {
 		return new AnimationBuilder();
 	}
-	
+
 	ArrayList<Animation> animations = new ArrayList<Animation>();
-	
+
 	// Utility Functions
-	
+
 	private Animation current() {
 		Animation anim = anim(-1);
-		if(anim == null)
+		if (anim == null)
 			throw new NoAnimationException();
 		return anim;
 	}
-	
+
 	private Animation previous() {
 		return anim(-2);
 	}
-	
+
 	private Animation anim(int number) {
-		if(animations.size() == 0)
+		if (animations.size() == 0)
 			return null;
-		if(number < 0) number += animations.size();
-		if(number >= animations.size() || number < 0) 
+		if (number < 0)
+			number += animations.size();
+		if (number >= animations.size() || number < 0)
 			return null;
 		return animations.get(number);
 	}
-	
+
 	private AnimationBuilder() {
-		
+
 	}
-	
+
 	// Animation Creation
-	
+
 	public AnimationBuilder alpha(float from, float to) {
 		anim(new AlphaAnimation(from, to));
 		return this;
 	}
 
-	public AnimationBuilder scale(float fromX, float toX, float fromY, float toY, 
-			int pivotXType, float pivotX, int pivotYType, float pivotY) {
-		anim(new ScaleAnimation(
-				fromX, toX, fromY, toY, 
-				pivotXType, pivotX, pivotYType, pivotY));
+	public AnimationBuilder scale(float fromX, float toX, float fromY,
+			float toY, int pivotXType, float pivotX, int pivotYType,
+			float pivotY) {
+		anim(new ScaleAnimation(fromX, toX, fromY, toY, pivotXType, pivotX,
+				pivotYType, pivotY));
 		return this;
 	}
 
 	public AnimationBuilder scale(float fromX, float toX, float fromY, float toY) {
-		anim(new ScaleAnimation(
-				fromX, toX, fromY, toY));
+		anim(new ScaleAnimation(fromX, toX, fromY, toY));
 		return this;
 	}
 
-	public AnimationBuilder scale(float fromX, float toX, float fromY, float toY, 
-			float pivotX, float pivotY) {
-		anim(new ScaleAnimation(
-				fromX, toX, fromY, toY, 
-				pivotX, pivotY));
+	public AnimationBuilder scale(float fromX, float toX, float fromY,
+			float toY, float pivotX, float pivotY) {
+		anim(new ScaleAnimation(fromX, toX, fromY, toY, pivotX, pivotY));
 		return this;
 	}
-	
+
 	public AnimationBuilder anim(Animation anim) {
 		animations.add(anim);
 		return this;
 	}
-	
+
 	// Timing Tweak
-	
+
 	/**
 	 * Set the start time of the animation
+	 * 
 	 * @param timeMillis
 	 * @return
 	 */
@@ -98,9 +89,10 @@ public class AnimationBuilder {
 		current().setStartTime(timeMillis);
 		return this;
 	}
-	
+
 	/**
 	 * Wait before the animation is started since its startTime
+	 * 
 	 * @param timeMillis
 	 * @return
 	 */
@@ -108,19 +100,23 @@ public class AnimationBuilder {
 		current().setStartOffset(timeMillis);
 		return this;
 	}
-	
+
 	/**
 	 * Animate to what time? (relative to the parent)
+	 * 
 	 * @param timeMillis
 	 * @return
 	 */
 	public AnimationBuilder to(long timeMillis) {
-		current().setDuration(timeMillis - current().getStartTime() - current().getStartOffset());
+		current().setDuration(
+				timeMillis - current().getStartTime()
+						- current().getStartOffset());
 		return this;
 	}
-	
+
 	/**
 	 * Animate for how long?
+	 * 
 	 * @param timeMillis
 	 * @return
 	 */
@@ -128,106 +124,111 @@ public class AnimationBuilder {
 		current().setDuration(timeMillis);
 		return this;
 	}
-	
+
 	/**
 	 * Alias for animateFor
 	 */
 	public AnimationBuilder duration(long timeMillis) {
 		return animateFor(timeMillis);
 	}
-	
+
 	// synchronize the StartOffset offend the behaviour rule of serial()
-	
+
 	/**
 	 * Parallel with previous Animation
+	 * 
 	 * @return
 	 */
 	public AnimationBuilder parallel() {
-		if(previous() != null) {
+		if (previous() != null) {
 			current().setStartTime(previous().getStartTime());
 			current().setStartOffset(previous().getStartOffset());
-		}else{
+		} else {
 			current().setStartTime(0);
 			current().setStartOffset(0);
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Parallel with Animation for N before
+	 * 
 	 * @return
 	 */
 	public AnimationBuilder parallel(int n) {
-		if(anim(-n-1) != null) {
-			current().setStartTime(anim(-n-1).getStartTime());
-			current().setStartOffset(anim(-n-1).getStartOffset());
-		}else{
+		if (anim(-n - 1) != null) {
+			current().setStartTime(anim(-n - 1).getStartTime());
+			current().setStartOffset(anim(-n - 1).getStartOffset());
+		} else {
 			throw new NoAnimationException();
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Serial to previous Animation
+	 * 
 	 * @return
 	 */
 	public AnimationBuilder serial() {
 		long pOffset = 0, pDuration = 0;
-		if(previous() != null) {
+		if (previous() != null) {
 			pOffset = previous().getStartTime() + previous().getStartOffset();
 			pDuration = previous().getDuration();
 		}
 		current().setStartTime(pOffset + pDuration);
 		return this;
 	}
-	
+
 	/**
 	 * Serial with Animation for N before
+	 * 
 	 * @param n
 	 * @return
 	 */
 	public AnimationBuilder serial(int n) {
 		long pOffset = 0, pDuration = 0;
-		if(anim(-n-1) != null) {
-			pOffset = anim(-n-1).getStartTime() + anim(-n-1).getStartOffset();
-			pDuration = anim(-n-1).getDuration();
+		if (anim(-n - 1) != null) {
+			pOffset = anim(-n - 1).getStartTime()
+					+ anim(-n - 1).getStartOffset();
+			pDuration = anim(-n - 1).getDuration();
 		}
 		current().setStartTime(pOffset + pDuration);
 		return this;
 	}
-	
+
 	// Interpolator
-	
+
 	public AnimationBuilder accelerated() {
 		return interpolator(new AccelerateInterpolator());
 	}
-	
+
 	public AnimationBuilder decelerated() {
 		return interpolator(new DecelerateInterpolator());
 	}
-	
+
 	public AnimationBuilder overshoot() {
 		return interpolator(new OvershootInterpolator());
 	}
-	
+
 	public AnimationBuilder accelerated(float factor) {
 		return interpolator(new AccelerateInterpolator(factor));
 	}
-	
+
 	public AnimationBuilder decelerated(float factor) {
 		return interpolator(new DecelerateInterpolator(factor));
 	}
-	
+
 	public AnimationBuilder overshoot(float factor) {
 		return interpolator(new OvershootInterpolator(factor));
 	}
-	
+
 	private Interpolator global_interpolator = null;
-	
+
 	public AnimationBuilder interpolator(Interpolator i) {
-		try{
+		try {
 			current().setInterpolator(i);
-		}catch(NoAnimationException e){
+		} catch (NoAnimationException e) {
 			global_interpolator = i;
 		}
 		return this;
@@ -236,65 +237,79 @@ public class AnimationBuilder {
 	// FillOptions
 
 	public FillOptions Fill = new FillOptions();
-	
+
 	public class FillOptions {
-		
+
 		private boolean global_fillafter = false;
 		private boolean global_fillbefore = true;
 		private boolean global_fillenabled = true;
-		
+
 		public FillOptions after(boolean enabled) {
-			try{
+			try {
 				current().setFillAfter(enabled);
-			}catch(NoAnimationException e){
+			} catch (NoAnimationException e) {
 				global_fillafter = enabled;
 			}
 			return this;
 		}
-		
+
 		public FillOptions before(boolean enabled) {
-			try{
-			current().setFillBefore(enabled);
-		}catch(NoAnimationException e){
-			global_fillbefore = enabled;
-		}
+			try {
+				current().setFillBefore(enabled);
+			} catch (NoAnimationException e) {
+				global_fillbefore = enabled;
+			}
 			return this;
 		}
-		
+
 		public FillOptions enabled(boolean enabled) {
-			try{
-			current().setFillEnabled(enabled);
-		}catch(NoAnimationException e){
-			global_fillenabled = enabled;
-		}
+			try {
+				current().setFillEnabled(enabled);
+			} catch (NoAnimationException e) {
+				global_fillenabled = enabled;
+			}
 			return this;
 		}
-		
+
 		public AnimationBuilder upward() {
 			return AnimationBuilder.this;
 		}
-		
+
 	}
-	
+
 	/**
 	 * Build for output of the animation
+	 * 
 	 * @return
 	 */
 	public Animation build() {
-		if(animations.size() <= 1) {
+		if (animations.size() <= 1) {
+			current().setFillEnabled(Fill.global_fillenabled);
+			current().setFillBefore(Fill.global_fillbefore);
+			current().setFillAfter(Fill.global_fillafter);
+			if (global_interpolator != null)
+				current().setInterpolator(global_interpolator);
+			animations.clear();
 			return current();
-		}else{
+		} else {
 			AnimationSet set = new AnimationSet(global_interpolator != null);
 			set.setFillEnabled(Fill.global_fillenabled);
 			set.setFillBefore(Fill.global_fillbefore);
 			set.setFillAfter(Fill.global_fillafter);
-			if(global_interpolator != null)
+			if (global_interpolator != null)
 				set.setInterpolator(global_interpolator);
-			for(Animation anim : animations) {
+			for (Animation anim : animations) {
 				set.addAnimation(anim);
 			}
+			animations.clear();
 			return set;
 		}
 	}
-	
+
+	public Animation build(Animation.AnimationListener listener) {
+		Animation anim = build();
+		anim.setAnimationListener(listener);
+		return anim;
+	}
+
 }
