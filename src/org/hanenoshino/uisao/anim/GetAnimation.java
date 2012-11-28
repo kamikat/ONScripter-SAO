@@ -1,86 +1,79 @@
 package org.hanenoshino.uisao.anim;
 
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.OvershootInterpolator;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
-import android.view.animation.Animation.AnimationListener;
 
 public class GetAnimation {
 
-	public static class General {
-
-		public static Animation Alpha(float from, float to, long duration) {
-			AlphaAnimation anim = new AlphaAnimation(from, to);
-			anim.setFillAfter(true);
-			anim.setDuration(duration);
-			return anim;
-		}
-
-	}
-
 	public static class For {
+		
 		public static class MainInterface {
 
 			public static Animation ToShowCover(AnimationListener listener) {
-				AnimationSet anim = new AnimationSet(false);
-				ScaleAnimation animScale = new ScaleAnimation(0.5f, 1.0f, 0.5f,
-						1.0f, Animation.RELATIVE_TO_SELF, 0.5f,
-						Animation.RELATIVE_TO_SELF, 0.5f);
-				animScale.setInterpolator(new OvershootInterpolator());
-				animScale.setDuration(300);
-				anim.addAnimation(General.Alpha(0, 1, 300));
-				anim.addAnimation(animScale);
-				anim.setFillAfter(true);
-				anim.setAnimationListener(listener);
+				Animation anim = 
+						AnimationBuilder.create()
+						// Change Fill Options
+						.Fill.after(true).upward()
+						// Set the valtype of the value to be inturrpted
+						.valtype(Animation.RELATIVE_TO_SELF)
+						// Add a Scale Animation
+						.scale(0.5f, 1.0f, 0.5f, 1.0f, 0.5f, 0.5f).overshoot()
+						.animateFor(300)
+						// Add an Alpha Animation
+						.alpha(0, 1).animateFor(300)
+						// Build Animation
+						.build(listener);
 				return anim;
 			}
 
 			public static Animation ToHideCover(AnimationListener listener) {
-				AnimationSet anim = new AnimationSet(true);
-				ScaleAnimation animScale = new ScaleAnimation(1.0f, 1.5f, 1.0f,
-						1.5f, Animation.RELATIVE_TO_SELF, 0.5f,
-						Animation.RELATIVE_TO_SELF, 0.5f);
-				animScale.setDuration(300);
-				anim.addAnimation(General.Alpha(1, 0, 300));
-				anim.addAnimation(animScale);
-				anim.setInterpolator(new AccelerateInterpolator(2));
-				anim.setAnimationListener(listener);
+				Animation anim = AnimationBuilder.create()
+						// Change Fill Options
+						.Fill.after(true).upward()
+						// Change the global interpolator
+						.accelerated(2)
+						// Set the valtype of the value to be inturrpted
+						.valtype(Animation.RELATIVE_TO_SELF)
+						// Add a Scale Animation
+						.scale(1.0f, 1.5f, 1.0f, 1.5f, 0.5f, 0.5f)
+						.animateFor(300)
+						// Add an Alpha Animation
+						.alpha(1, 0).animateFor(300)
+						// Build Animation
+						.build(listener);
 				return anim;
 			}
 
 			public static Animation ToShowBackground(AnimationListener listener) {
-				Animation anim = General.Alpha(0, 1, 1000);
-				;
-				anim.setInterpolator(new DecelerateInterpolator(1.5f));
-				anim.setAnimationListener(listener);
+				Animation anim = AnimationBuilder.create()
+						.Fill.after(true).upward()
+						.alpha(0, 1).animateFor(1000).decelerated(1.5f)
+						.build(listener);
 				return anim;
 			}
 
 			public static Animation ToHideBackground(AnimationListener listener) {
-				Animation anim = General.Alpha(1, 0, 1000);
-				anim.setInterpolator(new AccelerateInterpolator(1.5f));
-				anim.setAnimationListener(listener);
+				Animation anim = AnimationBuilder.create()
+						.Fill.after(true).upward()
+						.alpha(1, 0).animateFor(1000).accelerated(1.5f)
+						.build(listener);
 				return anim;
 			}
 
 			public static Animation ToShowVideoPlayerFrame(
 					AnimationListener listener) {
-				Animation anim = General.Alpha(0, 1, 200);
-				anim.setInterpolator(new AccelerateInterpolator(1.5f));
-				anim.setAnimationListener(listener);
+				Animation anim = AnimationBuilder.create()
+						.Fill.after(true).upward()
+						.alpha(0, 1).animateFor(200).accelerated(1.5f)
+						.build(listener);
 				return anim;
 			}
 
 			public static Animation ToHideVideoPlayerFrame(
 					AnimationListener listener) {
-				Animation anim = General.Alpha(1, 0, 200);
-				anim.setInterpolator(new AccelerateInterpolator(1.5f));
-				anim.setAnimationListener(listener);
+				Animation anim = AnimationBuilder.create()
+						.Fill.after(true).upward()
+						.alpha(1, 0).animateFor(200).accelerated(1.5f)
+						.build(listener);
 				return anim;
 			}
 
@@ -89,20 +82,13 @@ public class GetAnimation {
 		public static class ListItem {
 
 			public static Animation OnItemFirstDisplayed(long delay, float alpha) {
-				AnimationSet anim = new AnimationSet(true);
-				AlphaAnimation animAlpha = new AlphaAnimation(0, alpha);
-				TranslateAnimation animTrans = new TranslateAnimation(
-						Animation.RELATIVE_TO_SELF, 0.0f,
-						Animation.RELATIVE_TO_SELF, 0.0f,
-						Animation.RELATIVE_TO_SELF, 1.7f,
-						Animation.RELATIVE_TO_SELF, 0.0f);
-				animAlpha.setDuration(500);
-				animTrans.setDuration(500);
-				anim.addAnimation(animAlpha);
-				anim.addAnimation(animTrans);
-				anim.setStartOffset(delay);
-				anim.setInterpolator(new DecelerateInterpolator(4f));
-				anim.setFillAfter(true);
+				Animation anim = AnimationBuilder.create()
+						.Fill.after(true).upward()
+						.decelerated(4.0f)
+						.alpha(0, alpha).pending(delay).animateFor(500)
+						.valtype(Animation.RELATIVE_TO_SELF)
+						.translate(0.0f, 0.0f, 1.7f, 0.0f).animateFor(500)
+						.build();
 				return anim;
 			}
 
