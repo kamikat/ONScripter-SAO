@@ -9,6 +9,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
+import android.view.animation.ScaleAnimation;
 
 public class AnimationBuilder {
 
@@ -56,6 +57,28 @@ public class AnimationBuilder {
 	
 	public AnimationBuilder alpha(float from, float to) {
 		anim(new AlphaAnimation(from, to));
+		return this;
+	}
+
+	public AnimationBuilder scale(float fromX, float toX, float fromY, float toY, 
+			int pivotXType, float pivotX, int pivotYType, float pivotY) {
+		anim(new ScaleAnimation(
+				fromX, toX, fromY, toY, 
+				pivotXType, pivotX, pivotYType, pivotY));
+		return this;
+	}
+
+	public AnimationBuilder scale(float fromX, float toX, float fromY, float toY) {
+		anim(new ScaleAnimation(
+				fromX, toX, fromY, toY));
+		return this;
+	}
+
+	public AnimationBuilder scale(float fromX, float toX, float fromY, float toY, 
+			float pivotX, float pivotY) {
+		anim(new ScaleAnimation(
+				fromX, toX, fromY, toY, 
+				pivotX, pivotY));
 		return this;
 	}
 	
@@ -216,18 +239,34 @@ public class AnimationBuilder {
 	
 	public class FillOptions {
 		
+		private boolean global_fillafter = false;
+		private boolean global_fillbefore = true;
+		private boolean global_fillenabled = true;
+		
 		public FillOptions after(boolean enabled) {
-			current().setFillAfter(enabled);
+			try{
+				current().setFillAfter(enabled);
+			}catch(NoAnimationException e){
+				global_fillafter = enabled;
+			}
 			return this;
 		}
 		
 		public FillOptions before(boolean enabled) {
+			try{
 			current().setFillBefore(enabled);
+		}catch(NoAnimationException e){
+			global_fillbefore = enabled;
+		}
 			return this;
 		}
 		
 		public FillOptions enabled(boolean enabled) {
+			try{
 			current().setFillEnabled(enabled);
+		}catch(NoAnimationException e){
+			global_fillenabled = enabled;
+		}
 			return this;
 		}
 		
@@ -246,6 +285,9 @@ public class AnimationBuilder {
 			return current();
 		}else{
 			AnimationSet set = new AnimationSet(global_interpolator != null);
+			set.setFillEnabled(Fill.global_fillenabled);
+			set.setFillBefore(Fill.global_fillbefore);
+			set.setFillAfter(Fill.global_fillafter);
 			if(global_interpolator != null)
 				set.setInterpolator(global_interpolator);
 			for(Animation anim : animations) {
