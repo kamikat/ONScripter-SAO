@@ -309,13 +309,14 @@ public class AnimationBuilder {
 	 */
 	public Animation build() {
 		if (animations.size() <= 1) {
-			current().setFillEnabled(Fill.global_fillenabled);
-			current().setFillBefore(Fill.global_fillbefore);
-			current().setFillAfter(Fill.global_fillafter);
+			Animation anim = current();
+			anim.setFillEnabled(Fill.global_fillenabled);
+			anim.setFillBefore(Fill.global_fillbefore);
+			anim.setFillAfter(Fill.global_fillafter);
 			if (global_interpolator != null)
-				current().setInterpolator(global_interpolator);
+				anim.setInterpolator(global_interpolator);
 			animations.clear();
-			return current();
+			return anim;
 		} else {
 			AnimationSet set = new AnimationSet(global_interpolator != null);
 			set.setFillEnabled(Fill.global_fillenabled);
