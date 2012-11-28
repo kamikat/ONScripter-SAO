@@ -505,7 +505,7 @@ public class MainActivity extends GameController implements OnItemClickListener,
         		return true;
         	}
         }
-		return super.onKeyDown(keyCode, msg);
+		return super.onKeyUp(keyCode, msg);
 	}
 
 }

@@ -78,7 +78,7 @@ public class GameController extends Activity {
                 finish();
             } else {
                 Toast.makeText(
-                		getApplicationContext(), 
+                		this, 
                 		R.string.notify_exit, Toast.LENGTH_SHORT
                 		).show();
                 last_backkey_pressed=msg.getEventTime();
