@@ -39,10 +39,6 @@ public class AnimationBuilder {
 		return anim(-2);
 	}
 	
-	private void append(Animation anim) {
-		animations.add(anim);
-	}
-	
 	private Animation anim(int number) {
 		if(animations.size() == 0)
 			return null;
@@ -59,12 +55,12 @@ public class AnimationBuilder {
 	// Animation Creation
 	
 	public AnimationBuilder alpha(float from, float to) {
-		append(new AlphaAnimation(from, to));
+		anim(new AlphaAnimation(from, to));
 		return this;
 	}
 	
 	public AnimationBuilder anim(Animation anim) {
-		append(anim);
+		animations.add(anim);
 		return this;
 	}
 	
