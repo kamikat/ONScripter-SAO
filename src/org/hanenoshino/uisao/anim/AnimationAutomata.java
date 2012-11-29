@@ -47,6 +47,29 @@ public class AnimationAutomata implements StateIO {
 		return target;
 	}
 
+	private int cesFrom, cesTo;
+	/**
+	 * Set the current editing transfer path
+	 * @param from
+	 * @param to
+	 * @return
+	 */
+	public AnimationAutomata edit(int from, int to) {
+		cesFrom = from;
+		cesTo = to;
+		return this;
+	}
+	
+	/**
+	 * Attatch animation listener to current editing transfer path
+	 * @param listener
+	 * @return
+	 */
+	public AnimationAutomata addAction(AnimationListener listener) {
+		this.addAction(cesFrom, cesTo, listener);
+		return this;
+	}
+	
 	/**
 	 * Attatch animation listener for specific transfer
 	 * @param from
@@ -56,6 +79,16 @@ public class AnimationAutomata implements StateIO {
 	 */
 	public AnimationAutomata addAction(int from, int to, AnimationListener listener) {
 		this.addAction(from, to, new AutomataAction(listener));
+		return this;
+	}
+	
+	/**
+	 * Add AutomataAction to current editing transfer path
+	 * @param action
+	 * @return
+	 */
+	public AnimationAutomata addAction(AutomataAction action) {
+		this.addAction(cesFrom, cesTo, action);
 		return this;
 	}
 	
@@ -78,7 +111,17 @@ public class AnimationAutomata implements StateIO {
 	}
 	
 	/**
-	 * Add Animation from this state to another state
+	 * Set animation of current editing transfer path
+	 * @param anim
+	 * @return
+	 */
+	public AnimationAutomata setAnimation(Animation anim) {
+		this.setAnimation(cesFrom, cesTo, anim);
+		return this;
+	}
+	
+	/**
+	 * Set Animation from this state to another state
 	 * Animation Listener will be set, so yours should be passed via addAction method
 	 * Animations added should not be modified
 	 * @param from

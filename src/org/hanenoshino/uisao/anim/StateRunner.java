@@ -34,6 +34,14 @@ public class StateRunner implements StateIO {
 
 	private ArrayList<StateIO> listener;
 	
+	public StateRunner() {
+		this(0);
+	}
+	
+	public StateRunner(int initial) {
+		state = initial;
+	}
+	
 	public void addSublevelStateIO(StateIO sio) {
 		listener.add(sio);
 	}
@@ -62,7 +70,6 @@ public class StateRunner implements StateIO {
 		return this;
 	}
 
-	@Override
 	public int currentState() {
 		return state;
 	}
