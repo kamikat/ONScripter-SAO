@@ -143,10 +143,11 @@ public class AnimationAutomata implements StateIO {
 		Animation anim = animations.get(key);
 		if(anim != null) {
 			if(target == null) throw new NoTargetFoundException();
-			if(current != null && !current.hasEnded()) {
+			if(current != anim && current != null && !current.hasEnded()) {
 				current.cancel();
 				target.clearAnimation();
 			}
+			anim.reset();
 			final List<AutomataAction> action = actions.get(key);
 			for(AutomataAction a : action) {
 				a.setAutomata(AnimationAutomata.this);
