@@ -1,4 +1,7 @@
-package org.hanenoshino.uisao.anim;
+package org.hanenoshino.uisao;
+
+import org.hanenoshino.uisao.anim.AnimationBuilder;
+import org.hanenoshino.uisao.anim.AnimationListener;
 
 import android.view.animation.Animation;
 
