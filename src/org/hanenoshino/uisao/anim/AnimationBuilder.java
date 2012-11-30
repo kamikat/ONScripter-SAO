@@ -56,6 +56,13 @@ public class AnimationBuilder {
 		return this;
 	}
 	
+	public AnimationBuilder alpha(float alpha) {
+		Animation anim = new AlphaAnimation(alpha, alpha);
+		anim.setDuration(1);
+		anim(anim);
+		return this;
+	}
+	
 	public AnimationBuilder valtype(int type) {
 		val_type = type;
 		return this;
