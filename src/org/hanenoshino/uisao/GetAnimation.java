@@ -48,7 +48,6 @@ public class GetAnimation {
 
 			public static Animation ToShowBackground(AnimationListener listener) {
 				Animation anim = AnimationBuilder.create()
-						.Fill.after(true).upward()
 						.alpha(0, 1).animateFor(1000).decelerated(1.5f)
 						.build(listener);
 				return anim;
@@ -56,7 +55,6 @@ public class GetAnimation {
 
 			public static Animation ToHideBackground(AnimationListener listener) {
 				Animation anim = AnimationBuilder.create()
-						.Fill.after(true).upward()
 						.alpha(1, 0).animateFor(1000).accelerated(1.5f)
 						.build(listener);
 				return anim;
@@ -65,7 +63,6 @@ public class GetAnimation {
 			public static Animation ToShowVideoPlayerFrame(
 					AnimationListener listener) {
 				Animation anim = AnimationBuilder.create()
-						.Fill.after(true).upward()
 						.alpha(0, 1).animateFor(200).accelerated(1.5f)
 						.build(listener);
 				return anim;
@@ -74,7 +71,6 @@ public class GetAnimation {
 			public static Animation ToHideVideoPlayerFrame(
 					AnimationListener listener) {
 				Animation anim = AnimationBuilder.create()
-						.Fill.after(true).upward()
 						.alpha(1, 0).animateFor(200).accelerated(1.5f)
 						.build(listener);
 				return anim;
@@ -86,7 +82,6 @@ public class GetAnimation {
 
 			public static Animation OnItemFirstDisplayed(long delay, float alpha) {
 				Animation anim = AnimationBuilder.create()
-						.Fill.after(true).upward()
 						.decelerated(4.0f)
 						.alpha(0, alpha).pending(delay).animateFor(500)
 						.valtype(Animation.RELATIVE_TO_SELF)

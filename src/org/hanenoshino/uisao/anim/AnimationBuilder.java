@@ -265,7 +265,7 @@ public class AnimationBuilder {
 
 	public class FillOptions {
 
-		private boolean global_fillafter = false;
+		private boolean global_fillafter = true;
 		private boolean global_fillbefore = true;
 		private boolean global_fillenabled = true;
 
