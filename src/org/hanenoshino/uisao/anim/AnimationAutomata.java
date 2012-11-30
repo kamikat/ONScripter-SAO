@@ -146,6 +146,31 @@ public class AnimationAutomata implements StateIO {
 	}
 	
 	/**
+	 * Set the current editing path's Animation to the given once's
+	 * @param srcFrom
+	 * @param srcTo
+	 * @return
+	 */
+	public AnimationAutomata setAnimation(int srcFrom, int srcTo) {
+		this.setAnimation(cesFrom, cesTo, srcFrom, srcTo);
+		return this;
+	}
+	
+	/**
+	 * Set the Animation of another transfer to this transfer
+	 * @param from
+	 * @param to
+	 * @param srcFrom
+	 * @param srcTo
+	 * @return
+	 */
+	public AnimationAutomata setAnimation(int from, int to, int srcFrom, int srcTo) {
+		long key = makeLong(from, to);
+		animations.put(key, animations.get(makeLong(srcFrom, srcTo)));
+		return this;
+	}
+	
+	/**
 	 * Set Animation from this state to another state
 	 * Animation is created from AnimationFactory
 	 * @param from
