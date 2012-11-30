@@ -111,6 +111,32 @@ public class AnimationAutomata implements StateIO {
 	}
 	
 	/**
+	 * Set the current editing action same as given path
+	 * @param srcFrom
+	 * @param srcTo
+	 * @return
+	 */
+	public AnimationAutomata setAction(int srcFrom, int srcTo) {
+		this.setAction(cesFrom, cesTo, srcFrom, srcTo);
+		return this;
+	}
+
+	/**
+	 * Assign actions of one path to another
+	 * @param from
+	 * @param to
+	 * @param srcFrom
+	 * @param srcTo
+	 * @return
+	 */
+	public AnimationAutomata setAction(int from, int to, int srcFrom, int srcTo) {
+		long key = makeLong(from, to);
+		actions.put(key, actions.get(makeLong(srcFrom, srcTo)));
+		return this;
+	}
+	
+	
+	/**
 	 * Set animation of current editing transfer path
 	 * @param anim
 	 * @return
@@ -131,21 +157,6 @@ public class AnimationAutomata implements StateIO {
 	}
 	
 	/**
-	 * Set Animation from this state to another state
-	 * Animation Listener will be set, so yours should be passed via addAction method
-	 * Animations added should not be modified
-	 * @param from
-	 * @param to
-	 * @param anim
-	 * @return
-	 */
-	public AnimationAutomata setAnimation(int from, int to, Animation anim) {
-		long key = makeLong(from, to);
-		animations.put(key, anim);
-		return this;
-	}
-	
-	/**
 	 * Set the current editing path's Animation to the given once's
 	 * @param srcFrom
 	 * @param srcTo
@@ -157,16 +168,17 @@ public class AnimationAutomata implements StateIO {
 	}
 	
 	/**
-	 * Set the Animation of another transfer to this transfer
+	 * Set Animation from this state to another state
+	 * Animation Listener will be set, so yours should be passed via addAction method
+	 * Animations added should not be modified
 	 * @param from
 	 * @param to
-	 * @param srcFrom
-	 * @param srcTo
+	 * @param anim
 	 * @return
 	 */
-	public AnimationAutomata setAnimation(int from, int to, int srcFrom, int srcTo) {
+	public AnimationAutomata setAnimation(int from, int to, Animation anim) {
 		long key = makeLong(from, to);
-		animations.put(key, animations.get(makeLong(srcFrom, srcTo)));
+		animations.put(key, anim);
 		return this;
 	}
 	
@@ -185,6 +197,20 @@ public class AnimationAutomata implements StateIO {
 			animfa.setContext(this);
 		}
 		animations.put(key, animf.make());
+		return this;
+	}
+	
+	/**
+	 * Set the Animation of another transfer to this transfer
+	 * @param from
+	 * @param to
+	 * @param srcFrom
+	 * @param srcTo
+	 * @return
+	 */
+	public AnimationAutomata setAnimation(int from, int to, int srcFrom, int srcTo) {
+		long key = makeLong(from, to);
+		animations.put(key, animations.get(makeLong(srcFrom, srcTo)));
 		return this;
 	}
 	
