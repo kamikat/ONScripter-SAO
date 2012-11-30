@@ -121,6 +121,16 @@ public class AnimationAutomata implements StateIO {
 	}
 	
 	/**
+	 * Set animation of current editing transfer path generated from AnimationFactory
+	 * @param animf
+	 * @return
+	 */
+	public AnimationAutomata setAnimation(AnimationFactory animf) {
+		this.setAnimation(cesFrom, cesTo, animf);
+		return this;
+	}
+	
+	/**
 	 * Set Animation from this state to another state
 	 * Animation Listener will be set, so yours should be passed via addAction method
 	 * Animations added should not be modified
@@ -133,6 +143,30 @@ public class AnimationAutomata implements StateIO {
 		long key = makeLong(from, to);
 		animations.put(key, anim);
 		return this;
+	}
+	
+	/**
+	 * Set Animation from this state to another state
+	 * Animation is created from AnimationFactory
+	 * @param from
+	 * @param to
+	 * @param animf
+	 * @return
+	 */
+	public AnimationAutomata setAnimation(int from, int to, AnimationFactory animf) {
+		long key = makeLong(from, to);
+		if(animf instanceof AutomataAnimationFactory) {
+			AutomataAnimationFactory animfa = (AutomataAnimationFactory) animf;
+			animfa.setContext(this);
+		}
+		animations.put(key, animf.make());
+		return this;
+	}
+	
+	public Animation getAnimation(int from, int to) {
+		long key = makeLong(from, to);
+		Animation anim = animations.get(key);
+		return anim;
 	}
 
 	public void onStateTransferred(int before, int after, int issueId) {
