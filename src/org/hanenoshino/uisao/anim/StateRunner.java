@@ -69,6 +69,13 @@ public class StateRunner implements StateIO {
 		handler.obtainMessage(msgCounter.incrementAndGet(), pstate, state, this);
 		return this;
 	}
+	
+	public StateIO gotoState(int cond, int to) {
+		if(state == to) return this;
+		if(state != cond) return this;
+		gotoState(to);
+		return this;
+	}
 
 	public int currentState() {
 		return state;

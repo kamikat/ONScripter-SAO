@@ -273,6 +273,11 @@ public class AnimationAutomata implements StateIO {
 		runner.gotoState(to);
 		return this;
 	}
+	
+	public StateIO gotoState(int cond, int to) {
+		runner.gotoState(cond, to);
+		return this;
+	}
 
 	public int currentState() {
 		return runner.currentState();

@@ -19,6 +19,13 @@ public interface StateIO {
 	public StateIO gotoState(int to);
 	
 	/**
+	 * Go from current state to destination state conditionally
+	 * @param to
+	 * @return
+	 */
+	public StateIO gotoState(int cond, int to);
+	
+	/**
 	 * Retrieve the current state of the machine
 	 * @return
 	 */
