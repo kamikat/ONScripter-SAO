@@ -480,7 +480,7 @@ public class MainActivity extends GameController implements OnItemClickListener,
 		case R.id.surface_view:
 			int action = event.getAction() & MotionEvent.ACTION_MASK;
 			if(action == MotionEvent.ACTION_UP) {
-				if(System.currentTimeMillis() - last_videotouch < 200) {
+				if(System.currentTimeMillis() - last_videotouch < 500) {
 					toggleFullscreen();
 				}else{
 					if (preview.isPlaying())
