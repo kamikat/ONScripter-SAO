@@ -32,7 +32,7 @@ public class StateRunner implements StateIO {
 	// To avoid circular notify
 	private int lastIssue = 0;
 
-	private ArrayList<StateIO> listener;
+	private ArrayList<StateIO> listener = new ArrayList<StateIO>();
 	
 	public StateRunner() {
 		this(0);
@@ -66,7 +66,7 @@ public class StateRunner implements StateIO {
 		if(state == to) return this;
 		int pstate = state;
 		state = to;
-		handler.obtainMessage(msgCounter.incrementAndGet(), pstate, state, this);
+		handler.obtainMessage(msgCounter.incrementAndGet(), pstate, state, this).sendToTarget();
 		return this;
 	}
 	
