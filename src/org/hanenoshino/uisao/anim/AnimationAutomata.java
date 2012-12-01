@@ -36,6 +36,7 @@ public class AnimationAutomata implements StateIO {
 	
 	private AnimationAutomata(StateIO sio) {
 		runner = sio;
+		runner.addSublevelStateIO(this);
 	}
 	
 	public AnimationAutomata target(View v) {
@@ -226,6 +227,7 @@ public class AnimationAutomata implements StateIO {
 		// Take actions
 		long key = makeLong(before, after);
 		Animation anim = animations.get(key);
+		final List<AutomataAction> action = actions.get(key);
 		if(anim != null) {
 			if(target == null) throw new NoTargetFoundException();
 			if(current != anim && current != null && !current.hasEnded()) {
@@ -233,14 +235,11 @@ public class AnimationAutomata implements StateIO {
 				target.clearAnimation();
 			}
 			anim.reset();
-			final List<AutomataAction> action = actions.get(key);
-			for(AutomataAction a : action) {
-				a.setAutomata(AnimationAutomata.this);
-				a.onStateChanged(before, after);
-			}
+			
 			anim.setAnimationListener(new android.view.animation.Animation.AnimationListener() {
 				
 				public void onAnimationEnd(Animation animation) {
+					if(action != null)
 					for(AutomataAction a : action) {
 						a.setAutomata(AnimationAutomata.this);
 						a.onAnimationEnd(animation);
@@ -248,6 +247,7 @@ public class AnimationAutomata implements StateIO {
 				}
 				
 				public void onAnimationStart(Animation animation) {
+					if(action != null)
 					for(AutomataAction a : action) {
 						a.setAutomata(AnimationAutomata.this);
 						a.onAnimationStart(animation);
@@ -256,6 +256,7 @@ public class AnimationAutomata implements StateIO {
 				}
 				
 				public void onAnimationRepeat(Animation animation) {
+					if(action != null)
 					for(AutomataAction a : action) {
 						a.setAutomata(AnimationAutomata.this);
 						a.onAnimationRepeat(animation);
@@ -265,6 +266,12 @@ public class AnimationAutomata implements StateIO {
 			});
 			current = anim;
 			target.startAnimation(anim);
+		}
+		if(action != null) {
+			for(AutomataAction a : action) {
+				a.setAutomata(AnimationAutomata.this);
+				a.onStateChanged(before, after);
+			}
 		}
 	}
 
