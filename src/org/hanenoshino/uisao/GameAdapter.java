@@ -253,16 +253,10 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 	
 	public void showPanel(View v) {
 		final Payload load = getLoad(v);
-		Command.invoke(Command.RUN).of(new Runnable() {
-			public void run() {
-				load.StateHolder.gotoState(Payload.STATE_SELECTED, Payload.STATE_SELECTED_PANEL);
-			}
-		}).sendDelayed(100);
-		Command.invoke(Command.RUN).of(new Runnable() {
-			public void run() {
-				load.StateHolder.gotoState(Payload.STATE_SELECTED_PANEL, Payload.STATE_SELECTED);
-			}
-		}).sendDelayed(5000);
+		Command.invoke(Command.STATE_CONTROL_COND).of(load.StateHolder)
+		.args(Payload.STATE_SELECTED, Payload.STATE_SELECTED_PANEL).sendDelayed(100);
+		Command.invoke(Command.STATE_CONTROL_COND).of(load.StateHolder)
+		.args(Payload.STATE_SELECTED_PANEL, Payload.STATE_SELECTED).sendDelayed(5100);
 	}
 
 }
