@@ -66,7 +66,7 @@ public class StateRunner implements StateIO {
 		if(state == to) return this;
 		int pstate = state;
 		state = to;
-		handler.obtainMessage(msgCounter.incrementAndGet(), pstate, state, this).sendToTarget();
+		handler.handleMessage(handler.obtainMessage(msgCounter.incrementAndGet(), pstate, state, this));
 		return this;
 	}
 	
