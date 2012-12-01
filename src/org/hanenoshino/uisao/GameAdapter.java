@@ -24,6 +24,25 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 	private static <T> T $(View v, int id) {
 		return U.$(v, id);
 	}
+	
+	// Workaround to make delay load of creation animations {{{
+	private long gadLastGetTime = 0;
+	private long gadCount = 0;
+	private long getJustAddAnimationDelay() {
+		long current = System.currentTimeMillis();
+		if(current - gadLastGetTime > 200) {
+			gadCount = 0;
+			gadLastGetTime = current;
+		}
+		return gadCount++ * 50;
+	}
+	
+	private int getAnimationInitialState() {
+		if(gadLastGetTime == 0) return Payload.STATE_CREATED;
+		if(System.currentTimeMillis() - gadLastGetTime < 200) return Payload.STATE_CREATED;
+		return Payload.STATE_NORMAL;
+	}
+	// }}}
 
 	// Class for storage state in Tag of correspoinding View
 	public class Payload {
@@ -47,22 +66,23 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 			final View panel = $(v, R.id.start_panel);
 			final View btn_play = $(v, R.id.btn_play);
 			final View btn_config = $(v, R.id.btn_config);
-			StateHolder = new StateRunner(STATE_CREATED);
+			
+			icon.setImageResource(R.drawable.test_icon_0);
+			caption.setTextColor(getContext().getResources().getColor(R.color.sao_grey));
+			v.setBackgroundColor(getContext().getResources().getColor(R.color.sao_transparent_white));
+			
+			// Ugly set Alpha for compaticity with lower API version
+			v.startAnimation(AnimationBuilder.create().alpha(0.8f).animateFor(30).build());
+			
+			StateHolder = new StateRunner(getAnimationInitialState());
 			AnimationAutomata.refer(StateHolder).target(v)
 			.edit(STATE_CREATED, STATE_NORMAL)
 			.setAnimation(AnimationBuilder.create()
-					.decelerated(4.0f)
-					.alpha(0.0f, 0.8f).pending(0).animateFor(500)
+					.decelerated(3.0f)
+					.alpha(0.0f, 0.8f).pending(getJustAddAnimationDelay()).animateFor(500)
 					.valtype(Animation.RELATIVE_TO_SELF)
 					.translate(0.0f, 0.0f, 1.7f, 0.0f).animateFor(500)
 					.build())
-			.addAction(new AutomataAction() {
-				public void onStateChanged(int from, int to) {
-					icon.setImageResource(R.drawable.test_icon_0);
-					caption.setTextColor(getContext().getResources().getColor(R.color.sao_grey));
-					v.setBackgroundColor(getContext().getResources().getColor(R.color.sao_transparent_white));
-				}
-			})
 			.edit(STATE_NORMAL, STATE_SELECTED)
 			.setAnimation(AnimationBuilder.create()
 					.alpha(0.8f, 1.0f).animateFor(200)
@@ -246,7 +266,6 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 				}
 			}
 			load.Item = o;
-			// animation on item first displayed TODO
 		}
 		return v;
 	}
