@@ -77,19 +77,5 @@ public class GetAnimation {
 			}
 
 		}
-
-		public static class ListItem {
-
-			public static Animation OnItemFirstDisplayed(long delay, float alpha) {
-				Animation anim = AnimationBuilder.create()
-						.decelerated(4.0f)
-						.alpha(0, alpha).pending(delay).animateFor(500)
-						.valtype(Animation.RELATIVE_TO_SELF)
-						.translate(0.0f, 0.0f, 1.7f, 0.0f).animateFor(500)
-						.build();
-				return anim;
-			}
-
-		}
 	}
 }
