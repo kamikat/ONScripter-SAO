@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
-import org.hanenoshino.uisao.anim.AnimationBuilder;
-
 import android.view.View;
 
 /**
@@ -41,14 +39,6 @@ public class U {
 			e.printStackTrace();
 			return null;
 		}
-	}
-	
-	public static void setAlpha(View v, float alpha) {
-		v.startAnimation(
-				AnimationBuilder.create()
-				.Fill.after(true).upward()
-				.alpha(alpha, alpha).animateFor(1)
-				.build());
 	}
 	
 	public static boolean supportMedia(String name) {
