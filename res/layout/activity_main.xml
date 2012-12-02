@@ -28,33 +28,6 @@
         android:textColor="@color/sao_white"
         android:textSize="18dip" />
 
-    <RelativeLayout
-        android:layout_width="170dip"
-        android:layout_height="80dip"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="10dip"
-        android:layout_marginRight="20dip" >
-
-        <ImageView
-            android:id="@+id/btn_about"
-            android:layout_width="80dip"
-            android:layout_height="80dip"
-            android:layout_alignParentLeft="true"
-            android:background="@drawable/about_button"
-            android:clickable="true"
-            android:contentDescription="@string/alt_about" />
-
-        <ImageView
-            android:id="@+id/btn_settings"
-            android:layout_width="80dip"
-            android:layout_height="80dip"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/settings_button"
-            android:clickable="true"
-            android:contentDescription="@string/alt_settings" />
-    </RelativeLayout>
-
     <ImageView
         android:id="@+id/cover"
         android:layout_width="fill_parent"
@@ -84,6 +57,33 @@
         android:fadingEdgeLength="48dip"
         android:requiresFadingEdge="vertical"
         android:scrollbars="none" />
+    
+    <RelativeLayout
+        android:layout_width="170dip"
+        android:layout_height="80dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dip"
+        android:layout_marginRight="20dip" >
+
+        <ImageView
+            android:id="@+id/btn_about"
+            android:layout_width="80dip"
+            android:layout_height="80dip"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/about_button"
+            android:clickable="true"
+            android:contentDescription="@string/alt_about" />
+
+        <ImageView
+            android:id="@+id/btn_settings"
+            android:layout_width="80dip"
+            android:layout_height="80dip"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/settings_button"
+            android:clickable="true"
+            android:contentDescription="@string/alt_settings" />
+    </RelativeLayout>
     
     <RelativeLayout
         android:id="@+id/videoframe"
