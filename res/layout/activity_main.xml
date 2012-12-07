@@ -6,12 +6,17 @@
 
     <ImageView
         android:id="@+id/background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:contentDescription="@string/alt_background"
         android:scaleType="centerCrop"
         android:src="@drawable/dbkg_und_blur" />
 
+    <RelativeLayout 
+        android:id="@+id/panel_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        
     <TextView
         android:id="@+id/gametitle"
         android:layout_width="fill_parent"
@@ -85,7 +90,7 @@
             android:contentDescription="@string/alt_settings" />
     </RelativeLayout>
     
-    <RelativeLayout
+    <org.hanenoshino.uisao.widget.VideoViewContainer
         android:id="@+id/videoframe"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -96,13 +101,8 @@
         android:layout_marginTop="40dip"
         android:background="#000000"
         android:visibility="gone" >
-
-        <org.hanenoshino.uisao.widget.VideoView
-            android:id="@+id/surface_view"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
-    </RelativeLayout>
+        
+    </org.hanenoshino.uisao.widget.VideoViewContainer>
     
+    </RelativeLayout>
 </RelativeLayout>
