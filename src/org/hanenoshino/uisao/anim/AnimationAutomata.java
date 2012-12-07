@@ -239,6 +239,7 @@ public class AnimationAutomata implements StateIO {
 			anim.setAnimationListener(new android.view.animation.Animation.AnimationListener() {
 				
 				public void onAnimationEnd(Animation animation) {
+					m_isAnimating = false;
 					if(action != null)
 					for(AutomataAction a : action) {
 						a.setAutomata(AnimationAutomata.this);
@@ -247,12 +248,12 @@ public class AnimationAutomata implements StateIO {
 				}
 				
 				public void onAnimationStart(Animation animation) {
+					m_isAnimating = true;
 					if(action != null)
 					for(AutomataAction a : action) {
 						a.setAutomata(AnimationAutomata.this);
 						a.onAnimationStart(animation);
 					}
-					
 				}
 				
 				public void onAnimationRepeat(Animation animation) {
@@ -305,6 +306,12 @@ public class AnimationAutomata implements StateIO {
 	// Utility Function
 	public static long makeLong(int low, int high) { 
 		return ((long)low & 0xFFFFFFFFl) | (((long)high << 32) & 0xFFFFFFFF00000000l); 
+	}
+	
+	private boolean m_isAnimating = false;
+	
+	public boolean isAnimating() {
+		return m_isAnimating;
 	}
 	
 }
