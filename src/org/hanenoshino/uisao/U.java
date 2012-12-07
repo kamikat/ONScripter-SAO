@@ -61,14 +61,23 @@ public class U {
 		}
 	}
 	
-	public static boolean supportMedia(String name) {
+	public static boolean supportVideoMedia(String name) {
 		return 
 				name.endsWith(".avi") || name.endsWith(".mp4") || 
 				name.endsWith(".mpg") || name.endsWith(".rmvb") || 
 				name.endsWith(".mpeg") || name.endsWith(".flv") || 
 				name.endsWith(".rm") || name.endsWith(".f4v") || 
 				name.endsWith(".hlv") || name.endsWith(".wmv") || 
+				name.endsWith(".3gp") || 
 				name.endsWith(".mkv");
+	}
+	
+	public static boolean supportAudioMedia(String name) {
+		return 
+				name.endsWith(".mp3") || name.endsWith(".wma") || 
+				name.endsWith(".flac") || name.endsWith(".ape") || 
+				name.endsWith(".ogg") || name.endsWith(".m4a") || 
+				name.endsWith(".aac");
 	}
 	
 	
