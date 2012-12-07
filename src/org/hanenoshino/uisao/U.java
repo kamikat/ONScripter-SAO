@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 
 import android.view.View;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 /**
  * Utility functions
@@ -22,6 +24,24 @@ public class U {
 	@SuppressWarnings("unchecked")
 	public static <T> T $(Object o) {
 		return (T) o;
+	}
+
+	/**
+	 * Scroll view to the center of the list
+	 * @param view
+	 * @param parent
+	 */
+	public static void scrollViewToCenter(View view, ListView parent) {
+		ListAdapter items = parent.getAdapter();
+		int viewY = view.getTop() + view.getHeight() / 2 - parent.getHeight() / 2;
+		if(viewY < 0 && parent.getFirstVisiblePosition() == 0){
+			parent.smoothScrollToPosition(0);
+		}else if(viewY > 0 && parent.getLastVisiblePosition() == items.getCount() - 1){
+			parent.smoothScrollToPosition(items.getCount() - 1);
+		}else{
+			Command.invoke(Command.SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS)
+			.of(parent).only().args(viewY, 300).sendDelayed(100);
+		}
 	}
 	
 	public static String read(File file) {
