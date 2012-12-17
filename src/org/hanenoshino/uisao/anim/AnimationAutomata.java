@@ -273,6 +273,13 @@ public class AnimationAutomata implements StateIO {
 				a.setAutomata(AnimationAutomata.this);
 				a.onStateChanged(before, after);
 			}
+			if(anim == null) {
+				for(AutomataAction a : action) {
+					a.setAutomata(AnimationAutomata.this);
+					a.onAnimationStart(null);
+					a.onAnimationEnd(null);
+				}
+			}
 		}
 	}
 
