@@ -15,6 +15,7 @@ import org.hanenoshino.uisao.anim.AutomataAction;
 import org.hanenoshino.uisao.anim.StateRunner;
 import org.hanenoshino.uisao.decoder.BackgroundDecoder;
 import org.hanenoshino.uisao.decoder.CoverDecoder;
+import org.hanenoshino.uisao.widget.AudioPlayer;
 import org.hanenoshino.uisao.widget.MediaController;
 import org.hanenoshino.uisao.widget.VideoView;
 import org.hanenoshino.uisao.widget.VideoViewContainer;
@@ -108,6 +109,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 	// VideoPlayer Block {{{
 	private static volatile boolean isVideoInitialized = false;
 
+	private AudioPlayer mAudioPlayer = null;
+	
 	private void configureVideoPlayer() {
 		preview.setVideoQuality(MediaPlayer.VIDEOQUALITY_HIGH);
 		preview.setOnCompletionListener(new OnCompletionListener() {
@@ -128,6 +131,18 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		});
 		preview.setMediaController(new MediaController(this));
 
+		mAudioPlayer = new AudioPlayer(this);
+		mAudioPlayer.setMediaController(new MediaController(this), preview.getRootView());
+		
+		cover.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				if(mAudioPlayer.isInPlaybackState())
+					mAudioPlayer.toggleMediaControlsVisiblity();
+			}
+			
+		});
+		
 		// Initialize the Vitamio codecs
 		if(!Vitamio.isInitialized(this)) {
 			new AsyncTask<Object, Object, Boolean>() {
@@ -323,14 +338,25 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		.edit(STATE_COVER_VISIBLE, STATE_AUDIO_PLAY)
 		.addAction(new AutomataAction() {
 			public void onStateChanged(int from, int to) {
-				// TODO Play Audio Here
+				startAudioPlay();
+			}
+			private void startAudioPlay() {
+				Game item = items.getSelectedItem();
+				if(item.audio != null && isVideoInitialized) {
+					mAudioPlayer.setAudioURI(null);
+					mAudioPlayer.setAudioPath(item.audio);
+				}
 			}
 		})
 		
 		.edit(STATE_AUDIO_PLAY, STATE_COVER_VISIBLE)
 		.addAction(new AutomataAction() {
 			public void onStateChanged(int from, int to) {
-				// TODO Release Audio Play Here
+				releaseAudioPlay();
+			}
+			private void releaseAudioPlay() {
+				mAudioPlayer.stopPlayback();
+				mAudioPlayer.setAudioURI(null);
 			}
 		})
 		
