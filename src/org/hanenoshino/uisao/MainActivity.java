@@ -52,6 +52,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 	}
 
+	private static final String DIRECTORY = "saoui";
+	
 	// Controls Initialization Block {{{
 	private ListView games;
 	private ImageView cover, background;
@@ -87,7 +89,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			imgMgr = new ImageManager(new FileCache(
 					new File(
 							Environment.getExternalStorageDirectory(),
-							"saoui/.cover")));
+							DIRECTORY + "/.cover")));
 		}else{
 			imgMgr = new ImageManager(new FileCache(
 					new File(
@@ -163,7 +165,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 	
 	private boolean environmentCheck() {
 		File mCurrentDirectory = new File(
-				Environment.getExternalStorageDirectory() + "/saoui"
+				Environment.getExternalStorageDirectory() + "/" + DIRECTORY
 				);
 		if (!mCurrentDirectory.exists()) {
 			new AlertDialog.Builder(this)
@@ -190,7 +192,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			
 			public void run() {
 				File root = new File(
-						Environment.getExternalStorageDirectory() + "/saoui"
+						Environment.getExternalStorageDirectory() + "/" + DIRECTORY
 						);
 				File[] mDirectoryFiles = root.listFiles();
 				for(File file: mDirectoryFiles) {
