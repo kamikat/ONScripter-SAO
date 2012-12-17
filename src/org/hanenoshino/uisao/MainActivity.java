@@ -285,15 +285,12 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		
 		.edit(STATE_COVER_VISIBLE, STATE_COVER_HIDDEN)
 		.setAnimation(AnimationBuilder.create()
-				// Change the global interpolator
-				.accelerated(2)
 				// Set the valtype of the value to be inturrpted
 				.valtype(Animation.RELATIVE_TO_SELF)
 				// Add a Scale Animation
-				.scale(1.0f, 1.5f, 1.0f, 1.5f, 0.5f, 0.5f)
-				.animateFor(300)
+				.scale(1.0f, 0.6f, 1.0f, 0.6f, 0.5f, 0.5f).animateFor(100)
 				// Add an Alpha Animation
-				.alpha(1, 0).animateFor(300)
+				.alpha(1, 0).animateFor(100)
 				// Build Animation
 				.build())
 		.addAction(new AutomataAction() {
