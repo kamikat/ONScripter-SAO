@@ -35,6 +35,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -622,6 +623,19 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
+	}
+
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch(item.getItemId()) {
+		case R.id.menu_settings:
+			
+			break;
+		case R.id.menu_end:
+			finish();
+			System.exit(0);
+			break;
+		}
+		return super.onMenuItemSelected(featureId, item);
 	}
 
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
