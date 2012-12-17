@@ -21,6 +21,8 @@
     <string name="error_play_audio">播放主题音乐时出现错误，播放取消</string>
     <string name="error_play_video">播放预览视频时出现错误，播放取消</string>
     
+    <string name="error_repeated_playfail">如果您一直出现播放问题，我们建议您使用菜单中的\'退出\'彻底退出程序并重新启动</string>
+    
     <string name="error">错误</string>
     <string name="known">我知道了</string>
     <string name="no_sdcard_dir">没有在SD卡下找到saoui目录，请手工创建并将游戏资料放入目录</string>

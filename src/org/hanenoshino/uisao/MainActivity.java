@@ -61,6 +61,10 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 	private VideoViewContainer videoframe;
 	private VideoView preview;
 	private ImageView btn_settings, btn_about;
+	
+	private int mPlaybackErrCounter = 0;
+	private static final int PLAYBACK_ERR_TOLERANCE = 3;
+	private static final int PLAYBACK_ERR_IGNORED_TOLERANCE = 5;
 
 	private <T> T $(int id) {
 		return U.$(findViewById(id));
@@ -115,6 +119,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		preview.setOnCompletionListener(new OnCompletionListener() {
 
 			public void onCompletion(MediaPlayer player) {
+				mPlaybackErrCounter = 0;
 				Command.invoke(Command.LOOP_VIDEO_PREVIEW).of(preview).send();
 			}
 
@@ -124,8 +129,16 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			@Override
 			public boolean onError(MediaPlayer player, int framework_err, int impl_err) {
 				mStatePreview.gotoState(STATE_COVER_VISIBLE);
-				Toast.makeText(getApplicationContext(), 
-						R.string.error_play_video, Toast.LENGTH_LONG).show();
+				mPlaybackErrCounter++;
+				if(mPlaybackErrCounter < PLAYBACK_ERR_TOLERANCE) {
+					Toast.makeText(getApplicationContext(), 
+							R.string.error_play_video, Toast.LENGTH_LONG).show();
+				} else {
+					if(mPlaybackErrCounter < PLAYBACK_ERR_IGNORED_TOLERANCE) {
+						Toast.makeText(getApplicationContext(), 
+								R.string.error_repeated_playfail, Toast.LENGTH_LONG).show();
+					}
+				}
 				return true;
 			}
 
@@ -138,6 +151,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		mAudioPlayer.setOnCompletionListener(new OnCompletionListener() {
 
 			public void onCompletion(MediaPlayer player) {
+				mPlaybackErrCounter = 0;
 				Command.invoke(Command.LOOP_AUDIO_PLAY).of(mAudioPlayer).send();
 			}
 
@@ -146,8 +160,16 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		mAudioPlayer.setOnErrorListener(new OnErrorListener() {
 
 			public boolean onError(MediaPlayer player, int framework_err, int impl_err) {
-				Toast.makeText(getApplicationContext(), 
-						R.string.error_play_audio, Toast.LENGTH_LONG).show();
+				mPlaybackErrCounter++;
+				if(mPlaybackErrCounter < PLAYBACK_ERR_TOLERANCE) {
+					Toast.makeText(getApplicationContext(), 
+							R.string.error_play_audio, Toast.LENGTH_LONG).show();
+				} else {
+					if(mPlaybackErrCounter < PLAYBACK_ERR_IGNORED_TOLERANCE) {
+						Toast.makeText(getApplicationContext(), 
+								R.string.error_repeated_playfail, Toast.LENGTH_LONG).show();
+					}
+				}
 				return true;
 			}
 
