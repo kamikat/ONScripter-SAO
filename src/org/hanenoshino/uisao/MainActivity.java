@@ -227,7 +227,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 				.build())
 		.addAction(new AutomataAction() {
 			public void onAnimationEnd(Animation animation) {
-				tryDisplayBackground();
+				Command.invoke(Command.MAINACTIVITY_ACTION_TRY_DISPLAY_BKG)
+				.of(MainActivity.this).send();
 			}
 		})
 		
@@ -238,7 +239,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		;
 	}
 
-	private void tryDisplayBackground() {
+	public void tryDisplayBackground() {
 		if(background.getTag() instanceof Bitmap && !mStateBackground.isAnyAnimatingAutomata()) {
 			background.setImageBitmap((Bitmap) background.getTag());
 			background.setBackgroundDrawable(null);
@@ -263,7 +264,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 
 			protected void act() {
 				background.setTag(image().bmp());
-				tryDisplayBackground();
+				Command.invoke(Command.MAINACTIVITY_ACTION_TRY_DISPLAY_BKG)
+				.of(MainActivity.this).send();
 			}
 
 		}, new BackgroundDecoder());
@@ -300,7 +302,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			}
 			public void After(Animation animation) {
 				getAutomata().target().setVisibility(View.GONE);
-				tryDisplayCover();
+				Command.invoke(Command.MAINACTIVITY_ACTION_TRY_DISPLAY_COVER).only()
+				.of(MainActivity.this).send();
 			}
 		})
 		
@@ -421,7 +424,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		
 	}
 	
-	private void tryDisplayCover() {
+	public void tryDisplayCover() {
 		if(cover.getTag() instanceof Bitmap && !mStatePreview.isAnyAnimatingAutomata(cover)) {
 			cover.setImageBitmap((Bitmap) cover.getTag());
 			cover.setBackgroundDrawable(null);
@@ -458,7 +461,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 
 			protected void act() {
 				cover.setTag(image().bmp());
-				tryDisplayCover();
+				Command.invoke(Command.MAINACTIVITY_ACTION_TRY_DISPLAY_COVER).only()
+				.of(MainActivity.this).send();
 				if(coverToBkg) {
 					String background = CoverDecoder.getThumbernailCache(url);
 					// Exception for Web Images
@@ -473,7 +477,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		}, new CoverDecoder(cover.getWidth(), cover.getHeight()));
 
 		// Perform Action After Display Cover in a Time-out way
-		Command.invoke(Command.MAINACTIVITY_ACTION_AFTER_DISPLAY_COVER).of(MainActivity.this).only().sendDelayed(3000);
+		Command.invoke(Command.MAINACTIVITY_ACTION_AFTER_DISPLAY_COVER).of(MainActivity.this).only().sendDelayed(4000);
 		
 		mStatePreview.gotoState(STATE_COVER_HIDDEN);
 	}

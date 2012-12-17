@@ -37,6 +37,12 @@ public class Command {
 	public static final int SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS = 10;
 
 	// obj - MainActivity
+	public static final int MAINACTIVITY_ACTION_TRY_DISPLAY_COVER = 35;
+	
+	// obj - MainActivity
+	public static final int MAINACTIVITY_ACTION_TRY_DISPLAY_BKG = 36;
+	
+	// obj - MainActivity
 	public static final int MAINACTIVITY_ACTION_AFTER_DISPLAY_COVER = 38;
 	
 	// obj - ListAdapter, getData() - Game
@@ -57,6 +63,7 @@ public class Command {
 			VideoView videoview;
 			ArrayAdapter<Game> adapter;
 			StateIO sio;
+			MainActivity mainactivity;
 			switch(msg.what){
 			case LOOP_VIDEO_PREVIEW:
 				videoview = $(msg.obj);
@@ -77,8 +84,16 @@ public class Command {
 				adapter = $(msg.obj);
 				adapter.notifyDataSetChanged();
 				break;
+			case MAINACTIVITY_ACTION_TRY_DISPLAY_COVER:
+				mainactivity = $(msg.obj);
+				mainactivity.tryDisplayCover();
+				break;
+			case MAINACTIVITY_ACTION_TRY_DISPLAY_BKG:
+				mainactivity = $(msg.obj);
+				mainactivity.tryDisplayBackground();
+				break;
 			case MAINACTIVITY_ACTION_AFTER_DISPLAY_COVER:
-				MainActivity mainactivity = $(msg.obj);
+				mainactivity = $(msg.obj);
 				mainactivity.checkActionAfterDisplayCover();
 				break;
 			case RELEASE_VIDEO_PREVIEW:
