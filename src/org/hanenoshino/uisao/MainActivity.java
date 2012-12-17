@@ -519,9 +519,6 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 
 		}, new CoverDecoder(cover.getWidth(), cover.getHeight()));
 
-		// Perform Action After Display Cover in a Time-out way
-		Command.invoke(Command.MAINACTIVITY_ACTION_AFTER_DISPLAY_COVER).of(MainActivity.this).only().sendDelayed(4000);
-		
 		mStatePreview.gotoState(STATE_COVER_HIDDEN);
 	}
 	
@@ -538,18 +535,16 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		if(item.cover != null) {
 			updateCover(item.cover, item.background == null);
 		}else{
-			// If no cover but video, play video directly
-			if(item.video != null) {
-				Command.invoke(Command.MAINACTIVITY_ACTION_AFTER_DISPLAY_COVER).of(MainActivity.this).only().send();
-			}else{
-				cover.setTag(getResources().getDrawable(R.drawable.dbkg_und));
-				mStatePreview.gotoState(STATE_COVER_HIDDEN);
-			}
+			cover.setTag(getResources().getDrawable(R.drawable.dbkg_und));
+			mStatePreview.gotoState(STATE_COVER_HIDDEN);
 			if(item.background == null) {
 				background.setTag(getResources().getDrawable(R.drawable.dbkg_und_blur));
 				mStateBackground.gotoState(STATE_BKG_HIDDEN);
 			}
 		}
+		
+		// Perform Action After Display Cover in a Time-out way
+		Command.invoke(Command.MAINACTIVITY_ACTION_AFTER_DISPLAY_COVER).of(MainActivity.this).only().sendDelayed(4000);
 		
 	}
 	
