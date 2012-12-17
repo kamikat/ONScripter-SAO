@@ -37,7 +37,7 @@ public class Command {
 	public static final int SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS = 10;
 
 	// obj - MainActivity
-	public static final int MAINACTIVITY_PLAY_VIDEO = 38;
+	public static final int MAINACTIVITY_ACTION_AFTER_DISPLAY_COVER = 38;
 	
 	// obj - ListAdapter, getData() - Game
 	public static final int ADD_ITEM_TO_LISTADAPTER = 102;
@@ -77,9 +77,9 @@ public class Command {
 				adapter = $(msg.obj);
 				adapter.notifyDataSetChanged();
 				break;
-			case MAINACTIVITY_PLAY_VIDEO:
+			case MAINACTIVITY_ACTION_AFTER_DISPLAY_COVER:
 				MainActivity mainactivity = $(msg.obj);
-				mainactivity.playVideo();
+				mainactivity.checkActionAfterDisplayCover();
 				break;
 			case RELEASE_VIDEO_PREVIEW:
 				videoview = $(msg.obj);
