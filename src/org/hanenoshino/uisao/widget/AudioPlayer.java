@@ -329,9 +329,21 @@ public class AudioPlayer implements MediaController.MediaPlayerControl {
 	}
 
 	public void toggleMediaControlsVisiblity() {
+		if(mMediaController == null)
+			return;
 		if (mMediaController.isShowing()) {
 			mMediaController.hide();
 		} else {
+			mMediaController.show();
+		}
+	}
+	
+	public void setMediaControlsVisibility(boolean visible) {
+		if(mMediaController == null)
+			return;
+		if (!visible && mMediaController.isShowing()) {
+			mMediaController.hide();
+		} else if (visible && !mMediaController.isShowing()) {
 			mMediaController.show();
 		}
 	}

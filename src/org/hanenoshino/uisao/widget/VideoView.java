@@ -512,6 +512,8 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
 	}
 
 	public void toggleMediaControlsVisiblity() {
+		if(mMediaController == null)
+			return;
 		if (mMediaController.isShowing()) {
 			mMediaController.hide();
 		} else {
