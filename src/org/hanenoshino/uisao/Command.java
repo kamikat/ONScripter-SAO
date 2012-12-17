@@ -1,6 +1,7 @@
 package org.hanenoshino.uisao;
 
 import org.hanenoshino.uisao.anim.StateIO;
+import org.hanenoshino.uisao.widget.AudioPlayer;
 import org.hanenoshino.uisao.widget.VideoView;
 
 import android.os.Bundle;
@@ -26,12 +27,16 @@ public class Command {
 
 	// obj - VideoView
 	public static final int LOOP_VIDEO_PREVIEW = 13;
+	
 
 	// obj - VideoView
 	public static final int RELEASE_VIDEO_PREVIEW = 14;
 
 	// obj - VideoView
 	public static final int UPDATE_VIDEO_SIZE = 16;
+
+	// obj - AudioPlayer
+	public static final int LOOP_AUDIO_PLAY = 21;
 
 	// obj - listview, arg1 - distance, arg2 - duration
 	public static final int SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS = 10;
@@ -64,11 +69,17 @@ public class Command {
 			ArrayAdapter<Game> adapter;
 			StateIO sio;
 			MainActivity mainactivity;
+			AudioPlayer audioplayer;
 			switch(msg.what){
 			case LOOP_VIDEO_PREVIEW:
 				videoview = $(msg.obj);
 				videoview.seekTo(0);
 				videoview.start();
+				break;
+			case LOOP_AUDIO_PLAY:
+				audioplayer = $(msg.obj);
+				audioplayer.seekTo(0);
+				audioplayer.start();
 				break;
 			case SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS:
 				ListView listview = $(msg.obj);

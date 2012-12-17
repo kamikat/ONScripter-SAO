@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 import org.hanenoshino.uisao.anim.AnimationAutomata;
 import org.hanenoshino.uisao.anim.AnimationBuilder;
-import org.hanenoshino.uisao.anim.AnimationListener;
 import org.hanenoshino.uisao.anim.AutomataAction;
 import org.hanenoshino.uisao.anim.StateRunner;
 import org.hanenoshino.uisao.decoder.BackgroundDecoder;
@@ -125,6 +124,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			@Override
 			public boolean onError(MediaPlayer player, int framework_err, int impl_err) {
 				mStatePreview.gotoState(STATE_COVER_VISIBLE);
+				Toast.makeText(getApplicationContext(), 
+						R.string.error_play_video, Toast.LENGTH_LONG).show();
 				return true;
 			}
 
@@ -133,6 +134,24 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 
 		mAudioPlayer = new AudioPlayer(this);
 		mAudioPlayer.setMediaController(new MediaController(this), preview.getRootView());
+		
+		mAudioPlayer.setOnCompletionListener(new OnCompletionListener() {
+
+			public void onCompletion(MediaPlayer player) {
+				Command.invoke(Command.LOOP_AUDIO_PLAY).of(mAudioPlayer).send();
+			}
+
+		});
+		
+		mAudioPlayer.setOnErrorListener(new OnErrorListener() {
+
+			public boolean onError(MediaPlayer player, int framework_err, int impl_err) {
+				Toast.makeText(getApplicationContext(), 
+						R.string.error_play_audio, Toast.LENGTH_LONG).show();
+				return true;
+			}
+
+		});
 		
 		cover.setOnClickListener(new OnClickListener() {
 
@@ -357,6 +376,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			private void releaseAudioPlay() {
 				mAudioPlayer.stopPlayback();
 				mAudioPlayer.setAudioURI(null);
+				mAudioPlayer.setMediaControlsVisibility(false);
 			}
 		})
 		
