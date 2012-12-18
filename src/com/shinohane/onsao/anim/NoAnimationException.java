@@ -1,4 +1,4 @@
-package org.hanenoshino.uisao.anim;
+package com.shinohane.onsao.anim;
 
 public class NoAnimationException extends RuntimeException {
 

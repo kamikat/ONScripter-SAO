@@ -1,12 +1,14 @@
-package org.hanenoshino.uisao;
+package com.shinohane.onsao;
 
 import java.util.ArrayList;
 
-import org.hanenoshino.uisao.anim.AnimationAutomata;
-import org.hanenoshino.uisao.anim.AnimationBuilder;
-import org.hanenoshino.uisao.anim.AutomataAction;
-import org.hanenoshino.uisao.anim.StateIO;
-import org.hanenoshino.uisao.anim.StateRunner;
+import com.shinohane.onsao.R;
+
+import com.shinohane.onsao.anim.AnimationAutomata;
+import com.shinohane.onsao.anim.AnimationBuilder;
+import com.shinohane.onsao.anim.AutomataAction;
+import com.shinohane.onsao.anim.StateIO;
+import com.shinohane.onsao.anim.StateRunner;
 
 
 import android.content.Context;

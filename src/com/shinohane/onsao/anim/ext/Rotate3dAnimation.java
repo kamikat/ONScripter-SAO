@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.hanenoshino.uisao.anim.ext;
+package com.shinohane.onsao.anim.ext;
 
 import android.view.animation.Animation;
 import android.view.animation.Transformation;

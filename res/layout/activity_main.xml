@@ -90,7 +90,7 @@
             android:contentDescription="@string/alt_settings" />
     </RelativeLayout>
     
-    <org.hanenoshino.uisao.widget.VideoViewContainer
+    <com.shinohane.onsao.widget.VideoViewContainer
         android:id="@+id/videoframe"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -102,7 +102,7 @@
         android:background="#000000"
         android:visibility="gone" >
         
-    </org.hanenoshino.uisao.widget.VideoViewContainer>
+    </com.shinohane.onsao.widget.VideoViewContainer>
     
     </RelativeLayout>
 </RelativeLayout>

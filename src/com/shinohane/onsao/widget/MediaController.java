@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package org.hanenoshino.uisao.widget;
+package com.shinohane.onsao.widget;
 
 import io.vov.utils.Log;
 import io.vov.utils.StringUtils;
-import org.hanenoshino.uisao.R;
+import com.shinohane.onsao.R;
 import android.content.Context;
 import android.graphics.Rect;
 import android.media.AudioManager;

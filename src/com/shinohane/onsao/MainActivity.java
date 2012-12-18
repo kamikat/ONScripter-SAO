@@ -1,4 +1,4 @@
-package org.hanenoshino.uisao;
+package com.shinohane.onsao;
 
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.MediaPlayer.OnCompletionListener;
@@ -8,20 +8,21 @@ import io.vov.vitamio.Vitamio;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.hanenoshino.uisao.anim.AnimationAutomata;
-import org.hanenoshino.uisao.anim.AnimationBuilder;
-import org.hanenoshino.uisao.anim.AutomataAction;
-import org.hanenoshino.uisao.anim.StateRunner;
-import org.hanenoshino.uisao.decoder.BackgroundDecoder;
-import org.hanenoshino.uisao.decoder.CoverDecoder;
-import org.hanenoshino.uisao.widget.AudioPlayer;
-import org.hanenoshino.uisao.widget.MediaController;
-import org.hanenoshino.uisao.widget.VideoView;
-import org.hanenoshino.uisao.widget.VideoViewContainer;
+import com.shinohane.onsao.R;
 
 import com.footmark.utils.cache.FileCache;
 import com.footmark.utils.image.ImageManager;
 import com.footmark.utils.image.ImageSetter;
+import com.shinohane.onsao.anim.AnimationAutomata;
+import com.shinohane.onsao.anim.AnimationBuilder;
+import com.shinohane.onsao.anim.AutomataAction;
+import com.shinohane.onsao.anim.StateRunner;
+import com.shinohane.onsao.decoder.BackgroundDecoder;
+import com.shinohane.onsao.decoder.CoverDecoder;
+import com.shinohane.onsao.widget.AudioPlayer;
+import com.shinohane.onsao.widget.MediaController;
+import com.shinohane.onsao.widget.VideoView;
+import com.shinohane.onsao.widget.VideoViewContainer;
 
 import android.os.AsyncTask;
 import android.os.Build;

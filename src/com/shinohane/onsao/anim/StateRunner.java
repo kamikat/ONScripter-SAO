@@ -1,4 +1,4 @@
-package org.hanenoshino.uisao.anim;
+package com.shinohane.onsao.anim;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;

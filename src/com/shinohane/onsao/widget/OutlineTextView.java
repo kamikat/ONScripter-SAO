@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.hanenoshino.uisao.widget;
+package com.shinohane.onsao.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

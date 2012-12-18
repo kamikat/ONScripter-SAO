@@ -1,8 +1,8 @@
-package org.hanenoshino.uisao;
+package com.shinohane.onsao;
 
-import org.hanenoshino.uisao.anim.StateIO;
-import org.hanenoshino.uisao.widget.AudioPlayer;
-import org.hanenoshino.uisao.widget.VideoView;
+import com.shinohane.onsao.anim.StateIO;
+import com.shinohane.onsao.widget.AudioPlayer;
+import com.shinohane.onsao.widget.VideoView;
 
 import android.os.Bundle;
 import android.os.Handler;

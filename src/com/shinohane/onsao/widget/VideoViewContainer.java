@@ -1,6 +1,6 @@
-package org.hanenoshino.uisao.widget;
+package com.shinohane.onsao.widget;
 
-import org.hanenoshino.uisao.Command;
+import com.shinohane.onsao.Command;
 
 import android.content.Context;
 import android.util.AttributeSet;

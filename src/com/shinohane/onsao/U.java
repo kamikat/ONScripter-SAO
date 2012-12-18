@@ -1,4 +1,4 @@
-package org.hanenoshino.uisao;
+package com.shinohane.onsao;
 
 import java.io.BufferedReader;
 import java.io.File;
