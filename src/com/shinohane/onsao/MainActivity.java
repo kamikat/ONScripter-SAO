@@ -30,9 +30,13 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.Intent.ShortcutIconResource;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -655,6 +659,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 	}
 
 	public void onClick(View v) {
+		Game g;
 		switch(v.getId()) {
 		case R.id.btn_settings:
 			
@@ -663,10 +668,32 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			
 			break;
 		case R.id.btn_config:
-			
+			g = items.getSelectedItem();
+			// TODO Show Config Panel
+			switch(g.isItemRunnable()) {
+			case MISS_FONT:
+				showFontAlertDialog(new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						// TODO update font setting in config panel
+					}
+				});
+				break;
+			}
 			break;
 		case R.id.btn_play:
-			
+			g = items.getSelectedItem();
+			switch(g.isItemRunnable()) {
+			case VALID:
+				run(g); // Directly run game if all green
+				break;
+			case MISS_FONT:
+				showFontAlertDialog(new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						run(items.getSelectedItem());
+					}
+				});
+				break;
+			}
 			break;
 		}
 	}
@@ -703,6 +730,88 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
             return true;
         }
 		return super.onKeyUp(keyCode, msg);
+	}
+	
+	private void showFontAlertDialog(final DialogInterface.OnClickListener listener) {
+		new AlertDialog.Builder(this)
+		.setTitle(getString(R.string.error))
+		.setMessage(getString(R.string.font_not_found))
+		.setPositiveButton(getString(R.string.font_use_default), new DialogInterface.OnClickListener(){
+			public void onClick(DialogInterface dialog, int whichButton) {
+				// TODO Assign a default font to current game
+				listener.onClick(dialog, whichButton);
+			}
+		})
+		.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				// Nothing to do
+			}
+		})
+		.create()
+		.show();
+	}
+
+	private void run(Game g){
+		Intent intent = new Intent(this, ONScripterActivity.class);
+		intent.putExtra(ONScripterActivity.EXTRA_GAME_PATH, g.basepath);
+		startActivity(intent);
+	}
+
+	private void askToCreateShortcut(final Game g){
+		switch(g.isItemRunnable()) {
+		case VALID:
+			new AlertDialog.Builder(this)
+			.setTitle(getString(R.string.information))
+			.setMessage(getString(R.string.create_shortcut, g.title))
+			.setPositiveButton(getString(R.string.create_shortcut_granted), new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface dialog, int whichButton) {
+					createShortcut(g);
+				}
+			})
+			.setNegativeButton(getString(R.string.create_shortcut_cancel), new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface dialog, int whichButton) {
+					// Nothing to do
+				}
+			})
+			.create()
+			.show();
+			break;
+		case MISS_FONT:
+			showFontAlertDialog(new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					askToCreateShortcut(items.getSelectedItem());
+				}
+			});
+			break;
+		}
+	}
+	
+	private void createShortcut(Game g) {
+		Intent shortcut = new Intent(
+				"com.android.launcher.action.INSTALL_SHORTCUT");
+		shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, g.title);
+		shortcut.putExtra("duplicate", false);
+		ComponentName comp = new ComponentName(
+				getPackageName(), "." + this.getLocalClassName());
+		shortcut.putExtra(
+				Intent.EXTRA_SHORTCUT_INTENT, new Intent(
+				Intent.ACTION_MAIN).setComponent(comp));
+		Intent shortcutIntent = new Intent(Intent.ACTION_RUN);
+		shortcutIntent.setClass(this, ONScripterActivity.class);
+		shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		shortcutIntent.putExtra(ONScripterActivity.EXTRA_GAME_PATH, g.basepath);
+		shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+
+		Drawable d = Drawable.createFromPath(g.icon);
+		if (d != null) {
+			shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON, ((BitmapDrawable) d).getBitmap());
+		} else {
+			ShortcutIconResource iconRes = Intent.ShortcutIconResource
+					.fromContext(this, R.drawable.ic_launcher);
+			shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
+		}
+		sendBroadcast(shortcut);
 	}
 	
 }
