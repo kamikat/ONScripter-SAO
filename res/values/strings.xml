@@ -31,10 +31,6 @@
     
     <string name="version">引擎版本ONScripter-20121006</string>
     
-    <!-- Default Configurations -->
-    <bool name="button_visible">true</bool>
-    <bool name="screen_centered">false</bool>
-    
     <!-- Side Control Buttons -->
     <string name="button_rclick">Right Click</string>
     <string name="button_lclick">Left Click</string>
