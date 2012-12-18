@@ -53,7 +53,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 	}
 
-	private static final String DIRECTORY = "saoui";
+	private static final String DIRECTORY = "ONS";
 	
 	// Controls Initialization Block {{{
 	private ListView games;
