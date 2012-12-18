@@ -8,16 +8,16 @@ import android.os.Bundle;
 public class GamePreference {
 	
 	// Optional preferred game engine name for the game 
-	public String engine;
+	public String engine = "";
 	
 	// Optional draw outline of text
-	public boolean draw_outline;
+	public boolean draw_outline = true;
 	
 	// Optional whether show side buttons during game play
-	public boolean button_visible;
+	public boolean button_visible = true;
 	
 	// Optional whether to center screen during game play
-	public boolean screen_centered;
+	public boolean screen_centered = false;
 	
 	public static GamePreference fromJSON(final JSONObject json) throws JSONException {
 		return new GamePreference(){{ readJSON(json); }};
