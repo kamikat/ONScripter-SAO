@@ -1,0 +1,9 @@
+libapplication.so
+libbz2.so
+libmad.so
+libsdl.so
+libsdl_image.so
+libsdl_main.so
+libsdl_mixer.so
+libsdl_ttf.so
+libtremor.so
