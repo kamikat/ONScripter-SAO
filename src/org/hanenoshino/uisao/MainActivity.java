@@ -205,7 +205,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 						isVideoInitialized = true;
 						
 						// Play video if exists
-						Command.invoke(Command.MAINACTIVITY_ACTION_AFTER_DISPLAY_COVER).of(this).only().sendDelayed(3000);
+						Command.invoke(Command.MAINACTIVITY_ACTION_AFTER_DISPLAY_COVER).of(MainActivity.this).only().sendDelayed(3000);
 					}
 				}
 
