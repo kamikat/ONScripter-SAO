@@ -94,7 +94,7 @@ public class Game {
 	
 	public JSONObject toJSON() throws JSONException {
 		JSONObject b = new JSONObject();
-		b.put("engine", preference);
+		b.put("preference", preference.toJSON());
 		b.put("title", title);
 		b.put("cover", cover);
 		b.put("description", description);
