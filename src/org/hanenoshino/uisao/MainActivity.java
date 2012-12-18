@@ -466,7 +466,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 				.alpha(1, 0).animateFor(300)
 				.build())
 		.addAction(new AutomataAction() {
-			public void Before(Animation animation) {
+			public void onStateChanged(int from, int to) {
 				releaseVideoPlay();
 			}
 			public void After(Animation animation) {
