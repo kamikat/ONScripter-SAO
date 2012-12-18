@@ -1,11 +1,11 @@
 <resources>
 
-    <string name="app_name">SAO Interface</string>
+    <string name="app_name">ONScripter-SAO</string>
     
     <string name="menu_settings">设置</string>
     <string name="menu_end">退出</string>
     
-    <string name="title_activity_main">SAO用户界面</string>
+    <string name="title_activity_main">ONScripter</string>
     <string name="alt_cover">封面图片</string>
     <string name="alt_background">背景</string>
     <string name="alt_icon">图标</string>
