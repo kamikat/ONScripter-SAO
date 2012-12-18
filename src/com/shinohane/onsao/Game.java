@@ -41,7 +41,7 @@ public class Game {
 	public String font;
 	
 	// Optional preferred game engine name for the game 
-	public GamePreference preference;
+	public GamePreference preference = new GamePreference();
 	
 	public final String basepath;
 	
