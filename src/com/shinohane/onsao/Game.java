@@ -106,6 +106,15 @@ public class Game {
 		b.put("font", font);
 		return b;
 	}
+	
+	public void writeJSON() {
+		File media = new File(basepath, "media.json");
+		try {
+			U.write(media, toJSON().toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static Game fromBundle(Bundle bundle) {
 		Game g = new Game(bundle.getString("basepath"));
@@ -146,7 +155,9 @@ public class Game {
 			try {
 				JSONObject data = new JSONObject(U.read(media));
 				g.readJSON(data, true);
-			} catch (Exception e) {}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		if(	g.cover != null && g.background != null && g.video != null && 
 			g.icon != null && g.audio != null && g.script != null && g.font != null) return g;

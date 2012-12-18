@@ -2,8 +2,8 @@ package com.shinohane.onsao;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
-
 import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -58,6 +58,19 @@ public class U {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	public static void write(File file, String str) {
+		if(file.exists())
+			file.delete();
+		try {
+			file.createNewFile();
+			FileOutputStream sout = new FileOutputStream(file);
+			sout.write(str.getBytes());
+			sout.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
