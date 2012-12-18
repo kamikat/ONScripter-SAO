@@ -28,7 +28,6 @@ import android.widget.LinearLayout;
 public class ONScripterActivity extends Activity{
 	
 	public static final String EXTRA_GAME_PATH = "gpath";
-	public static final String EXTRA_GAME_LANG = "language";
 
 	private int screen_w, screen_h;
 	private int button_w, button_h;
@@ -268,7 +267,7 @@ public class ONScripterActivity extends Activity{
 			mGame.preference.screen_centered = true;
 			resetLayout();
 		} else if (item.getItemId() == Menu.FIRST+7){
-			new AlertDialog.Builder(getApplicationContext())
+			new AlertDialog.Builder(ONScripterActivity.this)
 			.setTitle(getResources().getString(R.string.menu_version))
 			.setMessage(getResources().getString(R.string.version))
 			.setPositiveButton(
