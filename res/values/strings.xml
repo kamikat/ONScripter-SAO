@@ -25,6 +25,6 @@
     
     <string name="error">错误</string>
     <string name="known">我知道了</string>
-    <string name="no_sdcard_dir">没有在SD卡下找到saoui目录，请手工创建并将游戏资料放入目录</string>
+    <string name="no_sdcard_dir">没有在SD卡下找到ONS目录，请手工创建并将游戏资料放入目录</string>
 
 </resources>
