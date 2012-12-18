@@ -27,4 +27,36 @@
     <string name="known">我知道了</string>
     <string name="no_sdcard_dir">没有在SD卡下找到ONS目录，请手工创建并将游戏资料放入目录</string>
 
+    <!-- Strings Used By ONScripter -->
+    
+    <string name="version">引擎版本ONScripter-20121006</string>
+    
+    <!-- Default Configurations -->
+    <bool name="button_visible">true</bool>
+    <bool name="screen_centered">false</bool>
+    
+    <!-- Side Control Buttons -->
+    <string name="button_rclick">Right Click</string>
+    <string name="button_lclick">Left Click</string>
+    <string name="button_up">Up</string>
+    <string name="button_down">Down</string>
+    
+    <!-- Menu Items -->
+    <string name="menu_automode">切换自动模式</string>
+    <string name="menu_skip">快进</string>
+    <string name="menu_speed">切换速度</string>
+    <string name="menu_show_buttons">显示控制按钮</string>
+    <string name="menu_hide_buttons">隐藏控制按钮</string>
+    <string name="menu_topleft">默认显示</string>
+    <string name="menu_center">居中显示</string>
+    <string name="menu_version">版本信息</string>
+    
+    <string name="warning">警告</string>
+    <string name="information">信息</string>
+    <string name="font_not_found">\'%s\'没有相应的default.ttf字体文件，使用默认字体么？</string>
+    <string name="font_use_default">使用默认字体</string>
+    <string name="cancel">取消</string>
+    <string name="create_shortcut">是否为\'%s\'创建桌面快捷方式？</string>
+    <string name="create_shortcut_granted">创建</string>
+    <string name="create_shortcut_cancel">取消</string>
 </resources>
