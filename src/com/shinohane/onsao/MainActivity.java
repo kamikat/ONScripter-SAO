@@ -765,6 +765,10 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 	}
 
 	private void run(Game g){
+    	if(mStatePreview.currentState() == STATE_VIDEO_PLAY || 
+    			mStatePreview.currentState() == STATE_AUDIO_PLAY) {
+    		mStatePreview.gotoState(STATE_COVER_VISIBLE);
+    	}
 		Intent intent = new Intent(this, ONScripterActivity.class);
 		intent.putExtra(ONScripterActivity.EXTRA_GAME_PATH, g.basepath);
 		startActivity(intent);
