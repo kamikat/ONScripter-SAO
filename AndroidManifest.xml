@@ -17,19 +17,16 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" 
             android:screenOrientation="sensorLandscape"
             android:configChanges="orientation|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ONScripterActivity"
-            android:label="@string/title_activity_main" 
             android:screenOrientation="sensorLandscape"
             android:configChanges="orientation|keyboardHidden"
      		android:process="com.shinohane.onsao.scripter">
