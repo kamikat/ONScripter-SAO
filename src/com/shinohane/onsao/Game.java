@@ -104,15 +104,24 @@ public class Game {
 	public JSONObject toJSON() throws JSONException {
 		JSONObject b = new JSONObject();
 		b.put("preference", preference.toJSON());
+		if(title != null)
 		b.put("title", title);
-		b.put("cover", cover);
+		if(cover != null)
+		b.put("cover", cover.replace(basepath, "./"));
+		if(description != null)
 		b.put("description", description);
-		b.put("background", background);
-		b.put("icon", icon);
-		b.put("video", video);
-		b.put("audio", audio);
-		b.put("script", script);
-		b.put("font", font);
+		if(background != null)
+		b.put("background", background.replace(basepath, "./"));
+		if(icon != null)
+		b.put("icon", icon.replace(basepath, "./"));
+		if(video != null)
+		b.put("video", video.replace(basepath, "./"));
+		if(audio != null)
+		b.put("audio", audio.replace(basepath, "./"));
+		if(script != null)
+		b.put("script", script.replace(basepath, "./"));
+		if(font != null)
+		b.put("font", font.replace(basepath, "./"));
 		return b;
 	}
 	
