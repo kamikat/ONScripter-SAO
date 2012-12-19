@@ -49,9 +49,18 @@ public class Game {
 		this.basepath = (basepath.endsWith("/")?basepath:(basepath+"/"));
 	}
 	
+	private File script_file;
+	private File font_file;
+	
 	public Validation isItemRunnable() {
 		if(script == null) return Validation.INVALID;
+		if(script_file == null || !script_file.getAbsolutePath().equals(script))
+			script_file = new File(script);
+		if(!script_file.exists()) return Validation.INVALID;
 		if(font == null) return Validation.MISS_FONT;
+		if(font_file == null || !font_file.getAbsolutePath().equals(font))
+			font_file = new File(font);
+		if(!font_file.exists()) return Validation.MISS_FONT;
 		return Validation.VALID;
 	}
 	
