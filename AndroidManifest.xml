@@ -25,6 +25,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity 
+            android:name=".GameConfigActivity"
+            android:screenOrientation="sensorLandscape"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/ConfigActivity">
+        </activity>
         <activity
             android:name=".ONScripterActivity"
             android:screenOrientation="sensorLandscape"
