@@ -55,4 +55,9 @@
     <string name="create_shortcut">是否为\'%s\'创建桌面快捷方式？</string>
     <string name="create_shortcut_granted">创建</string>
     <string name="create_shortcut_cancel">取消</string>
+    
+    <string name="toast_cant_create_shortcut_for_invalid">该目录不是一个ONScripter游戏，不能为其创建快捷方式</string>
+    <string name="toast_cant_run_for_invalid">该目录不是一个ONScripter游戏，不能用于运行模拟器</string>
+    <string name="toast_cant_config_for_invalid">该目录不是一个ONScripter游戏，无法打开设置面板</string>
+    
 </resources>

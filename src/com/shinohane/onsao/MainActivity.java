@@ -669,7 +669,6 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			break;
 		case R.id.btn_config:
 			g = items.getSelectedItem();
-			// TODO Show Config Panel
 			switch(g.isItemRunnable()) {
 			case MISS_FONT:
 				showFontAlertDialog(new DialogInterface.OnClickListener() {
@@ -677,6 +676,14 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 						// TODO update font setting in config panel
 					}
 				});
+			case VALID:
+				// TODO Show Config Panel
+				break;
+			case INVALID:
+	            Toast.makeText(
+	            		this, 
+	            		R.string.toast_cant_config_for_invalid, Toast.LENGTH_LONG
+	            		).show();
 				break;
 			}
 			break;
@@ -692,6 +699,12 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 						run(items.getSelectedItem());
 					}
 				});
+				break;
+			case INVALID:
+	            Toast.makeText(
+	            		this, 
+	            		R.string.toast_cant_run_for_invalid, Toast.LENGTH_LONG
+	            		).show();
 				break;
 			}
 			break;
@@ -782,6 +795,12 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 					askToCreateShortcut(items.getSelectedItem());
 				}
 			});
+			break;
+		case INVALID:
+            Toast.makeText(
+            		this, 
+            		R.string.toast_cant_create_shortcut_for_invalid, Toast.LENGTH_LONG
+            		).show();
 			break;
 		}
 	}
