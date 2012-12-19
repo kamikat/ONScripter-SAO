@@ -669,11 +669,12 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			g = items.getSelectedItem();
 			switch(g.isItemRunnable()) {
 			case MISS_FONT:
-				showFontAlertDialog(new DialogInterface.OnClickListener() {
+				U.showFontAlertDialog(this, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						// TODO update font setting in config panel
 					}
 				});
+				break;
 			case VALID:
 				// TODO Show Config Panel
 				break;
@@ -692,9 +693,10 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 				run(g); // Directly run game if all green
 				break;
 			case MISS_FONT:
-				showFontAlertDialog(new DialogInterface.OnClickListener() {
+				U.showFontAlertDialog(this, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
-						run(items.getSelectedItem());
+						if(whichButton == DialogInterface.BUTTON_POSITIVE)
+							run(items.getSelectedItem());
 					}
 				});
 				break;
@@ -741,25 +743,6 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
             return true;
         }
 		return super.onKeyUp(keyCode, msg);
-	}
-	
-	private void showFontAlertDialog(final DialogInterface.OnClickListener listener) {
-		new AlertDialog.Builder(this)
-		.setTitle(getString(R.string.error))
-		.setMessage(getString(R.string.font_not_found))
-		.setPositiveButton(getString(R.string.font_use_default), new DialogInterface.OnClickListener(){
-			public void onClick(DialogInterface dialog, int whichButton) {
-				// TODO Assign a default font to current game
-				listener.onClick(dialog, whichButton);
-			}
-		})
-		.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				// Nothing to do
-			}
-		})
-		.create()
-		.show();
 	}
 
 	private void run(Game g) {

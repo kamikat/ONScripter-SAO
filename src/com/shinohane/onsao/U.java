@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -42,6 +46,25 @@ public class U {
 			Command.invoke(Command.SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS)
 			.of(parent).only().args(viewY, 300).sendDelayed(100);
 		}
+	}
+	
+	public static void showFontAlertDialog(Activity activity, final DialogInterface.OnClickListener listener) {
+		new AlertDialog.Builder(activity)
+		.setTitle(activity.getString(R.string.error))
+		.setMessage(activity.getString(R.string.font_not_found))
+		.setPositiveButton(activity.getString(R.string.font_use_default), new DialogInterface.OnClickListener(){
+			public void onClick(DialogInterface dialog, int whichButton) {
+				// TODO Assign a default font to current game
+				listener.onClick(dialog, whichButton);
+			}
+		})
+		.setNegativeButton(activity.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				listener.onClick(dialog, whichButton);
+			}
+		})
+		.create()
+		.show();
 	}
 	
 	public static String read(File file) {
