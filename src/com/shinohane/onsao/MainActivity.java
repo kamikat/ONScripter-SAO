@@ -550,7 +550,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 	
 	// }}}
 	
-	private void loadGameItem(Game item) {
+	public void loadGameItem(Game item) {
 		
 		gametitle.setText(item.title);
 
