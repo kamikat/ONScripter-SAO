@@ -26,8 +26,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 public class ONScripterActivity extends Activity{
-	
-	public static final String EXTRA_GAME_PATH = "gpath";
 
 	private int screen_w, screen_h;
 	private int button_w, button_h;
@@ -55,13 +53,13 @@ public class ONScripterActivity extends Activity{
 
 		Intent intent = getIntent();
 		
-		String path = intent.getStringExtra(EXTRA_GAME_PATH);
+		String path = intent.getStringExtra(Constant.EXTRA_GAME_PATH);
 		
 		mGame = Game.scanGameDir(new File(path));
 		
 		ONScripterView.loadLibrary(mGame.preference.engine);
 		
-		mGLView = new ONScripterView(this, mGame.basepath, true);
+		mGLView = new ONScripterView(this, mGame.basepath, mGame.preference.draw_outline);
 		
 		runSDLApp();
 		

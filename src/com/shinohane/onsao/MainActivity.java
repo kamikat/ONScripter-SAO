@@ -57,8 +57,6 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		// Set the priority, trick useful for some CPU
 		Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 	}
-
-	private static final String DIRECTORY = "ONS";
 	
 	// Controls Initialization Block {{{
 	private ListView games;
@@ -99,7 +97,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			imgMgr = new ImageManager(new FileCache(
 					new File(
 							Environment.getExternalStorageDirectory(),
-							DIRECTORY + "/.cover")));
+							Constant.DIRECTORY + "/.cover")));
 		}else{
 			imgMgr = new ImageManager(new FileCache(
 					new File(
@@ -227,7 +225,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 	
 	private boolean environmentCheck() {
 		File mCurrentDirectory = new File(
-				Environment.getExternalStorageDirectory() + "/" + DIRECTORY
+				Environment.getExternalStorageDirectory() + "/" + Constant.DIRECTORY
 				);
 		if (!mCurrentDirectory.exists()) {
 			new AlertDialog.Builder(this)
@@ -254,7 +252,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			
 			public void run() {
 				File root = new File(
-						Environment.getExternalStorageDirectory() + "/" + DIRECTORY
+						Environment.getExternalStorageDirectory() + "/" + Constant.DIRECTORY
 						);
 				File[] mDirectoryFiles = root.listFiles();
 				for(File file: mDirectoryFiles) {
@@ -764,13 +762,13 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		.show();
 	}
 
-	private void run(Game g){
+	private void run(Game g) {
     	if(mStatePreview.currentState() == STATE_VIDEO_PLAY || 
     			mStatePreview.currentState() == STATE_AUDIO_PLAY) {
     		mStatePreview.gotoState(STATE_COVER_VISIBLE);
     	}
 		Intent intent = new Intent(this, ONScripterActivity.class);
-		intent.putExtra(ONScripterActivity.EXTRA_GAME_PATH, g.basepath);
+		intent.putExtra(Constant.EXTRA_GAME_PATH, g.basepath);
 		startActivity(intent);
 	}
 
