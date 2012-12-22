@@ -750,6 +750,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
     			mStatePreview.currentState() == STATE_AUDIO_PLAY) {
     		mStatePreview.gotoState(STATE_COVER_VISIBLE);
     	}
+    	Command.revoke(Command.MAINACTIVITY_ACTION_AFTER_DISPLAY_COVER);
 		Intent intent = new Intent(this, ONScripterActivity.class);
 		intent.putExtra(Constant.EXTRA_GAME_PATH, g.basepath);
 		startActivity(intent);
