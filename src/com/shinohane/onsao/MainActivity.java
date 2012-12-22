@@ -181,9 +181,21 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		
 		cover.setOnClickListener(new OnClickListener() {
 
+			long lastClick = 0;
+			
 			public void onClick(View v) {
-				if(mAudioPlayer.isInPlaybackState())
+				if(mAudioPlayer.isInPlaybackState()) {
 					mAudioPlayer.toggleMediaControlsVisiblity();
+				} else {
+					long time = System.currentTimeMillis();
+					if(time - lastClick < 500) {
+						Command.invoke(Command.MAINACTIVITY_ACTION_AFTER_DISPLAY_COVER)
+						.of(MainActivity.this).only().send();
+						lastClick = 0;
+					}else{
+						lastClick = time;
+					}
+				}
 			}
 			
 		});
