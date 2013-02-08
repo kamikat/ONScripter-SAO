@@ -521,6 +521,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 	}
 	
 	public void checkActionAfterDisplayCover() {
+		if(items == null) return;
 		Game item = items.getSelectedItem();
 		if(item == null) return;
 		if(isVideoInitialized) {
