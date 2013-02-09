@@ -1,6 +1,7 @@
 package com.shinohane.onsao.widget;
 
-import com.shinohane.onsao.Command;
+import com.shinohane.onsao.command.Command;
+import com.shinohane.onsao.command.CommandHandler;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -38,7 +39,7 @@ public class VideoViewContainer extends RelativeLayout implements OnTouchListene
 		}else{
 			setLayoutParams(videoframelayout);
 		}
-		Command.invoke(Command.UPDATE_VIDEO_SIZE).of(getVideoView()).send();
+		Command.invoke(UPDATE_VIDEO_SIZE).args(getVideoView()).send();
 	}
 	
 	public boolean isVideoFullscreen() {
@@ -80,5 +81,22 @@ public class VideoViewContainer extends RelativeLayout implements OnTouchListene
 		}
 		return true;
 	}
-
+	
+	// Async Operation Block {{{
+	
+	static {
+		// Register Async Operation
+		com.shinohane.onsao.command.Command.register(VideoViewContainer.class);
+	}
+	
+	public static final int UPDATE_VIDEO_SIZE = 16;
+	
+	@CommandHandler(id = UPDATE_VIDEO_SIZE)
+	public static void UPDATE_VIDEO_SIZE(VideoView player) {
+		player.setVideoLayout(VideoView.VIDEO_LAYOUT_PREVIOUS, 0.0f);
+	}
+	
+	// }}}
+	
+	
 }

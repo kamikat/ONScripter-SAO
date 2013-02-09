@@ -16,7 +16,10 @@ import com.footmark.utils.image.ImageSetter;
 import com.shinohane.onsao.anim.AnimationAutomata;
 import com.shinohane.onsao.anim.AnimationBuilder;
 import com.shinohane.onsao.anim.AutomataAction;
+import com.shinohane.onsao.anim.StateIO;
 import com.shinohane.onsao.anim.StateRunner;
+import com.shinohane.onsao.command.Command;
+import com.shinohane.onsao.command.CommandHandler;
 import com.shinohane.onsao.decoder.BackgroundDecoder;
 import com.shinohane.onsao.decoder.CoverDecoder;
 import com.shinohane.onsao.widget.AudioPlayer;
@@ -124,7 +127,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 
 			public void onCompletion(MediaPlayer player) {
 				mPlaybackErrCounter = 0;
-				Command.invoke(Command.LOOP_VIDEO_PREVIEW).of(preview).send();
+				Command.invoke(LOOP_VIDEO_PREVIEW).args(preview).send();
 			}
 
 		});
@@ -156,7 +159,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 
 			public void onCompletion(MediaPlayer player) {
 				mPlaybackErrCounter = 0;
-				Command.invoke(Command.LOOP_AUDIO_PLAY).of(mAudioPlayer).send();
+				Command.invoke(LOOP_AUDIO_PLAY).args(mAudioPlayer).send();
 			}
 
 		});
@@ -189,8 +192,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 				} else {
 					long time = System.currentTimeMillis();
 					if(time - lastClick < 500) {
-						Command.invoke(Command.MAINACTIVITY_ACTION_AFTER_DISPLAY_COVER)
-						.of(MainActivity.this).only().send();
+						Command.invoke(ACTION_AFTER_DISPLAY_COVER)
+						.args(MainActivity.this).only().send();
 						lastClick = 0;
 					}else{
 						lastClick = time;
@@ -220,7 +223,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 						isVideoInitialized = true;
 						
 						// Play video if exists
-						Command.invoke(Command.MAINACTIVITY_ACTION_AFTER_DISPLAY_COVER).of(MainActivity.this).only().sendDelayed(3000);
+						Command.invoke(ACTION_AFTER_DISPLAY_COVER).args(MainActivity.this).only().sendDelayed(3000);
 					}
 				}
 
@@ -272,8 +275,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 						Game g = Game.scanGameDir(file);
 						if(g != null) {
 							// Add Game to Game List
-							Command.invoke(Command.ADD_ITEM_TO_LISTADAPTER)
-							.of(items).args(g.toBundle()).send();
+							Command.invoke(ADD_ITEM_TO_LISTADAPTER)
+							.args(items).args(g.toBundle()).send();
 						}
 					}
 				}
@@ -299,8 +302,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 				.build())
 		.addAction(new AutomataAction() {
 			public void onAnimationEnd(Animation animation) {
-				Command.invoke(Command.MAINACTIVITY_ACTION_TRY_DISPLAY_BKG)
-				.of(MainActivity.this).send();
+				Command.invoke(TRY_DISPLAY_BKG)
+				.args(MainActivity.this).send();
 			}
 		})
 		
@@ -336,8 +339,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 
 			protected void act() {
 				background.setTag(image().bmp());
-				Command.invoke(Command.MAINACTIVITY_ACTION_TRY_DISPLAY_BKG)
-				.of(MainActivity.this).send();
+				Command.invoke(TRY_DISPLAY_BKG)
+				.args(MainActivity.this).send();
 			}
 
 		}, new BackgroundDecoder());
@@ -371,8 +374,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			}
 			public void After(Animation animation) {
 				getAutomata().target().setVisibility(View.GONE);
-				Command.invoke(Command.MAINACTIVITY_ACTION_TRY_DISPLAY_COVER).only()
-				.of(MainActivity.this).send();
+				Command.invoke(TRY_DISPLAY_COVER).only()
+				.args(MainActivity.this).send();
 			}
 		})
 		
@@ -465,7 +468,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 				Game item = items.getSelectedItem();
 				if(item.video != null && isVideoInitialized) {
 					videoframe.setVisibility(View.VISIBLE);
-					Command.revoke(Command.RELEASE_VIDEO_PREVIEW, preview);
+					Command.revoke(RELEASE_VIDEO_PREVIEW);
 					preview.setVideoURI(null);
 					preview.setVideoPath(item.video);
 				}
@@ -493,8 +496,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 					preview.stopPlayback();
 				}
 				preview.setVisibility(View.GONE);
-				Command.invoke(Command.RELEASE_VIDEO_PREVIEW)
-				.of(preview).sendDelayed(2000);
+				Command.invoke(RELEASE_VIDEO_PREVIEW)
+				.args(preview).sendDelayed(2000);
 			}
 		})
 		
@@ -544,8 +547,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 
 			protected void act() {
 				cover.setTag(image().bmp());
-				Command.invoke(Command.MAINACTIVITY_ACTION_TRY_DISPLAY_COVER).only()
-				.of(MainActivity.this).send();
+				Command.invoke(TRY_DISPLAY_COVER).args(MainActivity.this).only().send();
 				if(coverToBkg) {
 					String background = CoverDecoder.getThumbernailCache(url);
 					// Exception for Web Images
@@ -584,7 +586,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		}
 		
 		// Perform Action After Display Cover in a Time-out way
-		Command.invoke(Command.MAINACTIVITY_ACTION_AFTER_DISPLAY_COVER).of(MainActivity.this).only().sendDelayed(4000);
+		Command.invoke(ACTION_AFTER_DISPLAY_COVER).args(MainActivity.this).only().sendDelayed(4000);
 		
 	}
 	
@@ -617,7 +619,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		games.setAdapter(items);
 		games.setOnItemClickListener(this);
 
-		Command.invoke(Command.RUN).of(
+		Command.invoke(
 				new Runnable() { public void run() {scanGames();}}
 		).sendDelayed(500);
 		
@@ -764,7 +766,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
     			mStatePreview.currentState() == STATE_AUDIO_PLAY) {
     		mStatePreview.gotoState(STATE_COVER_VISIBLE);
     	}
-    	Command.revoke(Command.MAINACTIVITY_ACTION_AFTER_DISPLAY_COVER);
+    	Command.revoke(ACTION_AFTER_DISPLAY_COVER);
 		Intent intent = new Intent(this, ONScripterActivity.class);
 		intent.putExtra(Constant.EXTRA_GAME_PATH, g.basepath);
 		startActivity(intent);
@@ -775,5 +777,72 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 		intent.putExtra(Constant.EXTRA_GAME_PATH, g.basepath);
 		startActivityForResult(intent, Constant.REQUEST_CODE_CONFIG_GAME);
 	}
+	
+	// Async Operation Block {{{
+	
+	static {
+		// Register Async Operation
+		com.shinohane.onsao.command.Command.register(MainActivity.class);
+	}
+
+	public static final int LOOP_VIDEO_PREVIEW = 13;
+	
+	public static final int RELEASE_VIDEO_PREVIEW = 14;
+
+	public static final int LOOP_AUDIO_PLAY = 21;
+
+	public static final int TRY_DISPLAY_COVER = 35;
+	
+	public static final int TRY_DISPLAY_BKG = 36;
+	
+	public static final int ACTION_AFTER_DISPLAY_COVER = 38;
+	
+	public static final int ADD_ITEM_TO_LISTADAPTER = 102;
+
+	public static final int DATASET_CHANGED_LISTADAPTER = 103;
+	
+	@CommandHandler(id = LOOP_VIDEO_PREVIEW)
+	public static void LOOP_VIDEO_PREVIEW(VideoView player) {
+		player.seekTo(0);
+		player.start();
+	}
+	
+	@CommandHandler(id = RELEASE_VIDEO_PREVIEW)
+	public static void RELEASE_VIDEO_PREVIEW(VideoView player) {
+		player.setVideoURI(null);
+	}
+	
+	@CommandHandler(id = LOOP_AUDIO_PLAY)
+	public static void LOOP_AUDIO_PLAY(AudioPlayer player) {
+		player.seekTo(0);
+		player.start();
+	}
+	
+	@CommandHandler(id = TRY_DISPLAY_COVER)
+	public static void TRY_DISPLAY_COVER(MainActivity activity) {
+		activity.tryDisplayCover();
+	}
+
+	@CommandHandler(id = TRY_DISPLAY_BKG)
+	public static void TRY_DISPLAY_BKG(MainActivity activity) {
+		activity.tryDisplayBackground();
+	}
+
+	@CommandHandler(id = ACTION_AFTER_DISPLAY_COVER)
+	public static void ACTION_AFTER_DISPLAY_COVER(MainActivity activity) {
+		activity.checkActionAfterDisplayCover();
+	}
+	
+	@CommandHandler(id = ADD_ITEM_TO_LISTADAPTER)
+	public static void ADD_ITEM_TO_LISTADAPTER(GameAdapter adapter, Game item) {
+		adapter.add(item);
+		Command.invoke(DATASET_CHANGED_LISTADAPTER).args(adapter).only().sendDelayed(200);
+	}
+
+	@CommandHandler(id = DATASET_CHANGED_LISTADAPTER)
+	public static void DATASET_CHANGED_LISTADAPTER(GameAdapter adapter) {
+		adapter.notifyDataSetChanged();
+	}
+	// }}}
 
 }

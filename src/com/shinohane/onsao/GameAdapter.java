@@ -9,8 +9,8 @@ import com.shinohane.onsao.anim.AnimationBuilder;
 import com.shinohane.onsao.anim.AutomataAction;
 import com.shinohane.onsao.anim.StateIO;
 import com.shinohane.onsao.anim.StateRunner;
-
-
+import com.shinohane.onsao.command.Command;
+import com.shinohane.onsao.command.CommandHandler;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -295,10 +295,33 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 	
 	public void showPanel(View v) {
 		final Payload load = getLoad(v);
-		Command.invoke(Command.STATE_CONTROL_COND).of(load.StateHolder)
-		.args(STATE_SELECTED, STATE_SELECTED_PANEL).sendDelayed(100);
-		Command.invoke(Command.STATE_CONTROL_COND).of(load.StateHolder)
-		.args(STATE_SELECTED_PANEL, STATE_SELECTED).sendDelayed(5100);
+		Command.invoke(STATE_CONTROL_COND).args(load.StateHolder,
+				STATE_SELECTED, STATE_SELECTED_PANEL).sendDelayed(100);
+		Command.invoke(STATE_CONTROL_COND).args(load.StateHolder, 
+				STATE_SELECTED_PANEL, STATE_SELECTED).sendDelayed(5100);
 	}
+	
+	// Async Operation Block {{{
+	
+	static {
+		// Register Async Operation
+		com.shinohane.onsao.command.Command.register(GameAdapter.class);
+	}
+	
+	public static final int STATE_CONTROL_COND = 209;
+	
+	public static final int STATE_CONTROL = 208;
+
+	@CommandHandler(id = STATE_CONTROL_COND)
+	public static void STATE_CONTROL_COND(StateIO sio, int state) {
+		sio.gotoState(state);
+	}
+
+	@CommandHandler(id = STATE_CONTROL)
+	public static void STATE_CONTROL(StateIO sio, int cond, int to) {
+		sio.gotoState(cond, to);
+	}
+	
+	// }}}
 
 }

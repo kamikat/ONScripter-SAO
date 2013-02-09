@@ -5,6 +5,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 
+import com.shinohane.onsao.command.Command;
+import com.shinohane.onsao.command.CommandHandler;
+
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -43,10 +47,26 @@ public class U {
 		}else if(viewY > 0 && parent.getLastVisiblePosition() == items.getCount() - 1){
 			parent.smoothScrollToPosition(items.getCount() - 1);
 		}else{
-			Command.invoke(Command.SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS)
-			.of(parent).only().args(viewY, 300).sendDelayed(100);
+			Command.invoke(SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS)
+			.args(parent, viewY, 300).only().sendDelayed(100);
 		}
 	}
+
+	// Async Operation Block {{{
+	
+	static {
+		// Register Async Operation
+		com.shinohane.onsao.command.Command.register(U.class);
+	}
+
+	public static final int SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS = 10;
+	
+	@CommandHandler(id = SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS)
+	public static void SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS(ListView v, int distance, int duration) {
+		v.smoothScrollBy(distance, duration);
+	}
+	
+	// }}}
 	
 	public static void showFontAlertDialog(Activity activity, final DialogInterface.OnClickListener listener) {
 		new AlertDialog.Builder(activity)
