@@ -276,7 +276,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 						if(g != null) {
 							// Add Game to Game List
 							Command.invoke(ADD_ITEM_TO_LISTADAPTER)
-							.args(items).args(g.toBundle()).send();
+							.args(items, g).send();
 						}
 					}
 				}

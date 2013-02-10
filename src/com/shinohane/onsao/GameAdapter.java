@@ -312,13 +312,13 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 	
 	public static final int STATE_CONTROL = 208;
 
-	@CommandHandler(id = STATE_CONTROL_COND)
-	public static void STATE_CONTROL_COND(StateIO sio, int state) {
+	@CommandHandler(id = STATE_CONTROL)
+	public static void STATE_CONTROL(StateIO sio, int state) {
 		sio.gotoState(state);
 	}
 
-	@CommandHandler(id = STATE_CONTROL)
-	public static void STATE_CONTROL(StateIO sio, int cond, int to) {
+	@CommandHandler(id = STATE_CONTROL_COND)
+	public static void STATE_CONTROL_COND(StateIO sio, int cond, int to) {
 		sio.gotoState(cond, to);
 	}
 	

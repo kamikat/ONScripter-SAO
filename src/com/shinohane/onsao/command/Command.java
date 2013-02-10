@@ -36,7 +36,7 @@ public class Command {
 				Method m1 = exec.get(id);
 				if(m1 != null)
 					throw new DuplicateCommandIdentifierException(id, m1, m);
-				exec.setValueAt(id, m);
+				exec.append(id, m);
 			}
 		}
 	}
@@ -50,6 +50,7 @@ public class Command {
 					Runnable runnable = $(msg.obj);
 					runnable.run();
 				}
+				break;
 			default:
 				Method m = exec.get(msg.what);
 				if(m == null) 
