@@ -68,10 +68,10 @@ public class U {
 	
 	// }}}
 	
-	public static void showFontAlertDialog(Activity activity, final DialogInterface.OnClickListener listener) {
+	public static void showFontAlertDialog(Activity activity, Game game, final DialogInterface.OnClickListener listener) {
 		new AlertDialog.Builder(activity)
 		.setTitle(activity.getString(R.string.error))
-		.setMessage(activity.getString(R.string.font_not_found))
+		.setMessage(activity.getString(R.string.font_not_found, game.title))
 		.setPositiveButton(activity.getString(R.string.font_use_default), new DialogInterface.OnClickListener(){
 			public void onClick(DialogInterface dialog, int whichButton) {
 				// TODO Assign a default font to current game

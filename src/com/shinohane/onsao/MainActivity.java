@@ -685,7 +685,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			g = items.getSelectedItem();
 			switch(g.isItemRunnable()) {
 			case MISS_FONT:
-				U.showFontAlertDialog(this, new DialogInterface.OnClickListener() {
+				U.showFontAlertDialog(this, g, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						config(g);
 					}
@@ -709,7 +709,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 				run(g); // Directly run game if all green
 				break;
 			case MISS_FONT:
-				U.showFontAlertDialog(this, new DialogInterface.OnClickListener() {
+				U.showFontAlertDialog(this, g, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						if(whichButton == DialogInterface.BUTTON_POSITIVE)
 							run(items.getSelectedItem());

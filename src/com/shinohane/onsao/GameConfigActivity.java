@@ -113,7 +113,7 @@ public class GameConfigActivity extends Activity {
 			.show();
 			break;
 		case MISS_FONT:
-			U.showFontAlertDialog(this, new DialogInterface.OnClickListener() {
+			U.showFontAlertDialog(this, g, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
 					if(whichButton == DialogInterface.BUTTON_POSITIVE)
 						askToCreateShortcut(g);
