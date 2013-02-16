@@ -72,7 +72,8 @@ public class StateRunner implements StateIO {
 	
 	public StateIO gotoState(int cond, int to) {
 		if(state == to) return this;
-		if(state != cond) return this;
+		if(state != cond) 
+			return this;
 		gotoState(to);
 		return this;
 	}

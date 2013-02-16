@@ -669,7 +669,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 			
 		}
 		
-		items.showPanel(view);
+		Command.invoke(GameAdapter.SHOW_PANEL).args(items).sendDelayed(100);
 	}
 
 	public void onClick(View v) {

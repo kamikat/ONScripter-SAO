@@ -252,8 +252,14 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 	public void setOnPlayClickListener(OnClickListener listener) {
 		mOnPlayClickListener = listener;
 	}
+	
+	private View mSelectedView = null;
+	
+	private View getSelectedView() {
+		return mSelectedView;
+	}
 
-	public Payload getLoad(View v) {
+	public static Payload getLoad(View v) {
 		Object o = v.getTag();
 		return (o instanceof Payload)?(Payload) o:null;
 	}
@@ -287,20 +293,13 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 				}else{
 					load.StateHolder.gotoState(STATE_NORMAL, STATE_SELECTED);
 				}
+				mSelectedView = v;
 			}
 			load.Item = o;
 		}
 		return v;
 	}
-	
-	public void showPanel(View v) {
-		final Payload load = getLoad(v);
-		Command.invoke(STATE_CONTROL_COND).args(load.StateHolder,
-				STATE_SELECTED, STATE_SELECTED_PANEL).sendDelayed(100);
-		Command.invoke(STATE_CONTROL_COND).args(load.StateHolder, 
-				STATE_SELECTED_PANEL, STATE_SELECTED).sendDelayed(5100);
-	}
-	
+
 	// Async Operation Block {{{
 	
 	static {
@@ -310,16 +309,24 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 	
 	public static final int STATE_CONTROL_COND = 209;
 	
-	public static final int STATE_CONTROL = 208;
-
-	@CommandHandler(id = STATE_CONTROL)
-	public static void STATE_CONTROL(StateIO sio, int state) {
-		sio.gotoState(state);
-	}
-
 	@CommandHandler(id = STATE_CONTROL_COND)
 	public static void STATE_CONTROL_COND(StateIO sio, int cond, int to) {
 		sio.gotoState(cond, to);
+	}
+
+	public static final int SHOW_PANEL = 210;
+
+	@CommandHandler(id = SHOW_PANEL)
+	public static void SHOW_PANEL(GameAdapter list) {
+		View v = list.getSelectedView();
+		if(v != null) {
+			final Payload load = getLoad(v);
+			Command.revoke(STATE_CONTROL_COND);
+			Command.invoke(STATE_CONTROL_COND).args(load.StateHolder,
+					STATE_SELECTED, STATE_SELECTED_PANEL).send();
+			Command.invoke(STATE_CONTROL_COND).args(load.StateHolder, 
+					STATE_SELECTED_PANEL, STATE_SELECTED).sendDelayed(5000);
+		}
 	}
 	
 	// }}}
