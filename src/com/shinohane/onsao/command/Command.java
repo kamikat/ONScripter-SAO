@@ -2,9 +2,12 @@ package com.shinohane.onsao.command;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.shinohane.onsao.U;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.SparseArray;
 
@@ -41,7 +44,13 @@ public class Command {
 		}
 	}
 	
-	private static Handler Commander = new Handler() {
+	private static Map<Looper, Handler> _Handlers = new HashMap<Looper, Handler>();
+	
+	private static class _Handler extends Handler {
+		
+		public _Handler(Looper looper) {
+			super(looper);
+		}
 
 		public void handleMessage(Message msg) {
 			switch(msg.what){
@@ -65,7 +74,16 @@ public class Command {
 		}
 
 	};
-
+	
+	private static Handler obtainHandler(Looper looper) {
+		Handler h = _Handlers.get(looper);
+		if(h == null) {
+			_Handlers.put(looper, new _Handler(looper));
+			return obtainHandler(looper);
+		}
+		return h;
+	}
+	
 	public static Command invoke(Runnable run) {
 		Command cmd = new Command();
 		cmd.msg.what = RUN;
@@ -80,13 +98,40 @@ public class Command {
 	}
 
 	public static void revoke(int progId) {
-		Commander.removeMessages(progId);
+		for(Handler h : _Handlers.values())
+			h.removeMessages(progId);
 	}
 
 	private final Message msg;
+	
+	private Handler Commander;
 
 	private Command() {
-		msg = Message.obtain(Commander);
+		Looper l = Looper.myLooper();
+		if(l == null) l = Looper.getMainLooper();
+		Commander = obtainHandler(l);
+		msg = Message.obtain();
+	}
+	
+	public Command runAt(Looper looper) {
+		Commander = obtainHandler(looper);
+		return this;
+	}
+	
+	public Command to(Looper looper) {
+		return runAt(looper);
+	}
+	
+	public Command at(Looper looper) {
+		return runAt(looper);
+	}
+	
+	public Command atMain() {
+		return runAt(Looper.getMainLooper());
+	}
+	
+	public Command atCurrent() {
+		return runAt(Looper.myLooper());
 	}
 
 	public Command args(Object... args) {
@@ -95,12 +140,12 @@ public class Command {
 	}
 	
 	public Command only() {
-		Commander.removeMessages(msg.what);
+		Command.revoke(msg.what);
 		return this;
 	}
 	
 	public Command exclude(int progId) {
-		Commander.removeMessages(progId);
+		Command.revoke(progId);
 		return this;
 	}
 
