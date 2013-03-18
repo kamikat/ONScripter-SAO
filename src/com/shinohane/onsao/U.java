@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 
-import com.shinohane.onsao.command.Command;
-import com.shinohane.onsao.command.CommandHandler;
+import com.dummi.common.command.Command;
+import com.dummi.common.command.Resolver;
 
 
 import android.app.Activity;
@@ -56,12 +56,12 @@ public class U {
 	
 	static {
 		// Register Async Operation
-		com.shinohane.onsao.command.Command.register(U.class);
+		com.dummi.common.command.Command.register(U.class);
 	}
 
 	public static final int SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS = 10;
 	
-	@CommandHandler(id = SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS)
+	@Resolver(id = SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS)
 	public static void SCROLL_LIST_FOR_DISTANCE_IN_ANY_MILLIS(ListView v, int distance, int duration) {
 		v.smoothScrollBy(distance, duration);
 	}

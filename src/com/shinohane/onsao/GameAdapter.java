@@ -9,8 +9,8 @@ import com.shinohane.onsao.anim.AnimationBuilder;
 import com.shinohane.onsao.anim.AutomataAction;
 import com.shinohane.onsao.anim.StateIO;
 import com.shinohane.onsao.anim.StateRunner;
-import com.shinohane.onsao.command.Command;
-import com.shinohane.onsao.command.CommandHandler;
+import com.dummi.common.command.Command;
+import com.dummi.common.command.Resolver;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -304,19 +304,19 @@ public class GameAdapter extends ArrayAdapter<Game> implements ListAdapter {
 	
 	static {
 		// Register Async Operation
-		com.shinohane.onsao.command.Command.register(GameAdapter.class);
+		com.dummi.common.command.Command.register(GameAdapter.class);
 	}
 	
 	public static final int STATE_CONTROL_COND = 209;
 	
-	@CommandHandler(id = STATE_CONTROL_COND)
+	@Resolver(id = STATE_CONTROL_COND)
 	public static void STATE_CONTROL_COND(StateIO sio, int cond, int to) {
 		sio.gotoState(cond, to);
 	}
 
 	public static final int SHOW_PANEL = 210;
 
-	@CommandHandler(id = SHOW_PANEL)
+	@Resolver(id = SHOW_PANEL)
 	public static void SHOW_PANEL(GameAdapter list) {
 		View v = list.getSelectedView();
 		if(v != null) {

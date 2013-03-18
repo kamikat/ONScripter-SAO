@@ -18,8 +18,8 @@ import com.shinohane.onsao.anim.AnimationBuilder;
 import com.shinohane.onsao.anim.AutomataAction;
 import com.shinohane.onsao.anim.StateIO;
 import com.shinohane.onsao.anim.StateRunner;
-import com.shinohane.onsao.command.Command;
-import com.shinohane.onsao.command.CommandHandler;
+import com.dummi.common.command.Command;
+import com.dummi.common.command.Resolver;
 import com.shinohane.onsao.decoder.BackgroundDecoder;
 import com.shinohane.onsao.decoder.CoverDecoder;
 import com.shinohane.onsao.widget.AudioPlayer;
@@ -781,8 +781,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 	// Async Operation Block {{{
 	
 	static {
-		// Register Async Operation
-		com.shinohane.onsao.command.Command.register(MainActivity.class);
+		// Register Async Operation 
+		com.dummi.common.command.Command.register(MainActivity.class);
 	}
 
 	public static final int LOOP_VIDEO_PREVIEW = 13;
@@ -801,45 +801,45 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 
 	public static final int DATASET_CHANGED_LISTADAPTER = 103;
 	
-	@CommandHandler(id = LOOP_VIDEO_PREVIEW)
+	@Resolver(id = LOOP_VIDEO_PREVIEW)
 	public static void LOOP_VIDEO_PREVIEW(VideoView player) {
 		player.seekTo(0);
 		player.start();
 	}
 	
-	@CommandHandler(id = RELEASE_VIDEO_PREVIEW)
+	@Resolver(id = RELEASE_VIDEO_PREVIEW)
 	public static void RELEASE_VIDEO_PREVIEW(VideoView player) {
 		player.setVideoURI(null);
 	}
 	
-	@CommandHandler(id = LOOP_AUDIO_PLAY)
+	@Resolver(id = LOOP_AUDIO_PLAY)
 	public static void LOOP_AUDIO_PLAY(AudioPlayer player) {
 		player.seekTo(0);
 		player.start();
 	}
 	
-	@CommandHandler(id = TRY_DISPLAY_COVER)
+	@Resolver(id = TRY_DISPLAY_COVER)
 	public static void TRY_DISPLAY_COVER(MainActivity activity) {
 		activity.tryDisplayCover();
 	}
 
-	@CommandHandler(id = TRY_DISPLAY_BKG)
+	@Resolver(id = TRY_DISPLAY_BKG)
 	public static void TRY_DISPLAY_BKG(MainActivity activity) {
 		activity.tryDisplayBackground();
 	}
 
-	@CommandHandler(id = ACTION_AFTER_DISPLAY_COVER)
+	@Resolver(id = ACTION_AFTER_DISPLAY_COVER)
 	public static void ACTION_AFTER_DISPLAY_COVER(MainActivity activity) {
 		activity.checkActionAfterDisplayCover();
 	}
 	
-	@CommandHandler(id = ADD_ITEM_TO_LISTADAPTER)
+	@Resolver(id = ADD_ITEM_TO_LISTADAPTER)
 	public static void ADD_ITEM_TO_LISTADAPTER(GameAdapter adapter, Game item) {
 		adapter.add(item);
 		Command.invoke(DATASET_CHANGED_LISTADAPTER).args(adapter).only().sendDelayed(200);
 	}
 
-	@CommandHandler(id = DATASET_CHANGED_LISTADAPTER)
+	@Resolver(id = DATASET_CHANGED_LISTADAPTER)
 	public static void DATASET_CHANGED_LISTADAPTER(GameAdapter adapter) {
 		adapter.notifyDataSetChanged();
 	}
